@@ -1,0 +1,27 @@
+### THIS FILE IS AUTO GENERATED
+
+"""
+Instruction for establishing a live connection that is updated once the underlying data changes.
+"""
+directive @live on QUERY
+
+type Query {
+  character: Character
+}
+
+type Character {
+  name: String!
+  imageUrl: String
+  health: Health!
+}
+
+type Health {
+  maximum: Int!
+  current: Int!
+}
+
+type Mutation {
+  setMaximumHealth(newMaximumHealth: Int!): Boolean
+  setCurrentHealth(newCurrentHealth: Int!): Boolean
+  setCharacterImage(imageUrl: String!): Boolean
+}

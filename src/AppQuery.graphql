@@ -1,0 +1,10 @@
+query AppQuery @live {
+  character {
+    name
+    imageUrl
+    health {
+      maximum
+      current
+    }
+  }
+}
