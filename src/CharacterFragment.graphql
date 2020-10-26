@@ -1,0 +1,13 @@
+fragment CharacterFragment on Character {
+  id
+  name
+  imageUrl
+  health {
+    maximum
+    current
+  }
+  mana {
+    maximum
+    current
+  }
+}

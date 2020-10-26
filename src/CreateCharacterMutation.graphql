@@ -1,0 +1,11 @@
+mutation CreateCharacterMutation {
+  createCharacter {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CreateCharacterSuccess {
+      editHash
+    }
+  }
+}

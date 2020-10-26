@@ -3,9 +3,11 @@ import { subscribe } from "graphql";
 import { createServer } from "graphql-ws";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { schema } from "./schema";
-import { rootState } from "./state";
+import { PrismaClient } from "@prisma/client";
+import type { ApplicationContext } from "./ApplicationContext";
 
 const liveQueryStore = new InMemoryLiveQueryStore();
+const prisma = new PrismaClient();
 
 const server = http.createServer((_, res) => {
   res.writeHead(404);
@@ -17,8 +19,8 @@ createServer(
     schema,
     context: {
       liveQueryStore,
-      state: rootState,
-    },
+      prisma,
+    } as ApplicationContext,
     execute: liveQueryStore.execute,
     subscribe,
   },

@@ -1,0 +1,3 @@
+mutation CharacterSetNameMutation($editHash: String!, $newName: String!) {
+  characterSetName(editHash: $editHash, newName: $newName)
+}

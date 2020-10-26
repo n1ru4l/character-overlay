@@ -15,14 +15,34 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  characterEditor?: Maybe<CharacterEditor>;
   character?: Maybe<Character>;
+};
+
+
+export type QueryCharacterEditorArgs = {
+  editHash: Scalars['ID'];
+};
+
+
+export type QueryCharacterArgs = {
+  id: Scalars['ID'];
+};
+
+export type CharacterEditor = CharacterEditorView | Error;
+
+export type CharacterEditorView = {
+  __typename?: 'CharacterEditorView';
+  character: Character;
 };
 
 export type Character = {
   __typename?: 'Character';
+  id: Scalars['ID'];
   name: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
   health: Health;
+  mana?: Maybe<Health>;
 };
 
 export type Health = {
@@ -31,57 +51,192 @@ export type Health = {
   current: Scalars['Int'];
 };
 
+export type Error = {
+  __typename?: 'Error';
+  reason: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   setMaximumHealth?: Maybe<Scalars['Boolean']>;
   setCurrentHealth?: Maybe<Scalars['Boolean']>;
   setCharacterImage?: Maybe<Scalars['Boolean']>;
+  characterSetName?: Maybe<Scalars['Boolean']>;
+  createCharacter: CreateCharacterResult;
 };
 
 
 export type MutationSetMaximumHealthArgs = {
+  editHash: Scalars['String'];
   newMaximumHealth: Scalars['Int'];
 };
 
 
 export type MutationSetCurrentHealthArgs = {
+  editHash: Scalars['String'];
   newCurrentHealth: Scalars['Int'];
 };
 
 
 export type MutationSetCharacterImageArgs = {
+  editHash: Scalars['String'];
   imageUrl: Scalars['String'];
 };
 
-export type AppQueryVariables = Exact<{ [key: string]: never; }>;
+
+export type MutationCharacterSetNameArgs = {
+  editHash: Scalars['String'];
+  newName: Scalars['String'];
+};
+
+export type CreateCharacterResult = Error | CreateCharacterSuccess;
+
+export type CreateCharacterSuccess = {
+  __typename?: 'CreateCharacterSuccess';
+  editHash: Scalars['String'];
+};
+
+export type CharacterEditorQueryVariables = Exact<{
+  editHash: Scalars['ID'];
+}>;
 
 
-export type AppQuery = (
+export type CharacterEditorQuery = (
   { __typename?: 'Query' }
-  & { character?: Maybe<(
-    { __typename?: 'Character' }
-    & Pick<Character, 'name' | 'imageUrl'>
-    & { health: (
-      { __typename?: 'Health' }
-      & Pick<Health, 'maximum' | 'current'>
+  & { characterEditor?: Maybe<(
+    { __typename: 'CharacterEditorView' }
+    & { character: (
+      { __typename?: 'Character' }
+      & Pick<Character, 'id'>
+      & CharacterFragment
     ) }
+  ) | (
+    { __typename: 'Error' }
+    & Pick<Error, 'reason'>
   )> }
 );
 
+export type CharacterFragment = (
+  { __typename?: 'Character' }
+  & Pick<Character, 'id' | 'name' | 'imageUrl'>
+  & { health: (
+    { __typename?: 'Health' }
+    & Pick<Health, 'maximum' | 'current'>
+  ), mana?: Maybe<(
+    { __typename?: 'Health' }
+    & Pick<Health, 'maximum' | 'current'>
+  )> }
+);
 
-export const AppQueryDocument = gql`
-    query AppQuery @live {
-  character {
-    name
-    imageUrl
-    health {
-      maximum
-      current
+export type CharacterQueryVariables = Exact<{
+  characterId: Scalars['ID'];
+}>;
+
+
+export type CharacterQuery = (
+  { __typename?: 'Query' }
+  & { character?: Maybe<(
+    { __typename?: 'Character' }
+    & Pick<Character, 'id'>
+    & CharacterFragment
+  )> }
+);
+
+export type CharacterSetNameMutationVariables = Exact<{
+  editHash: Scalars['String'];
+  newName: Scalars['String'];
+}>;
+
+
+export type CharacterSetNameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'characterSetName'>
+);
+
+export type CreateCharacterMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateCharacterMutation = (
+  { __typename?: 'Mutation' }
+  & { createCharacter: (
+    { __typename: 'Error' }
+    & Pick<Error, 'reason'>
+  ) | (
+    { __typename: 'CreateCharacterSuccess' }
+    & Pick<CreateCharacterSuccess, 'editHash'>
+  ) }
+);
+
+export const CharacterFragment = gql`
+    fragment CharacterFragment on Character {
+  id
+  name
+  imageUrl
+  health {
+    maximum
+    current
+  }
+  mana {
+    maximum
+    current
+  }
+}
+    `;
+export const CharacterEditorQueryDocument = gql`
+    query CharacterEditorQuery($editHash: ID!) @live {
+  characterEditor(editHash: $editHash) {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CharacterEditorView {
+      character {
+        id
+        ...CharacterFragment
+      }
+    }
+  }
+}
+    ${CharacterFragment}`;
+
+export function useCharacterEditorQuery(options: Omit<Urql.UseQueryArgs<CharacterEditorQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CharacterEditorQuery>({ query: CharacterEditorQueryDocument, ...options });
+};
+export const CharacterQueryDocument = gql`
+    query CharacterQuery($characterId: ID!) @live {
+  character(id: $characterId) {
+    id
+    ...CharacterFragment
+  }
+}
+    ${CharacterFragment}`;
+
+export function useCharacterQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CharacterQuery>({ query: CharacterQueryDocument, ...options });
+};
+export const CharacterSetNameMutationDocument = gql`
+    mutation CharacterSetNameMutation($editHash: String!, $newName: String!) {
+  characterSetName(editHash: $editHash, newName: $newName)
+}
+    `;
+
+export function useCharacterSetNameMutation() {
+  return Urql.useMutation<CharacterSetNameMutation, CharacterSetNameMutationVariables>(CharacterSetNameMutationDocument);
+};
+export const CreateCharacterMutationDocument = gql`
+    mutation CreateCharacterMutation {
+  createCharacter {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CreateCharacterSuccess {
+      editHash
     }
   }
 }
     `;
 
-export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<AppQuery>({ query: AppQueryDocument, ...options });
+export function useCreateCharacterMutation() {
+  return Urql.useMutation<CreateCharacterMutation, CreateCharacterMutationVariables>(CreateCharacterMutationDocument);
 };
