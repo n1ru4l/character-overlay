@@ -12,23 +12,30 @@ import {
   HStack,
   InputGroup,
   InputRightElement,
+  Text,
+  Popover,
+  PopoverTrigger,
+  Portal,
 } from "@chakra-ui/core";
+import { darken, transparentize } from "polished";
+import { parseIntSafe } from "./number-utilities";
+// import FontPicker from "font-picker-react";
 import {
   CharacterFragment,
   useCharacterEditorQuery,
   useCharacterQuery,
   useCreateCharacterMutation,
   useCharacterSetNameMutation,
+  useCharacterSetCurrentHealthMutation,
+  useCharacterSetMaximumHealthMutation,
 } from "./generated/graphql";
+import { isSome } from "./Maybe";
+import { NumPad } from "./NumPad";
 
 const CharacterImage = styled.img({
   width: 150,
   height: 150,
-  border: "1px solid black",
-});
-
-const CharacterName = styled.div({
-  fontWeight: "bold",
+  background: "white",
 });
 
 const healthBarWidth = 300;
@@ -43,15 +50,18 @@ const ProgressBar = styled.div({
   position: "relative",
   width: healthBarWidth,
   height: healthBarHeight,
-  background: "transparent",
   borderRadius: 3,
-  border: "2px solid black",
+  border: `2px solid ${darken(0.1, "#ec008c")}`,
   overflow: "hidden",
+  background: transparentize(0.7, "#ec008c"),
+  color: "white",
 });
 
 const ProgressBarProgress = styled.div<{ width: number }>((props) => ({
   width: props.width,
   height: healthBarHeight,
+  transition: "width .6s ease-in-out",
+  flexShrink: 0,
 }));
 
 const HealthBarProgress = styled(ProgressBarProgress)({
@@ -197,7 +207,15 @@ const CharacterOverlay = ({
   editHash: string;
 }) => {
   const [, saveCharacterName] = useCharacterSetNameMutation();
+  const [, saveCurrentHealth] = useCharacterSetCurrentHealthMutation();
+  const [, saveMaximumHealth] = useCharacterSetMaximumHealthMutation();
   const [characterName, setCharacterName] = React.useState(character.name);
+  const [currentHealth, setCurrentHealth] = React.useState(
+    character.health.current
+  );
+  const [maximumHealth, setMaximumHealth] = React.useState(
+    character.health.maximum
+  );
 
   React.useEffect(() => {
     if (editHash === "") {
@@ -209,33 +227,112 @@ const CharacterOverlay = ({
     });
   }, [editHash, characterName, saveCharacterName]);
 
+  React.useEffect(() => {
+    if (editHash === "") {
+      return;
+    }
+    saveCurrentHealth({
+      editHash,
+      newCurrentHealth: currentHealth,
+    });
+  }, [editHash, currentHealth, saveCurrentHealth]);
+
+  React.useEffect(() => {
+    if (editHash === "") {
+      return;
+    }
+    saveMaximumHealth({
+      editHash,
+      newMaximumHealth: maximumHealth,
+    });
+  }, [editHash, maximumHealth, saveMaximumHealth]);
+
+  const actualCurrentHealth =
+    editHash === "" ? character.health.current : currentHealth;
+  const actualMaximumHealth =
+    editHash === "" ? character.health.maximum : maximumHealth;
+
   return (
     <>
-      <HStack spacing="2">
+      <HStack spacing="2" width="100%">
         <Column>
           <CharacterImage src={character.imageUrl ?? ""} />
         </Column>
         <VStack spacing="2">
           <Spacer height={18} />
           {editHash === "" ? (
-            <CharacterName>{character.name}</CharacterName>
+            <Text
+              color="white"
+              fontSize="lg"
+              textShadow="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"
+              width="100%"
+            >
+              {character.name}
+            </Text>
           ) : (
             <Input
               value={characterName}
               onChange={(ev) => setCharacterName(ev.target.value)}
             />
           )}
-          <ProgressBar>
-            <HealthBarProgress
-              width={
-                (character.health.current / character.health.maximum) *
-                healthBarWidth
-              }
-            />
-            <ProgressLabel>
-              LeP {character.health.current} / {character.health.maximum}
-            </ProgressLabel>
-          </ProgressBar>
+          <HStack width="100%">
+            <ProgressBar>
+              <HealthBarProgress
+                width={
+                  (actualCurrentHealth / actualMaximumHealth) * healthBarWidth
+                }
+              />
+              <ProgressLabel>
+                LeP {actualCurrentHealth} / {actualMaximumHealth}
+              </ProgressLabel>
+            </ProgressBar>
+            {editHash === "" ? null : (
+              <>
+                <Popover>
+                  <PopoverTrigger>
+                    <Input
+                      value={actualCurrentHealth}
+                      type="number"
+                      onChange={(ev) => {
+                        const maybeNumber = parseIntSafe(ev.target.value);
+                        if (isSome(maybeNumber)) {
+                          setCurrentHealth(maybeNumber);
+                        }
+                      }}
+                    />
+                  </PopoverTrigger>
+                  <Portal>
+                    <NumPad
+                      onAdd={(value) => {
+                        let newHealth = currentHealth + value;
+                        if (newHealth > maximumHealth) {
+                          newHealth = maximumHealth;
+                        }
+                        setCurrentHealth(newHealth);
+                      }}
+                      onSubstract={(value) => {
+                        let newHealth = currentHealth - value;
+                        if (newHealth < 0) {
+                          newHealth = 0;
+                        }
+                        setCurrentHealth(newHealth);
+                      }}
+                    />
+                  </Portal>
+                </Popover>
+                <Input
+                  value={actualMaximumHealth}
+                  type="number"
+                  onChange={(ev) => {
+                    const maybeNumber = parseIntSafe(ev.target.value);
+                    if (isSome(maybeNumber)) {
+                      setMaximumHealth(maybeNumber);
+                    }
+                  }}
+                />
+              </>
+            )}
+          </HStack>
           <Spacer height={4} />
           {character.mana ? (
             <ProgressBar>
@@ -258,31 +355,49 @@ const CharacterOverlay = ({
             Use the following link for adding the character info as a OBS
             overlay.
           </Box>
-          <InputGroup size="md">
-            <Input
-              pr="4.5rem"
-              type={"text"}
-              readOnly
-              value={
-                process.env.PUBLIC_URL ||
-                window.location.protocol +
-                  "://" +
-                  window.location.hostname +
-                  (window.location.port ? `:${window.location.port}` : "") +
-                  "/#" +
-                  encodeURIComponent(
-                    JSON.stringify({ characterId: character.id, hash: "" })
-                  )
-              }
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={() => alert("COPIED")}>
-                Copy
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+          <CopyInput
+            type="text"
+            readOnly
+            value={buildCharacterUrl(character.id)}
+          />
+          {/* {process.env.REACT_APP_GOOGLE_API_KEY ? (
+            <>
+              Select custom font:
+              <FontPicker apiKey={process.env.REACT_APP_GOOGLE_API_KEY} />
+            </>
+          ) : null} */}
         </>
       )}
     </>
+  );
+};
+
+const buildCharacterUrl = (characterId: string) =>
+  process.env.PUBLIC_URL ||
+  window.location.protocol +
+    "//" +
+    window.location.hostname +
+    (window.location.port ? `:${window.location.port}` : "") +
+    "/#" +
+    encodeURIComponent(JSON.stringify({ characterId, hash: "" }));
+
+const CopyInput = (props: React.ComponentProps<typeof Input>) => {
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  return (
+    <InputGroup size="md">
+      <Input pr="4.5rem" ref={inputRef} {...props} />
+      <InputRightElement width="4.5rem">
+        <Button
+          h="1.75rem"
+          size="sm"
+          onClick={() => {
+            inputRef.current?.select();
+            document.execCommand("copy");
+          }}
+        >
+          Copy
+        </Button>
+      </InputRightElement>
+    </InputGroup>
   );
 };

@@ -1,0 +1,9 @@
+mutation CharacterSetMaximumHealthMutation(
+  $editHash: String!
+  $newMaximumHealth: Int!
+) {
+  characterSetMaximumHealth(
+    editHash: $editHash
+    newMaximumHealth: $newMaximumHealth
+  )
+}

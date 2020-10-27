@@ -170,25 +170,41 @@ const CreateCharacterResult = t.unionType<{
 const Mutation = t.mutationType({
   name: "Mutation",
   fields: () => [
-    t.field("setMaximumHealth", {
+    t.field("characterSetMaximumHealth", {
       type: t.Boolean,
       args: {
         editHash: t.arg(t.NonNullInput(t.String)),
         newMaximumHealth: t.arg(t.NonNullInput(t.Int)),
       },
-      resolve: (_, args, context) => {
-        context.liveQueryStore.invalidate("Query.character");
+      resolve: async (_, args, context) => {
+        const character = await context.prisma.character.update({
+          where: {
+            editHash: args.editHash,
+          },
+          data: {
+            maximumHealth: args.newMaximumHealth,
+          },
+        });
+        context.liveQueryStore.invalidate(`Character:${character.id}`);
         return null;
       },
     }),
-    t.field("setCurrentHealth", {
+    t.field("characterSetCurrentHealth", {
       type: t.Boolean,
       args: {
         editHash: t.arg(t.NonNullInput(t.String)),
         newCurrentHealth: t.arg(t.NonNullInput(t.Int)),
       },
-      resolve: (_, args, context) => {
-        context.liveQueryStore.invalidate("Query.character");
+      resolve: async (_, args, context) => {
+        const character = await context.prisma.character.update({
+          where: {
+            editHash: args.editHash,
+          },
+          data: {
+            currentHealth: args.newCurrentHealth,
+          },
+        });
+        context.liveQueryStore.invalidate(`Character:${character.id}`);
         return null;
       },
     }),

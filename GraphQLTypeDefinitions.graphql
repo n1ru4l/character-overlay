@@ -34,8 +34,8 @@ type Error {
 }
 
 type Mutation {
-  setMaximumHealth(editHash: String!, newMaximumHealth: Int!): Boolean
-  setCurrentHealth(editHash: String!, newCurrentHealth: Int!): Boolean
+  characterSetMaximumHealth(editHash: String!, newMaximumHealth: Int!): Boolean
+  characterSetCurrentHealth(editHash: String!, newCurrentHealth: Int!): Boolean
   setCharacterImage(editHash: String!, imageUrl: String!): Boolean
   characterSetName(editHash: String!, newName: String!): Boolean
   createCharacter: CreateCharacterResult!

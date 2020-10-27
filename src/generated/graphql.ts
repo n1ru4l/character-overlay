@@ -58,21 +58,21 @@ export type Error = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  setMaximumHealth?: Maybe<Scalars['Boolean']>;
-  setCurrentHealth?: Maybe<Scalars['Boolean']>;
+  characterSetMaximumHealth?: Maybe<Scalars['Boolean']>;
+  characterSetCurrentHealth?: Maybe<Scalars['Boolean']>;
   setCharacterImage?: Maybe<Scalars['Boolean']>;
   characterSetName?: Maybe<Scalars['Boolean']>;
   createCharacter: CreateCharacterResult;
 };
 
 
-export type MutationSetMaximumHealthArgs = {
+export type MutationCharacterSetMaximumHealthArgs = {
   editHash: Scalars['String'];
   newMaximumHealth: Scalars['Int'];
 };
 
 
-export type MutationSetCurrentHealthArgs = {
+export type MutationCharacterSetCurrentHealthArgs = {
   editHash: Scalars['String'];
   newCurrentHealth: Scalars['Int'];
 };
@@ -140,6 +140,28 @@ export type CharacterQuery = (
     & Pick<Character, 'id'>
     & CharacterFragment
   )> }
+);
+
+export type CharacterSetCurrentHealthMutationVariables = Exact<{
+  editHash: Scalars['String'];
+  newCurrentHealth: Scalars['Int'];
+}>;
+
+
+export type CharacterSetCurrentHealthMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'characterSetCurrentHealth'>
+);
+
+export type CharacterSetMaximumHealthMutationVariables = Exact<{
+  editHash: Scalars['String'];
+  newMaximumHealth: Scalars['Int'];
+}>;
+
+
+export type CharacterSetMaximumHealthMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'characterSetMaximumHealth'>
 );
 
 export type CharacterSetNameMutationVariables = Exact<{
@@ -213,6 +235,24 @@ export const CharacterQueryDocument = gql`
 
 export function useCharacterQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CharacterQuery>({ query: CharacterQueryDocument, ...options });
+};
+export const CharacterSetCurrentHealthMutationDocument = gql`
+    mutation CharacterSetCurrentHealthMutation($editHash: String!, $newCurrentHealth: Int!) {
+  characterSetCurrentHealth(editHash: $editHash, newCurrentHealth: $newCurrentHealth)
+}
+    `;
+
+export function useCharacterSetCurrentHealthMutation() {
+  return Urql.useMutation<CharacterSetCurrentHealthMutation, CharacterSetCurrentHealthMutationVariables>(CharacterSetCurrentHealthMutationDocument);
+};
+export const CharacterSetMaximumHealthMutationDocument = gql`
+    mutation CharacterSetMaximumHealthMutation($editHash: String!, $newMaximumHealth: Int!) {
+  characterSetMaximumHealth(editHash: $editHash, newMaximumHealth: $newMaximumHealth)
+}
+    `;
+
+export function useCharacterSetMaximumHealthMutation() {
+  return Urql.useMutation<CharacterSetMaximumHealthMutation, CharacterSetMaximumHealthMutationVariables>(CharacterSetMaximumHealthMutationDocument);
 };
 export const CharacterSetNameMutationDocument = gql`
     mutation CharacterSetNameMutation($editHash: String!, $newName: String!) {
