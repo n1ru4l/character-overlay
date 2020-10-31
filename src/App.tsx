@@ -21,11 +21,11 @@ import {
 import { darken, transparentize } from "polished";
 import { parseIntSafe } from "./number-utilities";
 import {
-  CharacterFragment,
-  useCharacterEditorQuery,
-  useCharacterQuery,
-  useCreateCharacterMutation,
-  useUpdateCharacterMutation,
+  CharacterViewFragment,
+  useCharacterEditorQueryQuery,
+  useCharacterQueryQuery,
+  useCreateCharacterMutationMutation,
+  useUpdateCharacterMutationMutation,
 } from "./generated/graphql";
 import { isSome } from "./Maybe";
 import { NumPad } from "./NumPad";
@@ -95,13 +95,16 @@ const CharacterEditor = ({
   editHash: string;
   setEditHash: (hash: string) => void;
 }): React.ReactElement => {
-  const [data] = useCharacterEditorQuery({
+  const [data] = useCharacterEditorQueryQuery({
     variables: {
       editHash,
     },
   });
 
-  const [createCharacterState, createCharacter] = useCreateCharacterMutation();
+  const [
+    createCharacterState,
+    createCharacter,
+  ] = useCreateCharacterMutationMutation();
 
   React.useEffect(() => {
     if (
@@ -176,7 +179,7 @@ export const App = (): React.ReactElement => {
 };
 
 const CharacterRenderer = ({ characterId }: { characterId: string }) => {
-  const [data] = useCharacterQuery({
+  const [data] = useCharacterQueryQuery({
     variables: {
       characterId,
     },
@@ -193,10 +196,10 @@ const CharacterOverlay = ({
   character,
   editHash,
 }: {
-  character: CharacterFragment;
+  character: CharacterViewFragment;
   editHash: string;
 }) => {
-  const [, updateCharacter] = useUpdateCharacterMutation();
+  const [, updateCharacter] = useUpdateCharacterMutationMutation();
   const [name, setName] = React.useState(character.name);
   const [currentHealth, setCurrentHealth] = React.useState(
     character.health.current

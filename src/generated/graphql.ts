@@ -97,23 +97,11 @@ export type CharacterEditorQuery = (
     & { character: (
       { __typename?: 'Character' }
       & Pick<Character, 'id'>
-      & CharacterFragment
+      & CharacterViewFragment
     ) }
   ) | (
     { __typename: 'Error' }
     & Pick<Error, 'reason'>
-  )> }
-);
-
-export type CharacterFragment = (
-  { __typename?: 'Character' }
-  & Pick<Character, 'id' | 'name' | 'imageUrl'>
-  & { health: (
-    { __typename?: 'Health' }
-    & Pick<Health, 'maximum' | 'current'>
-  ), mana?: Maybe<(
-    { __typename?: 'Health' }
-    & Pick<Health, 'maximum' | 'current'>
   )> }
 );
 
@@ -127,7 +115,19 @@ export type CharacterQuery = (
   & { character?: Maybe<(
     { __typename?: 'Character' }
     & Pick<Character, 'id'>
-    & CharacterFragment
+    & CharacterViewFragment
+  )> }
+);
+
+export type CharacterViewFragment = (
+  { __typename?: 'Character' }
+  & Pick<Character, 'id' | 'name' | 'imageUrl'>
+  & { health: (
+    { __typename?: 'Health' }
+    & Pick<Health, 'maximum' | 'current'>
+  ), mana?: Maybe<(
+    { __typename?: 'Health' }
+    & Pick<Health, 'maximum' | 'current'>
   )> }
 );
 
@@ -155,8 +155,8 @@ export type UpdateCharacterMutation = (
   & Pick<Mutation, 'updateCharacter'>
 );
 
-export const CharacterFragment = gql`
-    fragment CharacterFragment on Character {
+export const CharacterViewFragmentDoc = gql`
+    fragment CharacterViewFragment on Character {
   id
   name
   imageUrl
@@ -180,26 +180,26 @@ export const CharacterEditorQueryDocument = gql`
     ... on CharacterEditorView {
       character {
         id
-        ...CharacterFragment
+        ...CharacterViewFragment
       }
     }
   }
 }
-    ${CharacterFragment}`;
+    ${CharacterViewFragmentDoc}`;
 
-export function useCharacterEditorQuery(options: Omit<Urql.UseQueryArgs<CharacterEditorQueryVariables>, 'query'> = {}) {
+export function useCharacterEditorQueryQuery(options: Omit<Urql.UseQueryArgs<CharacterEditorQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CharacterEditorQuery>({ query: CharacterEditorQueryDocument, ...options });
 };
 export const CharacterQueryDocument = gql`
     query CharacterQuery($characterId: ID!) @live {
   character(id: $characterId) {
     id
-    ...CharacterFragment
+    ...CharacterViewFragment
   }
 }
-    ${CharacterFragment}`;
+    ${CharacterViewFragmentDoc}`;
 
-export function useCharacterQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
+export function useCharacterQueryQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CharacterQuery>({ query: CharacterQueryDocument, ...options });
 };
 export const CreateCharacterMutationDocument = gql`
@@ -216,7 +216,7 @@ export const CreateCharacterMutationDocument = gql`
 }
     `;
 
-export function useCreateCharacterMutation() {
+export function useCreateCharacterMutationMutation() {
   return Urql.useMutation<CreateCharacterMutation, CreateCharacterMutationVariables>(CreateCharacterMutationDocument);
 };
 export const UpdateCharacterMutationDocument = gql`
@@ -225,6 +225,6 @@ export const UpdateCharacterMutationDocument = gql`
 }
     `;
 
-export function useUpdateCharacterMutation() {
+export function useUpdateCharacterMutationMutation() {
   return Urql.useMutation<UpdateCharacterMutation, UpdateCharacterMutationVariables>(UpdateCharacterMutationDocument);
 };
