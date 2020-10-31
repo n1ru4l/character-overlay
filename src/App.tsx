@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
-import useHashState from "use-hash-state";
 import styled from "@emotion/styled";
 import {
   VStack,
@@ -27,7 +26,7 @@ import {
   useCreateCharacterMutationMutation,
   useUpdateCharacterMutationMutation,
 } from "./generated/graphql";
-import { isSome } from "./Maybe";
+import { isNone, isSome, Maybe } from "./Maybe";
 import { NumPad } from "./NumPad";
 
 const CharacterImage = styled.img({
@@ -90,10 +89,8 @@ const Spacer = styled.div<{ width?: number; height?: number }>((props) => ({
 
 const CharacterEditor = ({
   editHash,
-  setEditHash,
 }: {
   editHash: string;
-  setEditHash: (hash: string) => void;
 }): React.ReactElement => {
   const [data] = useCharacterEditorQueryQuery({
     variables: {
@@ -101,6 +98,107 @@ const CharacterEditor = ({
     },
   });
 
+  switch (data?.data?.characterEditor?.__typename) {
+    case "Error":
+      return <Box>Unexpected Error occured</Box>;
+    case "CharacterEditorView": {
+      const { character } = data.data.characterEditor;
+      return <CharacterOverlay character={character} editHash={editHash} />;
+    }
+    default:
+      // TODO: Show Character not found view.
+      return <Box>Character not found...</Box>;
+  }
+};
+
+const parseEditHash = (hash: string): Maybe<string> => {
+  const result = /edit=(\w*)/.exec(hash);
+  if (isNone(result)) {
+    return null;
+  }
+  const [, editHash] = result;
+  return editHash;
+};
+
+const parseCharacterId = (hash: string): Maybe<string> => {
+  const result = /character=(\w*)/.exec(hash);
+  if (isNone(result)) {
+    return null;
+  }
+  const [, characterId] = result;
+  return characterId;
+};
+
+const useRoutingState = () => {
+  const [state, setState] = React.useState({
+    type: "main",
+    data: {},
+  } as
+    | {
+        type: "edit";
+        data: {
+          editHash: string;
+        };
+      }
+    | {
+        type: "main";
+        data: {};
+      }
+    | {
+        type: "character";
+        data: {
+          characterId: string;
+        };
+      });
+
+  React.useEffect(() => {
+    const onHashChange = () => {
+      const { hash } = window.location;
+      const editHash = parseEditHash(hash);
+      if (isSome(editHash)) {
+        setState({
+          type: "edit",
+          data: {
+            editHash,
+          },
+        });
+        return;
+      }
+      const characterId = parseCharacterId(hash);
+      if (isSome(characterId)) {
+        setState({
+          type: "character",
+          data: {
+            characterId,
+          },
+        });
+        return;
+      }
+      setState({
+        type: "main",
+        data: {},
+      });
+    };
+    window.addEventListener("hashchange", onHashChange);
+    onHashChange();
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [setState]);
+
+  return state;
+};
+
+export const App = (): React.ReactElement => {
+  const routingState = useRoutingState();
+
+  if (routingState.type === "character") {
+    return <CharacterRenderer characterId={routingState.data.characterId} />;
+  } else if (routingState.type === "edit") {
+    return <CharacterEditor editHash={routingState.data.editHash} />;
+  }
+  return <Main />;
+};
+
+const Main = (): React.ReactElement => {
   const [
     createCharacterState,
     createCharacter,
@@ -111,70 +209,39 @@ const CharacterEditor = ({
       createCharacterState.data?.createCharacter.__typename ===
       "CreateCharacterSuccess"
     ) {
-      setEditHash(createCharacterState.data.createCharacter.editHash);
+      window.location.hash = `edit=${createCharacterState.data.createCharacter.editHash}`;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createCharacterState.data?.createCharacter]);
 
-  if (editHash === "" || !data.data) {
-    return (
-      <Flex minHeight="100vh" justifyContent="center" alignItems="center">
-        <VStack
-          spacing="4"
-          maxW="sm"
-          minWidth={300}
-          borderWidth="1px"
-          borderRadius="lg"
-          p="6"
-        >
-          <img src="/logo.png" alt="OBS Character Overlay Logo" />
-
-          <Box as="p" textAlign="center">
-            Create an OBS overlay for your favorite tabeltop role-playing game
-            in seconds.
-          </Box>
-
-          <Button
-            onClick={() => {
-              createCharacter();
-            }}
-            disabled={createCharacterState.fetching}
-            colorScheme="purple"
-          >
-            Create Overlay!
-          </Button>
-        </VStack>
-      </Flex>
-    );
-  }
-
-  switch (data?.data.characterEditor?.__typename) {
-    case "Error":
-      return <Box>Unexpected Error occured</Box>;
-    case "CharacterEditorView": {
-      const { character } = data.data.characterEditor;
-      return <CharacterOverlay character={character} editHash={editHash} />;
-    }
-    default:
-      return <Box />;
-  }
-};
-
-export const App = (): React.ReactElement => {
-  const { state, setStateAtKey } = useHashState({
-    hash: "",
-    characterId: "",
-  });
-
-  if (state.characterId !== "") {
-    return <CharacterRenderer characterId={state.characterId} />;
-  }
-
   return (
-    <CharacterEditor
-      setEditHash={(hash) => setStateAtKey("hash", hash)}
-      editHash={state.hash}
-    />
+    <Flex minHeight="100vh" justifyContent="center" alignItems="center">
+      <VStack
+        spacing="4"
+        maxW="sm"
+        minWidth={300}
+        borderWidth="1px"
+        borderRadius="lg"
+        p="6"
+      >
+        <img src="/logo.png" alt="OBS Character Overlay Logo" />
+
+        <Box as="p" textAlign="center">
+          Create an OBS overlay for your favorite tabeltop role-playing game in
+          seconds.
+        </Box>
+
+        <Button
+          onClick={() => {
+            createCharacter();
+          }}
+          disabled={createCharacterState.fetching}
+          colorScheme="purple"
+        >
+          Create Overlay!
+        </Button>
+      </VStack>
+    </Flex>
   );
 };
 
@@ -186,6 +253,7 @@ const CharacterRenderer = ({ characterId }: { characterId: string }) => {
   });
 
   if (!data.data?.character) {
+    // TODO: Show Character not found view.
     return <Box>Character not found...</Box>;
   }
 
@@ -399,8 +467,7 @@ const buildCharacterUrl = (characterId: string) =>
     "//" +
     window.location.hostname +
     (window.location.port ? `:${window.location.port}` : "") +
-    "/#" +
-    encodeURIComponent(JSON.stringify({ characterId, hash: "" }));
+    `/#character=${characterId}`;
 
 const CopyInput = (props: React.ComponentProps<typeof Input>) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
