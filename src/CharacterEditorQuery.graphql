@@ -7,7 +7,7 @@ query CharacterEditorQuery($editHash: ID!) @live {
     ... on CharacterEditorView {
       character {
         id
-        ...CharacterFragment
+        ...CharacterViewFragment
       }
     }
   }

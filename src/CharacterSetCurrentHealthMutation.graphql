@@ -1,9 +1,0 @@
-mutation CharacterSetCurrentHealthMutation(
-  $editHash: String!
-  $newCurrentHealth: Int!
-) {
-  characterSetCurrentHealth(
-    editHash: $editHash
-    newCurrentHealth: $newCurrentHealth
-  )
-}

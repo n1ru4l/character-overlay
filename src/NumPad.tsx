@@ -6,11 +6,11 @@ import {
   PopoverBody,
   PopoverFooter,
   Button,
-  Box,
   PopoverHeader,
   VStack,
   Grid,
   GridItem,
+  Input,
 } from "@chakra-ui/core";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { isSome } from "./Maybe";
@@ -76,9 +76,14 @@ export const NumPad = (props: {
       <PopoverHeader>Change Health</PopoverHeader>
       <PopoverBody>
         <VStack spacing="2">
-          <Box padding="1" background="lightgray" width="100%">
-            {value}
-          </Box>
+          <Input
+            padding="2"
+            background="lightgray"
+            width="100%"
+            defaultValue={value}
+            textAlign="right"
+          />
+
           <Grid templateColumns="repeat(3, 1fr)" gap="1" width="100%">
             <Button
               variant="outline"

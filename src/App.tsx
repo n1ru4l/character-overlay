@@ -16,18 +16,16 @@ import {
   Popover,
   PopoverTrigger,
   Portal,
+  Stack,
 } from "@chakra-ui/core";
 import { darken, transparentize } from "polished";
 import { parseIntSafe } from "./number-utilities";
-// import FontPicker from "font-picker-react";
 import {
   CharacterFragment,
   useCharacterEditorQuery,
   useCharacterQuery,
   useCreateCharacterMutation,
-  useCharacterSetNameMutation,
-  useCharacterSetCurrentHealthMutation,
-  useCharacterSetMaximumHealthMutation,
+  useUpdateCharacterMutation,
 } from "./generated/graphql";
 import { isSome } from "./Maybe";
 import { NumPad } from "./NumPad";
@@ -36,6 +34,7 @@ const CharacterImage = styled.img({
   width: 150,
   height: 150,
   background: "white",
+  borderRadius: 75,
 });
 
 const healthBarWidth = 300;
@@ -55,13 +54,13 @@ const ProgressBar = styled.div({
   overflow: "hidden",
   background: transparentize(0.7, "#ec008c"),
   color: "white",
+  flexShrink: 0,
 });
 
-const ProgressBarProgress = styled.div<{ width: number }>((props) => ({
-  width: props.width,
+const ProgressBarProgress = styled.div<{ w: number }>((props) => ({
+  width: props.w,
   height: healthBarHeight,
   transition: "width .6s ease-in-out",
-  flexShrink: 0,
 }));
 
 const HealthBarProgress = styled(ProgressBarProgress)({
@@ -125,15 +124,7 @@ const CharacterEditor = ({
           borderRadius="lg"
           p="6"
         >
-          <Heading
-            mt="1"
-            fontWeight="semibold"
-            as="h1"
-            lineHeight="tight"
-            isTruncated
-          >
-            OBS Character Info
-          </Heading>
+          <img src="/logo.png" alt="OBS Character Overlay Logo" />
 
           <Box as="p" textAlign="center">
             Create an OBS overlay for your favorite tabeltop role-playing game
@@ -145,8 +136,9 @@ const CharacterEditor = ({
               createCharacter();
             }}
             disabled={createCharacterState.fetching}
+            colorScheme="purple"
           >
-            Create new Character
+            Create Overlay!
           </Button>
         </VStack>
       </Flex>
@@ -170,8 +162,6 @@ export const App = (): React.ReactElement => {
     hash: "",
     characterId: "",
   });
-
-  console.log(state);
 
   if (state.characterId !== "") {
     return <CharacterRenderer characterId={state.characterId} />;
@@ -206,10 +196,8 @@ const CharacterOverlay = ({
   character: CharacterFragment;
   editHash: string;
 }) => {
-  const [, saveCharacterName] = useCharacterSetNameMutation();
-  const [, saveCurrentHealth] = useCharacterSetCurrentHealthMutation();
-  const [, saveMaximumHealth] = useCharacterSetMaximumHealthMutation();
-  const [characterName, setCharacterName] = React.useState(character.name);
+  const [, updateCharacter] = useUpdateCharacterMutation();
+  const [name, setName] = React.useState(character.name);
   const [currentHealth, setCurrentHealth] = React.useState(
     character.health.current
   );
@@ -217,35 +205,26 @@ const CharacterOverlay = ({
     character.health.maximum
   );
 
+  const isFirstRun = React.useRef(true);
   React.useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     if (editHash === "") {
       return;
     }
-    saveCharacterName({
-      editHash,
-      newName: characterName,
+    updateCharacter({
+      input: {
+        editHash,
+        updates: {
+          name,
+          currentHealth,
+          maximumHealth,
+        },
+      },
     });
-  }, [editHash, characterName, saveCharacterName]);
-
-  React.useEffect(() => {
-    if (editHash === "") {
-      return;
-    }
-    saveCurrentHealth({
-      editHash,
-      newCurrentHealth: currentHealth,
-    });
-  }, [editHash, currentHealth, saveCurrentHealth]);
-
-  React.useEffect(() => {
-    if (editHash === "") {
-      return;
-    }
-    saveMaximumHealth({
-      editHash,
-      newMaximumHealth: maximumHealth,
-    });
-  }, [editHash, maximumHealth, saveMaximumHealth]);
+  }, [updateCharacter, editHash, name, currentHealth, maximumHealth]);
 
   const actualCurrentHealth =
     editHash === "" ? character.health.current : currentHealth;
@@ -254,120 +233,159 @@ const CharacterOverlay = ({
 
   return (
     <>
-      <HStack spacing="2" width="100%">
-        <Column>
-          <CharacterImage src={character.imageUrl ?? ""} />
-        </Column>
-        <VStack spacing="2">
-          <Spacer height={18} />
-          {editHash === "" ? (
-            <Text
-              color="white"
-              fontSize="lg"
-              textShadow="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"
-              width="100%"
-            >
-              {character.name}
+      <Stack spacing="2" padding="md">
+        {editHash === "" ? null : (
+          <Stack>
+            <Heading>Character Editor</Heading>
+            <Text>
+              Don't share the URL of this Page with anyone. Bookmark it in order
+              to re-use the character at a later point.
             </Text>
-          ) : (
-            <Input
-              value={characterName}
-              onChange={(ev) => setCharacterName(ev.target.value)}
-            />
-          )}
-          <HStack width="100%">
-            <ProgressBar>
-              <HealthBarProgress
-                width={
-                  (actualCurrentHealth / actualMaximumHealth) * healthBarWidth
-                }
-              />
-              <ProgressLabel>
-                LeP {actualCurrentHealth} / {actualMaximumHealth}
-              </ProgressLabel>
-            </ProgressBar>
-            {editHash === "" ? null : (
-              <>
-                <Popover>
-                  <PopoverTrigger>
-                    <Input
-                      value={actualCurrentHealth}
+            <Text>
+              If you loose the URL you cannot use this character anymore. So
+              make sure you bookmark it.
+            </Text>
+            <Text>
+              Wanna create a new character? Sure!{" "}
+              <Text as="span" fontWeight="bold">
+                JUST MAKE SURE TO BOOKMARK THIS URL FIRST.
+              </Text>
+              <br />
+              <Button
+                onClick={() => {
+                  window.location.hash = "";
+                  window.location.reload();
+                }}
+              >
+                Create another character
+              </Button>
+            </Text>
+          </Stack>
+        )}
+
+        <HStack spacing="10" width="100%">
+          <Column>
+            <CharacterImage src={character.imageUrl ?? ""} />
+          </Column>
+          <VStack spacing="2">
+            <Spacer height={18} />
+            {editHash === "" ? (
+              <Text
+                color="white"
+                fontSize="lg"
+                textShadow="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"
+                width="100%"
+              >
+                {character.name}
+              </Text>
+            ) : (
+              <Input value={name} onChange={(ev) => setName(ev.target.value)} />
+            )}
+            <HStack width="100%">
+              <ProgressBar>
+                <HealthBarProgress
+                  w={
+                    (actualCurrentHealth / actualMaximumHealth) * healthBarWidth
+                  }
+                />
+                <ProgressLabel>
+                  LeP{" "}
+                  {editHash === "" ? (
+                    actualCurrentHealth
+                  ) : (
+                    <Popover>
+                      <PopoverTrigger>
+                        <Box
+                          as="input"
+                          display="inline"
+                          value={actualCurrentHealth}
+                          type="number"
+                          textAlign="right"
+                          width="30px"
+                          background="transparent"
+                          onChange={(
+                            ev: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            const maybeNumber = parseIntSafe(ev.target.value);
+                            if (isSome(maybeNumber)) {
+                              setCurrentHealth(maybeNumber);
+                            }
+                          }}
+                        />
+                      </PopoverTrigger>
+                      <Portal>
+                        <NumPad
+                          onAdd={(value) => {
+                            let newHealth = currentHealth + value;
+                            if (newHealth > maximumHealth) {
+                              newHealth = maximumHealth;
+                            }
+                            setCurrentHealth(newHealth);
+                          }}
+                          onSubstract={(value) => {
+                            let newHealth = currentHealth - value;
+                            if (newHealth < 0) {
+                              newHealth = 0;
+                            }
+                            setCurrentHealth(newHealth);
+                          }}
+                        />
+                      </Portal>
+                    </Popover>
+                  )}{" "}
+                  /{" "}
+                  {editHash === "" ? (
+                    actualMaximumHealth
+                  ) : (
+                    <Box
+                      as="input"
+                      display="inline"
+                      value={actualMaximumHealth}
                       type="number"
-                      onChange={(ev) => {
+                      textAlign="left"
+                      width="30px"
+                      background="transparent"
+                      onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                         const maybeNumber = parseIntSafe(ev.target.value);
                         if (isSome(maybeNumber)) {
-                          setCurrentHealth(maybeNumber);
+                          setMaximumHealth(maybeNumber);
                         }
                       }}
                     />
-                  </PopoverTrigger>
-                  <Portal>
-                    <NumPad
-                      onAdd={(value) => {
-                        let newHealth = currentHealth + value;
-                        if (newHealth > maximumHealth) {
-                          newHealth = maximumHealth;
-                        }
-                        setCurrentHealth(newHealth);
-                      }}
-                      onSubstract={(value) => {
-                        let newHealth = currentHealth - value;
-                        if (newHealth < 0) {
-                          newHealth = 0;
-                        }
-                        setCurrentHealth(newHealth);
-                      }}
-                    />
-                  </Portal>
-                </Popover>
-                <Input
-                  value={actualMaximumHealth}
-                  type="number"
-                  onChange={(ev) => {
-                    const maybeNumber = parseIntSafe(ev.target.value);
-                    if (isSome(maybeNumber)) {
-                      setMaximumHealth(maybeNumber);
-                    }
-                  }}
+                  )}
+                </ProgressLabel>
+              </ProgressBar>
+            </HStack>
+            <Spacer height={4} />
+            {character.mana ? (
+              <ProgressBar>
+                <ManaBarProgress
+                  w={
+                    (character.mana.current / character.mana.maximum) *
+                    healthBarWidth
+                  }
                 />
-              </>
-            )}
-          </HStack>
-          <Spacer height={4} />
-          {character.mana ? (
-            <ProgressBar>
-              <ManaBarProgress
-                width={
-                  (character.mana.current / character.mana.maximum) *
-                  healthBarWidth
-                }
-              />
-              <ProgressLabel>
-                AsP {character.mana.current} / {character.mana.maximum}
-              </ProgressLabel>
-            </ProgressBar>
-          ) : null}
-        </VStack>
-      </HStack>
-      {editHash === "" ? null : (
-        <>
-          <Box>
-            Use the following link for adding the character info as a OBS
-            overlay.
-          </Box>
-          <CopyInput
-            type="text"
-            readOnly
-            value={buildCharacterUrl(character.id)}
-          />
-          {/* {process.env.REACT_APP_GOOGLE_API_KEY ? (
-            <>
-              Select custom font:
-              <FontPicker apiKey={process.env.REACT_APP_GOOGLE_API_KEY} />
-            </>
-          ) : null} */}
-        </>
-      )}
+                <ProgressLabel>
+                  AsP {character.mana.current} / {character.mana.maximum}
+                </ProgressLabel>
+              </ProgressBar>
+            ) : null}
+          </VStack>
+        </HStack>
+        {editHash === "" ? null : (
+          <>
+            <Box>
+              Use the following link for adding the character info as a OBS
+              overlay.
+            </Box>
+            <CopyInput
+              type="text"
+              readOnly
+              value={buildCharacterUrl(character.id)}
+            />
+          </>
+        )}
+      </Stack>
     </>
   );
 };

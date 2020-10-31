@@ -167,71 +167,40 @@ const CreateCharacterResult = t.unionType<{
   },
 });
 
+const GraphQLCharacterUpdateFields = t.inputObjectType({
+  name: "CharacterUpdateFields",
+  fields: () => ({
+    name: t.arg(t.String),
+    maximumHealth: t.arg(t.Int),
+    currentHealth: t.arg(t.Int),
+  }),
+});
+
+const GraphQLUpdateCharacterInput = t.inputObjectType({
+  name: "UpdateCharacterInput",
+  fields: () => ({
+    editHash: t.arg(t.NonNullInput(t.String)),
+    updates: t.arg(t.NonNullInput(GraphQLCharacterUpdateFields)),
+  }),
+});
+
 const Mutation = t.mutationType({
   name: "Mutation",
   fields: () => [
-    t.field("characterSetMaximumHealth", {
+    t.field("updateCharacter", {
       type: t.Boolean,
       args: {
-        editHash: t.arg(t.NonNullInput(t.String)),
-        newMaximumHealth: t.arg(t.NonNullInput(t.Int)),
+        input: t.arg(t.NonNullInput(GraphQLUpdateCharacterInput)),
       },
       resolve: async (_, args, context) => {
         const character = await context.prisma.character.update({
           where: {
-            editHash: args.editHash,
+            editHash: args.input.editHash,
           },
           data: {
-            maximumHealth: args.newMaximumHealth,
-          },
-        });
-        context.liveQueryStore.invalidate(`Character:${character.id}`);
-        return null;
-      },
-    }),
-    t.field("characterSetCurrentHealth", {
-      type: t.Boolean,
-      args: {
-        editHash: t.arg(t.NonNullInput(t.String)),
-        newCurrentHealth: t.arg(t.NonNullInput(t.Int)),
-      },
-      resolve: async (_, args, context) => {
-        const character = await context.prisma.character.update({
-          where: {
-            editHash: args.editHash,
-          },
-          data: {
-            currentHealth: args.newCurrentHealth,
-          },
-        });
-        context.liveQueryStore.invalidate(`Character:${character.id}`);
-        return null;
-      },
-    }),
-    t.field("setCharacterImage", {
-      type: t.Boolean,
-      args: {
-        editHash: t.arg(t.NonNullInput(t.String)),
-        imageUrl: t.arg(t.NonNullInput(t.String)),
-      },
-      resolve: (_, args, context) => {
-        context.liveQueryStore.invalidate("Query.character");
-        return null;
-      },
-    }),
-    t.field("characterSetName", {
-      type: t.Boolean,
-      args: {
-        editHash: t.arg(t.NonNullInput(t.String)),
-        newName: t.arg(t.NonNullInput(t.String)),
-      },
-      resolve: async (_, args, context) => {
-        const character = await context.prisma.character.update({
-          where: {
-            editHash: args.editHash,
-          },
-          data: {
-            name: args.newName,
+            name: args.input.updates.name ?? undefined,
+            maximumHealth: args.input.updates.maximumHealth ?? undefined,
+            currentHealth: args.input.updates.currentHealth ?? undefined,
           },
         });
         context.liveQueryStore.invalidate(`Character:${character.id}`);
@@ -245,9 +214,9 @@ const Mutation = t.mutationType({
           const character = await context.prisma.character.create({
             data: {
               id: createUniqueId(),
-              name: "Peter Parker",
+              name: "John Wayne",
               imageUrl:
-                "https://upload.wikimedia.org/wikipedia/en/3/3b/SpongeBob_SquarePants_character.svg",
+                "https://i.pinimg.com/236x/a1/51/44/a151443dadd6fee73bf8c460ebc2854d--character-portraits-character-ideas.jpg",
               editHash: createUniqueId(),
             },
           });

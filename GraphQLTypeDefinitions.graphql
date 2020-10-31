@@ -34,11 +34,19 @@ type Error {
 }
 
 type Mutation {
-  characterSetMaximumHealth(editHash: String!, newMaximumHealth: Int!): Boolean
-  characterSetCurrentHealth(editHash: String!, newCurrentHealth: Int!): Boolean
-  setCharacterImage(editHash: String!, imageUrl: String!): Boolean
-  characterSetName(editHash: String!, newName: String!): Boolean
+  updateCharacter(input: UpdateCharacterInput!): Boolean
   createCharacter: CreateCharacterResult!
+}
+
+input UpdateCharacterInput {
+  editHash: String!
+  updates: CharacterUpdateFields!
+}
+
+input CharacterUpdateFields {
+  name: String
+  maximumHealth: Int
+  currentHealth: Int
 }
 
 union CreateCharacterResult = Error | CreateCharacterSuccess

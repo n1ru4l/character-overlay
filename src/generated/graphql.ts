@@ -58,35 +58,24 @@ export type Error = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  characterSetMaximumHealth?: Maybe<Scalars['Boolean']>;
-  characterSetCurrentHealth?: Maybe<Scalars['Boolean']>;
-  setCharacterImage?: Maybe<Scalars['Boolean']>;
-  characterSetName?: Maybe<Scalars['Boolean']>;
+  updateCharacter?: Maybe<Scalars['Boolean']>;
   createCharacter: CreateCharacterResult;
 };
 
 
-export type MutationCharacterSetMaximumHealthArgs = {
-  editHash: Scalars['String'];
-  newMaximumHealth: Scalars['Int'];
+export type MutationUpdateCharacterArgs = {
+  input: UpdateCharacterInput;
 };
 
-
-export type MutationCharacterSetCurrentHealthArgs = {
+export type UpdateCharacterInput = {
   editHash: Scalars['String'];
-  newCurrentHealth: Scalars['Int'];
+  updates: CharacterUpdateFields;
 };
 
-
-export type MutationSetCharacterImageArgs = {
-  editHash: Scalars['String'];
-  imageUrl: Scalars['String'];
-};
-
-
-export type MutationCharacterSetNameArgs = {
-  editHash: Scalars['String'];
-  newName: Scalars['String'];
+export type CharacterUpdateFields = {
+  name?: Maybe<Scalars['String']>;
+  maximumHealth?: Maybe<Scalars['Int']>;
+  currentHealth?: Maybe<Scalars['Int']>;
 };
 
 export type CreateCharacterResult = Error | CreateCharacterSuccess;
@@ -142,39 +131,6 @@ export type CharacterQuery = (
   )> }
 );
 
-export type CharacterSetCurrentHealthMutationVariables = Exact<{
-  editHash: Scalars['String'];
-  newCurrentHealth: Scalars['Int'];
-}>;
-
-
-export type CharacterSetCurrentHealthMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'characterSetCurrentHealth'>
-);
-
-export type CharacterSetMaximumHealthMutationVariables = Exact<{
-  editHash: Scalars['String'];
-  newMaximumHealth: Scalars['Int'];
-}>;
-
-
-export type CharacterSetMaximumHealthMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'characterSetMaximumHealth'>
-);
-
-export type CharacterSetNameMutationVariables = Exact<{
-  editHash: Scalars['String'];
-  newName: Scalars['String'];
-}>;
-
-
-export type CharacterSetNameMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'characterSetName'>
-);
-
 export type CreateCharacterMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -187,6 +143,16 @@ export type CreateCharacterMutation = (
     { __typename: 'CreateCharacterSuccess' }
     & Pick<CreateCharacterSuccess, 'editHash'>
   ) }
+);
+
+export type UpdateCharacterMutationVariables = Exact<{
+  input: UpdateCharacterInput;
+}>;
+
+
+export type UpdateCharacterMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateCharacter'>
 );
 
 export const CharacterFragment = gql`
@@ -236,33 +202,6 @@ export const CharacterQueryDocument = gql`
 export function useCharacterQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CharacterQuery>({ query: CharacterQueryDocument, ...options });
 };
-export const CharacterSetCurrentHealthMutationDocument = gql`
-    mutation CharacterSetCurrentHealthMutation($editHash: String!, $newCurrentHealth: Int!) {
-  characterSetCurrentHealth(editHash: $editHash, newCurrentHealth: $newCurrentHealth)
-}
-    `;
-
-export function useCharacterSetCurrentHealthMutation() {
-  return Urql.useMutation<CharacterSetCurrentHealthMutation, CharacterSetCurrentHealthMutationVariables>(CharacterSetCurrentHealthMutationDocument);
-};
-export const CharacterSetMaximumHealthMutationDocument = gql`
-    mutation CharacterSetMaximumHealthMutation($editHash: String!, $newMaximumHealth: Int!) {
-  characterSetMaximumHealth(editHash: $editHash, newMaximumHealth: $newMaximumHealth)
-}
-    `;
-
-export function useCharacterSetMaximumHealthMutation() {
-  return Urql.useMutation<CharacterSetMaximumHealthMutation, CharacterSetMaximumHealthMutationVariables>(CharacterSetMaximumHealthMutationDocument);
-};
-export const CharacterSetNameMutationDocument = gql`
-    mutation CharacterSetNameMutation($editHash: String!, $newName: String!) {
-  characterSetName(editHash: $editHash, newName: $newName)
-}
-    `;
-
-export function useCharacterSetNameMutation() {
-  return Urql.useMutation<CharacterSetNameMutation, CharacterSetNameMutationVariables>(CharacterSetNameMutationDocument);
-};
 export const CreateCharacterMutationDocument = gql`
     mutation CreateCharacterMutation {
   createCharacter {
@@ -279,4 +218,13 @@ export const CreateCharacterMutationDocument = gql`
 
 export function useCreateCharacterMutation() {
   return Urql.useMutation<CreateCharacterMutation, CreateCharacterMutationVariables>(CreateCharacterMutationDocument);
+};
+export const UpdateCharacterMutationDocument = gql`
+    mutation UpdateCharacterMutation($input: UpdateCharacterInput!) {
+  updateCharacter(input: $input)
+}
+    `;
+
+export function useUpdateCharacterMutation() {
+  return Urql.useMutation<UpdateCharacterMutation, UpdateCharacterMutationVariables>(UpdateCharacterMutationDocument);
 };

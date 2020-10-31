@@ -1,4 +1,4 @@
-fragment CharacterFragment on Character {
+fragment CharacterViewFragment on Character {
   id
   name
   imageUrl
