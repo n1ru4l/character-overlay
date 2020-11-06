@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
   Portal,
   Stack,
+  Switch,
 } from "@chakra-ui/core";
 import { darken, transparentize } from "polished";
 import { parseIntSafe } from "./number-utilities";
@@ -257,7 +258,7 @@ const CharacterRenderer = ({ characterId }: { characterId: string }) => {
     return <Box>Character not found...</Box>;
   }
 
-  return <CharacterOverlay character={data.data.character} editHash="" />;
+  return <CharacterOverlay character={data.data.character} editHash={null} />;
 };
 
 const CharacterOverlay = ({
@@ -265,16 +266,19 @@ const CharacterOverlay = ({
   editHash,
 }: {
   character: CharacterViewFragment;
-  editHash: string;
+  editHash: null | string;
 }) => {
   const [, updateCharacter] = useUpdateCharacterMutationMutation();
   const [name, setName] = React.useState(character.name);
   const [currentHealth, setCurrentHealth] = React.useState(
-    character.health.current
+    character.currentHealth
   );
   const [maximumHealth, setMaximumHealth] = React.useState(
-    character.health.maximum
+    character.maximumHealth
   );
+  const [hasMana, setHasMana] = React.useState(character.hasMana);
+  const [currentMana, setCurrentMana] = React.useState(character.currentMana);
+  const [maximumMana, setMaximumMana] = React.useState(character.maximumMana);
 
   const isFirstRun = React.useRef(true);
   React.useEffect(() => {
@@ -282,7 +286,7 @@ const CharacterOverlay = ({
       isFirstRun.current = false;
       return;
     }
-    if (editHash === "") {
+    if (!editHash) {
       return;
     }
     updateCharacter({
@@ -292,20 +296,37 @@ const CharacterOverlay = ({
           name,
           currentHealth,
           maximumHealth,
+          hasMana,
+          currentMana,
+          maximumMana,
         },
       },
     });
-  }, [updateCharacter, editHash, name, currentHealth, maximumHealth]);
+  }, [
+    updateCharacter,
+    editHash,
+    name,
+    currentHealth,
+    maximumHealth,
+    hasMana,
+    currentMana,
+    maximumMana,
+  ]);
 
-  const actualCurrentHealth =
-    editHash === "" ? character.health.current : currentHealth;
-  const actualMaximumHealth =
-    editHash === "" ? character.health.maximum : maximumHealth;
+  const actualCurrentHealth = !editHash
+    ? character.currentHealth
+    : currentHealth;
+  const actualMaximumHealth = !editHash
+    ? character.maximumHealth
+    : maximumHealth;
+
+  const actualCurrentMana = !editHash ? character.currentMana : currentMana;
+  const actualMaximumMana = !editHash ? character.maximumMana : maximumMana;
 
   return (
     <>
       <Stack spacing="2" padding="md">
-        {editHash === "" ? null : (
+        {!editHash ? null : (
           <Stack>
             <Heading>Character Editor</Heading>
             <Text>
@@ -340,7 +361,7 @@ const CharacterOverlay = ({
           </Column>
           <VStack spacing="2">
             <Spacer height={18} />
-            {editHash === "" ? (
+            {!editHash ? (
               <Text
                 color="white"
                 fontSize="lg"
@@ -361,7 +382,7 @@ const CharacterOverlay = ({
                 />
                 <ProgressLabel>
                   LeP{" "}
-                  {editHash === "" ? (
+                  {!editHash ? (
                     actualCurrentHealth
                   ) : (
                     <Popover>
@@ -405,7 +426,7 @@ const CharacterOverlay = ({
                     </Popover>
                   )}{" "}
                   /{" "}
-                  {editHash === "" ? (
+                  {!editHash ? (
                     actualMaximumHealth
                   ) : (
                     <Box
@@ -427,23 +448,92 @@ const CharacterOverlay = ({
                 </ProgressLabel>
               </ProgressBar>
             </HStack>
-            <Spacer height={4} />
-            {character.mana ? (
-              <ProgressBar>
-                <ManaBarProgress
-                  w={
-                    (character.mana.current / character.mana.maximum) *
-                    healthBarWidth
-                  }
+            <Stack>
+              {hasMana ? (
+                <ProgressBar>
+                  <ManaBarProgress
+                    w={(actualCurrentMana / actualMaximumMana) * healthBarWidth}
+                  />
+                  <ProgressLabel>
+                    LeP{" "}
+                    {!editHash ? (
+                      actualCurrentHealth
+                    ) : (
+                      <Popover>
+                        <PopoverTrigger>
+                          <Box
+                            as="input"
+                            display="inline"
+                            value={actualCurrentMana}
+                            type="number"
+                            textAlign="right"
+                            width="30px"
+                            background="transparent"
+                            onChange={(
+                              ev: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const maybeNumber = parseIntSafe(ev.target.value);
+                              if (isSome(maybeNumber)) {
+                                setCurrentHealth(maybeNumber);
+                              }
+                            }}
+                          />
+                        </PopoverTrigger>
+                        <Portal>
+                          <NumPad
+                            onAdd={(value) => {
+                              let newMana = actualCurrentMana + value;
+                              if (newMana > actualMaximumMana) {
+                                newMana = actualMaximumMana;
+                              }
+                              setCurrentMana(newMana);
+                            }}
+                            onSubstract={(value) => {
+                              let newMana = currentMana - value;
+                              if (newMana < 0) {
+                                newMana = 0;
+                              }
+                              setCurrentMana(newMana);
+                            }}
+                          />
+                        </Portal>
+                      </Popover>
+                    )}{" "}
+                    /{" "}
+                    {!editHash ? (
+                      actualMaximumMana
+                    ) : (
+                      <Box
+                        as="input"
+                        display="inline"
+                        value={actualMaximumMana}
+                        type="number"
+                        textAlign="left"
+                        width="30px"
+                        background="transparent"
+                        onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                          const maybeNumber = parseIntSafe(ev.target.value);
+                          if (isSome(maybeNumber)) {
+                            setMaximumMana(maybeNumber);
+                          }
+                        }}
+                      />
+                    )}
+                  </ProgressLabel>
+                </ProgressBar>
+              ) : null}
+              {editHash ? (
+                <Switch
+                  isChecked={hasMana}
+                  onChange={(ev) => {
+                    setHasMana(ev.target.checked);
+                  }}
                 />
-                <ProgressLabel>
-                  AsP {character.mana.current} / {character.mana.maximum}
-                </ProgressLabel>
-              </ProgressBar>
-            ) : null}
+              ) : null}
+            </Stack>
           </VStack>
         </HStack>
-        {editHash === "" ? null : (
+        {!editHash ? null : (
           <>
             <Box>
               Use the following link for adding the character info as a OBS

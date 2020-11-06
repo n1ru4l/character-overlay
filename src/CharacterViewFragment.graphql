@@ -2,12 +2,9 @@ fragment CharacterViewFragment on Character {
   id
   name
   imageUrl
-  health {
-    maximum
-    current
-  }
-  mana {
-    maximum
-    current
-  }
+  maximumHealth
+  currentHealth
+  hasMana
+  maximumMana
+  currentMana
 }

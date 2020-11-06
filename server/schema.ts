@@ -22,20 +22,6 @@ const GraphQLErrorType = t.objectType<{
   ],
 });
 
-const Health = t.objectType<{ maximum: number; current: number }>({
-  name: "Health",
-  fields: () => [
-    t.field("maximum", {
-      type: t.NonNull(t.Int),
-      resolve: (health) => health.maximum,
-    }),
-    t.field("current", {
-      type: t.NonNull(t.Int),
-      resolve: (health) => health.current,
-    }),
-  ],
-});
-
 const GraphQLCharacterType = t.objectType<Character>({
   name: "Character",
   fields: () => [
@@ -51,22 +37,25 @@ const GraphQLCharacterType = t.objectType<Character>({
       type: t.String,
       resolve: (character) => character.imageUrl,
     }),
-    t.field("health", {
-      type: t.NonNull(Health),
-      resolve: (character) => ({
-        maximum: character.maximumHealth,
-        current: character.currentHealth,
-      }),
+    t.field("currentHealth", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.currentHealth,
     }),
-    t.field("mana", {
-      type: Health,
-      resolve: (character) =>
-        character.hasMana
-          ? {
-              maximum: character.maximumMana,
-              current: character.currentMana,
-            }
-          : null,
+    t.field("maximumHealth", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.maximumHealth,
+    }),
+    t.field("hasMana", {
+      type: t.NonNull(t.Boolean),
+      resolve: (character) => character.hasMana,
+    }),
+    t.field("currentMana", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.currentMana,
+    }),
+    t.field("maximumMana", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.maximumMana,
     }),
   ],
 });
@@ -174,6 +163,9 @@ const GraphQLCharacterUpdateFields = t.inputObjectType({
     name: t.arg(t.String),
     maximumHealth: t.arg(t.Int),
     currentHealth: t.arg(t.Int),
+    hasMana: t.arg(t.Boolean),
+    maximumMana: t.arg(t.Int),
+    currentMana: t.arg(t.Int),
   }),
 });
 
@@ -202,6 +194,9 @@ const Mutation = t.mutationType({
             name: args.input.updates.name ?? undefined,
             maximumHealth: args.input.updates.maximumHealth ?? undefined,
             currentHealth: args.input.updates.currentHealth ?? undefined,
+            hasMana: args.input.updates.hasMana ?? undefined,
+            maximumMana: args.input.updates.maximumMana ?? undefined,
+            currentMana: args.input.updates.currentMana ?? undefined,
           },
         });
         return null;

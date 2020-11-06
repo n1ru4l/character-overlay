@@ -80,7 +80,7 @@ export const NumPad = (props: {
             padding="2"
             background="lightgray"
             width="100%"
-            defaultValue={value}
+            value={value}
             textAlign="right"
           />
 

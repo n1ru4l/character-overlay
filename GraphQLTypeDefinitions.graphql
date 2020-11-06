@@ -20,13 +20,11 @@ type Character {
   id: ID!
   name: String!
   imageUrl: String
-  health: Health!
-  mana: Health
-}
-
-type Health {
-  maximum: Int!
-  current: Int!
+  currentHealth: Int!
+  maximumHealth: Int!
+  hasMana: Boolean!
+  currentMana: Int!
+  maximumMana: Int!
 }
 
 type Error {
@@ -47,6 +45,9 @@ input CharacterUpdateFields {
   name: String
   maximumHealth: Int
   currentHealth: Int
+  hasMana: Boolean
+  maximumMana: Int
+  currentMana: Int
 }
 
 union CreateCharacterResult = Error | CreateCharacterSuccess

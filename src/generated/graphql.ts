@@ -41,14 +41,11 @@ export type Character = {
   id: Scalars['ID'];
   name: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
-  health: Health;
-  mana?: Maybe<Health>;
-};
-
-export type Health = {
-  __typename?: 'Health';
-  maximum: Scalars['Int'];
-  current: Scalars['Int'];
+  currentHealth: Scalars['Int'];
+  maximumHealth: Scalars['Int'];
+  hasMana: Scalars['Boolean'];
+  currentMana: Scalars['Int'];
+  maximumMana: Scalars['Int'];
 };
 
 export type Error = {
@@ -76,6 +73,9 @@ export type CharacterUpdateFields = {
   name?: Maybe<Scalars['String']>;
   maximumHealth?: Maybe<Scalars['Int']>;
   currentHealth?: Maybe<Scalars['Int']>;
+  hasMana?: Maybe<Scalars['Boolean']>;
+  maximumMana?: Maybe<Scalars['Int']>;
+  currentMana?: Maybe<Scalars['Int']>;
 };
 
 export type CreateCharacterResult = Error | CreateCharacterSuccess;
@@ -121,14 +121,7 @@ export type CharacterQuery = (
 
 export type CharacterViewFragment = (
   { __typename?: 'Character' }
-  & Pick<Character, 'id' | 'name' | 'imageUrl'>
-  & { health: (
-    { __typename?: 'Health' }
-    & Pick<Health, 'maximum' | 'current'>
-  ), mana?: Maybe<(
-    { __typename?: 'Health' }
-    & Pick<Health, 'maximum' | 'current'>
-  )> }
+  & Pick<Character, 'id' | 'name' | 'imageUrl' | 'maximumHealth' | 'currentHealth' | 'hasMana' | 'maximumMana' | 'currentMana'>
 );
 
 export type CreateCharacterMutationVariables = Exact<{ [key: string]: never; }>;
@@ -160,14 +153,11 @@ export const CharacterViewFragmentDoc = gql`
   id
   name
   imageUrl
-  health {
-    maximum
-    current
-  }
-  mana {
-    maximum
-    current
-  }
+  maximumHealth
+  currentHealth
+  hasMana
+  maximumMana
+  currentMana
 }
     `;
 export const CharacterEditorQueryDocument = gql`
