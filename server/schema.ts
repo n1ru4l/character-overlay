@@ -194,7 +194,7 @@ const Mutation = t.mutationType({
         input: t.arg(t.NonNullInput(GraphQLUpdateCharacterInput)),
       },
       resolve: async (_, args, context) => {
-        const character = await context.prisma.character.update({
+        await context.prisma.character.update({
           where: {
             editHash: args.input.editHash,
           },
@@ -204,7 +204,6 @@ const Mutation = t.mutationType({
             currentHealth: args.input.updates.currentHealth ?? undefined,
           },
         });
-        context.liveQueryStore.invalidate(`Character:${character.id}`);
         return null;
       },
     }),

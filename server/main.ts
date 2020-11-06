@@ -9,6 +9,21 @@ import type { ApplicationContext } from "./ApplicationContext";
 const liveQueryStore = new InMemoryLiveQueryStore();
 const prisma = new PrismaClient();
 
+// Register Middleware for automatic model invalidation
+prisma.$use(async (params, next) => {
+  const resultPromise = next(params);
+
+  if (params.action === "update") {
+    resultPromise.then((res) => {
+      if (res?.id) {
+        liveQueryStore.invalidate(`${params.model}:${res.id}`);
+      }
+    });
+  }
+
+  return resultPromise;
+});
+
 const server = http.createServer((_, res) => {
   res.writeHead(404);
   res.end();
