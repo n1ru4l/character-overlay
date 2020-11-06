@@ -227,7 +227,7 @@ const Main = (): React.ReactElement => {
         <img src="/logo.png" alt="OBS Character Overlay Logo" />
 
         <Box as="p" textAlign="center">
-          Create an OBS overlay for your favorite tabeltop role-playing game in
+          Create an OBS overlay for your favorite tabletop role-playing game in
           seconds.
         </Box>
 

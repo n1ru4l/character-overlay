@@ -1,4 +1,5 @@
 import { createTypesFactory, buildGraphQLSchema } from "gqtx";
+import { specifiedDirectives } from "graphql";
 import crypto from "crypto";
 import { GraphQLLiveDirective } from "@n1ru4l/graphql-live-query";
 import type { ApplicationContext } from "./ApplicationContext";
@@ -239,5 +240,6 @@ const Mutation = t.mutationType({
 export const schema = buildGraphQLSchema({
   query: Query,
   mutation: Mutation,
-  directives: [GraphQLLiveDirective],
+  directives: [...specifiedDirectives, GraphQLLiveDirective],
 });
+// https://logomakr.com/6iAK0C

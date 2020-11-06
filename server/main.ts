@@ -1,6 +1,6 @@
 import http from "http";
-import { subscribe } from "graphql";
-import { createServer } from "graphql-ws";
+import { Server } from "socket.io";
+import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { schema } from "./schema";
 import { PrismaClient } from "@prisma/client";
@@ -14,21 +14,21 @@ const server = http.createServer((_, res) => {
   res.end();
 });
 
-createServer(
-  {
-    schema,
-    context: {
-      liveQueryStore,
-      prisma,
-    } as ApplicationContext,
+const socketServer = new Server(server);
+
+registerSocketIOGraphQLServer({
+  socketServer,
+  getParameter: () => ({
     execute: liveQueryStore.execute,
-    subscribe,
-  },
-  {
-    server,
-    path: "/graphql",
-  }
-);
+    graphQLExecutionParameter: {
+      schema,
+      contextValue: {
+        liveQueryStore,
+        prisma,
+      } as ApplicationContext,
+    },
+  }),
+});
 
 process.once("SIGINT", () => {
   server.close();

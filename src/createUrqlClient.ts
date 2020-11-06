@@ -3,13 +3,14 @@ import {
   dedupExchange,
   cacheExchange,
   subscriptionExchange,
+  ExecutionResult,
 } from "urql";
-import { createClient as createWSClient } from "graphql-ws";
+import { io } from "socket.io-client";
+import { createSocketIOGraphQLClient } from "@n1ru4l/socket-io-graphql-client";
 
 export const createUrqlClient = () => {
-  const ws = createWSClient({
-    url: "ws://localhost:3000/graphql",
-  });
+  const socket = io();
+  const networkInterface = createSocketIOGraphQLClient<ExecutionResult>(socket);
 
   return new UrqlClient({
     url: "/graphql",
@@ -18,11 +19,15 @@ export const createUrqlClient = () => {
       cacheExchange,
       subscriptionExchange({
         enableAllOperations: true,
-        forwardSubscription: (operation) => ({
+        forwardSubscription: ({ query: operation, variables }) => ({
           subscribe: (observerLike) => ({
-            unsubscribe: ws.subscribe(operation as any, {
-              ...observerLike,
-            }),
+            unsubscribe: networkInterface.execute(
+              {
+                operation,
+                variables,
+              },
+              observerLike
+            ),
           }),
         }),
       }),
