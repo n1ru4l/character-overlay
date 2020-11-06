@@ -319,6 +319,7 @@ const CharacterOverlay = ({
   const actualMaximumHealth = !editHash
     ? character.maximumHealth
     : maximumHealth;
+  const actualHasMana = !editHash ? character.hasMana : hasMana;
 
   const actualCurrentMana = !editHash ? character.currentMana : currentMana;
   const actualMaximumMana = !editHash ? character.maximumMana : maximumMana;
@@ -449,13 +450,13 @@ const CharacterOverlay = ({
               </ProgressBar>
             </HStack>
             <Stack>
-              {hasMana ? (
+              {actualHasMana ? (
                 <ProgressBar>
                   <ManaBarProgress
                     w={(actualCurrentMana / actualMaximumMana) * healthBarWidth}
                   />
                   <ProgressLabel>
-                    LeP{" "}
+                    AsP{" "}
                     {!editHash ? (
                       actualCurrentHealth
                     ) : (

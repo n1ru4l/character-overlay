@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 prisma.$use(async (params, next) => {
   const resultPromise = next(params);
 
-  if (params.action === "update") {
+  if (params.action === "update" && params.model) {
     resultPromise.then((res) => {
       if (res?.id) {
         liveQueryStore.invalidate(`${params.model}:${res.id}`);
