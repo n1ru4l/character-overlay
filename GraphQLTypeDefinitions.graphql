@@ -6,22 +6,52 @@ Instruction for establishing a live connection that is updated once the underlyi
 directive @live on QUERY
 
 type Query {
-  character: Character
+  characterEditor(editHash: ID!): CharacterEditor
+  character(id: ID!): Character
+}
+
+union CharacterEditor = CharacterEditorView | Error
+
+type CharacterEditorView {
+  character: Character!
 }
 
 type Character {
+  id: ID!
   name: String!
   imageUrl: String
-  health: Health!
+  currentHealth: Int!
+  maximumHealth: Int!
+  hasMana: Boolean!
+  currentMana: Int!
+  maximumMana: Int!
 }
 
-type Health {
-  maximum: Int!
-  current: Int!
+type Error {
+  reason: String!
 }
 
 type Mutation {
-  setMaximumHealth(newMaximumHealth: Int!): Boolean
-  setCurrentHealth(newCurrentHealth: Int!): Boolean
-  setCharacterImage(imageUrl: String!): Boolean
+  updateCharacter(input: UpdateCharacterInput!): Boolean
+  createCharacter: CreateCharacterResult!
+}
+
+input UpdateCharacterInput {
+  editHash: String!
+  updates: CharacterUpdateFields!
+}
+
+input CharacterUpdateFields {
+  name: String
+  maximumHealth: Int
+  currentHealth: Int
+  hasMana: Boolean
+  maximumMana: Int
+  currentMana: Int
+}
+
+union CreateCharacterResult = Error | CreateCharacterSuccess
+
+type CreateCharacterSuccess {
+  editHash: String!
 }

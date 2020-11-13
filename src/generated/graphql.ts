@@ -15,73 +15,206 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  characterEditor?: Maybe<CharacterEditor>;
   character?: Maybe<Character>;
+};
+
+
+export type QueryCharacterEditorArgs = {
+  editHash: Scalars['ID'];
+};
+
+
+export type QueryCharacterArgs = {
+  id: Scalars['ID'];
+};
+
+export type CharacterEditor = CharacterEditorView | Error;
+
+export type CharacterEditorView = {
+  __typename?: 'CharacterEditorView';
+  character: Character;
 };
 
 export type Character = {
   __typename?: 'Character';
+  id: Scalars['ID'];
   name: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
-  health: Health;
+  currentHealth: Scalars['Int'];
+  maximumHealth: Scalars['Int'];
+  hasMana: Scalars['Boolean'];
+  currentMana: Scalars['Int'];
+  maximumMana: Scalars['Int'];
 };
 
-export type Health = {
-  __typename?: 'Health';
-  maximum: Scalars['Int'];
-  current: Scalars['Int'];
+export type Error = {
+  __typename?: 'Error';
+  reason: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  setMaximumHealth?: Maybe<Scalars['Boolean']>;
-  setCurrentHealth?: Maybe<Scalars['Boolean']>;
-  setCharacterImage?: Maybe<Scalars['Boolean']>;
+  updateCharacter?: Maybe<Scalars['Boolean']>;
+  createCharacter: CreateCharacterResult;
 };
 
 
-export type MutationSetMaximumHealthArgs = {
-  newMaximumHealth: Scalars['Int'];
+export type MutationUpdateCharacterArgs = {
+  input: UpdateCharacterInput;
 };
 
-
-export type MutationSetCurrentHealthArgs = {
-  newCurrentHealth: Scalars['Int'];
+export type UpdateCharacterInput = {
+  editHash: Scalars['String'];
+  updates: CharacterUpdateFields;
 };
 
-
-export type MutationSetCharacterImageArgs = {
-  imageUrl: Scalars['String'];
+export type CharacterUpdateFields = {
+  name?: Maybe<Scalars['String']>;
+  maximumHealth?: Maybe<Scalars['Int']>;
+  currentHealth?: Maybe<Scalars['Int']>;
+  hasMana?: Maybe<Scalars['Boolean']>;
+  maximumMana?: Maybe<Scalars['Int']>;
+  currentMana?: Maybe<Scalars['Int']>;
 };
 
-export type AppQueryVariables = Exact<{ [key: string]: never; }>;
+export type CreateCharacterResult = Error | CreateCharacterSuccess;
+
+export type CreateCharacterSuccess = {
+  __typename?: 'CreateCharacterSuccess';
+  editHash: Scalars['String'];
+};
+
+export type CharacterEditorQueryVariables = Exact<{
+  editHash: Scalars['ID'];
+}>;
 
 
-export type AppQuery = (
+export type CharacterEditorQuery = (
   { __typename?: 'Query' }
-  & { character?: Maybe<(
-    { __typename?: 'Character' }
-    & Pick<Character, 'name' | 'imageUrl'>
-    & { health: (
-      { __typename?: 'Health' }
-      & Pick<Health, 'maximum' | 'current'>
+  & { characterEditor?: Maybe<(
+    { __typename: 'CharacterEditorView' }
+    & { character: (
+      { __typename?: 'Character' }
+      & Pick<Character, 'id'>
+      & CharacterViewFragment
     ) }
+  ) | (
+    { __typename: 'Error' }
+    & Pick<Error, 'reason'>
   )> }
 );
 
+export type CharacterQueryVariables = Exact<{
+  characterId: Scalars['ID'];
+}>;
 
-export const AppQueryDocument = gql`
-    query AppQuery @live {
-  character {
-    name
-    imageUrl
-    health {
-      maximum
-      current
+
+export type CharacterQuery = (
+  { __typename?: 'Query' }
+  & { character?: Maybe<(
+    { __typename?: 'Character' }
+    & Pick<Character, 'id'>
+    & CharacterViewFragment
+  )> }
+);
+
+export type CharacterViewFragment = (
+  { __typename?: 'Character' }
+  & Pick<Character, 'id' | 'name' | 'imageUrl' | 'maximumHealth' | 'currentHealth' | 'hasMana' | 'maximumMana' | 'currentMana'>
+);
+
+export type CreateCharacterMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateCharacterMutation = (
+  { __typename?: 'Mutation' }
+  & { createCharacter: (
+    { __typename: 'Error' }
+    & Pick<Error, 'reason'>
+  ) | (
+    { __typename: 'CreateCharacterSuccess' }
+    & Pick<CreateCharacterSuccess, 'editHash'>
+  ) }
+);
+
+export type UpdateCharacterMutationVariables = Exact<{
+  input: UpdateCharacterInput;
+}>;
+
+
+export type UpdateCharacterMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateCharacter'>
+);
+
+export const CharacterViewFragmentDoc = gql`
+    fragment CharacterViewFragment on Character {
+  id
+  name
+  imageUrl
+  maximumHealth
+  currentHealth
+  hasMana
+  maximumMana
+  currentMana
+}
+    `;
+export const CharacterEditorQueryDocument = gql`
+    query CharacterEditorQuery($editHash: ID!) @live {
+  characterEditor(editHash: $editHash) {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CharacterEditorView {
+      character {
+        id
+        ...CharacterViewFragment
+      }
+    }
+  }
+}
+    ${CharacterViewFragmentDoc}`;
+
+export function useCharacterEditorQueryQuery(options: Omit<Urql.UseQueryArgs<CharacterEditorQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CharacterEditorQuery>({ query: CharacterEditorQueryDocument, ...options });
+};
+export const CharacterQueryDocument = gql`
+    query CharacterQuery($characterId: ID!) @live {
+  character(id: $characterId) {
+    id
+    ...CharacterViewFragment
+  }
+}
+    ${CharacterViewFragmentDoc}`;
+
+export function useCharacterQueryQuery(options: Omit<Urql.UseQueryArgs<CharacterQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CharacterQuery>({ query: CharacterQueryDocument, ...options });
+};
+export const CreateCharacterMutationDocument = gql`
+    mutation CreateCharacterMutation {
+  createCharacter {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CreateCharacterSuccess {
+      editHash
     }
   }
 }
     `;
 
-export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<AppQuery>({ query: AppQueryDocument, ...options });
+export function useCreateCharacterMutationMutation() {
+  return Urql.useMutation<CreateCharacterMutation, CreateCharacterMutationVariables>(CreateCharacterMutationDocument);
+};
+export const UpdateCharacterMutationDocument = gql`
+    mutation UpdateCharacterMutation($input: UpdateCharacterInput!) {
+  updateCharacter(input: $input)
+}
+    `;
+
+export function useUpdateCharacterMutationMutation() {
+  return Urql.useMutation<UpdateCharacterMutation, UpdateCharacterMutationVariables>(UpdateCharacterMutationDocument);
 };

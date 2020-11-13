@@ -1,0 +1,14 @@
+query CharacterEditorQuery($editHash: ID!) @live {
+  characterEditor(editHash: $editHash) {
+    __typename
+    ... on Error {
+      reason
+    }
+    ... on CharacterEditorView {
+      character {
+        id
+        ...CharacterViewFragment
+      }
+    }
+  }
+}

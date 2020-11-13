@@ -1,32 +1,49 @@
 import http from "http";
-import { subscribe } from "graphql";
-import { createServer } from "graphql-ws";
+import { Server } from "socket.io";
+import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { schema } from "./schema";
-import { rootState } from "./state";
+import { PrismaClient } from "@prisma/client";
+import type { ApplicationContext } from "./ApplicationContext";
 
 const liveQueryStore = new InMemoryLiveQueryStore();
+const prisma = new PrismaClient();
+
+// Register Middleware for automatic model invalidation
+prisma.$use(async (params, next) => {
+  const resultPromise = next(params);
+
+  if (params.action === "update" && params.model) {
+    resultPromise.then((res) => {
+      if (res?.id) {
+        liveQueryStore.invalidate(`${params.model}:${res.id}`);
+      }
+    });
+  }
+
+  return resultPromise;
+});
 
 const server = http.createServer((_, res) => {
   res.writeHead(404);
   res.end();
 });
 
-createServer(
-  {
-    schema,
-    context: {
-      liveQueryStore,
-      state: rootState,
-    },
+const socketServer = new Server(server);
+
+registerSocketIOGraphQLServer({
+  socketServer,
+  getParameter: () => ({
     execute: liveQueryStore.execute,
-    subscribe,
-  },
-  {
-    server,
-    path: "/graphql",
-  }
-);
+    graphQLExecutionParameter: {
+      schema,
+      contextValue: {
+        liveQueryStore,
+        prisma,
+      } as ApplicationContext,
+    },
+  }),
+});
 
 process.once("SIGINT", () => {
   server.close();

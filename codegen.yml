@@ -2,7 +2,7 @@ overwrite: true
 schema: "./GraphQLTypeDefinitions.graphql"
 documents: "src/**/*.graphql"
 config:
-  omitOperationSuffix: true
+  dedupeOperationSuffix: true
 generates:
   src/generated/graphql.ts:
     plugins:

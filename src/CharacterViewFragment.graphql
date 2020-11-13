@@ -1,0 +1,10 @@
+fragment CharacterViewFragment on Character {
+  id
+  name
+  imageUrl
+  maximumHealth
+  currentHealth
+  hasMana
+  maximumMana
+  currentMana
+}
