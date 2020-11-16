@@ -29,6 +29,7 @@ import {
 } from "./generated/graphql";
 import { isNone, isSome, Maybe } from "./Maybe";
 import { NumPad } from "./NumPad";
+import { LandingPage } from "./LandingPage";
 
 const CharacterImage = styled.img({
   width: 150,
@@ -196,54 +197,7 @@ export const App = (): React.ReactElement => {
   } else if (routingState.type === "edit") {
     return <CharacterEditor editHash={routingState.data.editHash} />;
   }
-  return <Main />;
-};
-
-const Main = (): React.ReactElement => {
-  const [
-    createCharacterState,
-    createCharacter,
-  ] = useCreateCharacterMutationMutation();
-
-  React.useEffect(() => {
-    if (
-      createCharacterState.data?.createCharacter.__typename ===
-      "CreateCharacterSuccess"
-    ) {
-      window.location.hash = `edit=${createCharacterState.data.createCharacter.editHash}`;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createCharacterState.data?.createCharacter]);
-
-  return (
-    <Flex minHeight="100vh" justifyContent="center" alignItems="center">
-      <VStack
-        spacing="4"
-        maxW="sm"
-        minWidth={300}
-        borderWidth="1px"
-        borderRadius="lg"
-        p="6"
-      >
-        <img src="/logo.png" alt="OBS Character Overlay Logo" />
-
-        <Box as="p" textAlign="center">
-          Create an OBS overlay for your favorite tabletop role-playing game in
-          seconds.
-        </Box>
-
-        <Button
-          onClick={() => {
-            createCharacter();
-          }}
-          disabled={createCharacterState.fetching}
-          colorScheme="purple"
-        >
-          Create Overlay!
-        </Button>
-      </VStack>
-    </Flex>
-  );
+  return <LandingPage />;
 };
 
 const CharacterRenderer = ({ characterId }: { characterId: string }) => {
