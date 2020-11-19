@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ChakraProvider } from "@chakra-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
 import { Provider as UrqlProvider } from "urql";
 import { createUrqlClient } from "./createUrqlClient";
 import { App } from "./App";
