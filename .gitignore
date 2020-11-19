@@ -116,4 +116,4 @@ dist
 .pnp.*
 
 build
-service-build
+server-build
