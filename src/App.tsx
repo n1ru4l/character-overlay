@@ -5,7 +5,6 @@ import {
   VStack,
   Box,
   Button,
-  Flex,
   Heading,
   Input,
   HStack,
@@ -17,14 +16,13 @@ import {
   Portal,
   Stack,
   Switch,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { darken, transparentize } from "polished";
 import { parseIntSafe } from "./number-utilities";
 import {
   CharacterViewFragment,
   useCharacterEditorQueryQuery,
   useCharacterQueryQuery,
-  useCreateCharacterMutationMutation,
   useUpdateCharacterMutationMutation,
 } from "./generated/graphql";
 import { isNone, isSome, Maybe } from "./Maybe";

@@ -11,7 +11,7 @@ import {
   Grid,
   GridItem,
   Input,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { isSome } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";

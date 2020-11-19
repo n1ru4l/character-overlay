@@ -9,7 +9,7 @@ import {
   HStack,
   Stack,
   Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CharacterOverlay } from "./CharacterOverlay";
 import { useCreateCharacterMutationMutation } from "./generated/graphql";

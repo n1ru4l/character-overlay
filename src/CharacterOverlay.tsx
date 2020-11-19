@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Image, HStack, Text } from "@chakra-ui/core";
+import { Box, Image, HStack, Text } from "@chakra-ui/react";
 import { darken, transparentize } from "polished";
 import styled from "@emotion/styled";
 
