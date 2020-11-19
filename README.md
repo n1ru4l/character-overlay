@@ -1,17 +1,33 @@
-# Getting Started with Create React App
+# Character Overlay
+
+Add a character overlay for you video stream without hazzle.
+
+```bash
+docker run -p 3000:3000 -v $PWD/.data:/data n1ru4l/character-overlay
+```
+
+## Running the App
+
+## Development
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
-### `yarn start:server:dev`
+#### `yarn codegen`
+
+Generate code typings for the GraphQL operations.
+
+#### `yarn start:server:dev`
 
 Start the GraphQL backend, you must run this command first.
 
-### `yarn start`
+#### `yarn start`
 
 Starts the react development server.
 
-### `yarn codegen`
+#### Building the docker image
 
-Generate code typings for the GraphQL operations.
+```bash
+docker build -t n1ru4l/character-overlay
+```
