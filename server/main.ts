@@ -1,4 +1,5 @@
-import http from "http";
+import { App } from "@tinyhttp/app";
+import sirv from "sirv";
 import { Server } from "socket.io";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
@@ -24,9 +25,14 @@ prisma.$use(async (params, next) => {
   return resultPromise;
 });
 
-const server = http.createServer((_, res) => {
-  res.writeHead(404);
-  res.end();
+const app = new App();
+
+app.use(sirv("build"));
+
+const PORT = 4000;
+
+const server = app.listen(PORT, () => {
+  console.log(`Listening on 0.0.0.0:${PORT}`);
 });
 
 const socketServer = new Server(server);
@@ -47,10 +53,4 @@ registerSocketIOGraphQLServer({
 
 process.once("SIGINT", () => {
   server.close();
-});
-
-const PORT = 4000;
-
-server.listen(PORT, () => {
-  console.log(`Listening on 0.0.0.0:${PORT}`);
 });
