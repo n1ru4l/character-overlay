@@ -3,8 +3,10 @@
 Add a character overlay for you video stream without hazzle.
 
 ```bash
-docker run -p 3000:3000 -v $PWD/.data:/data n1ru4l/character-overlay
+docker run -p 4000:4000 -v $PWD/.data:/data n1ru4l/character-overlay
 ```
+
+Visit `http://localhost:4000`
 
 ## Running the App
 
