@@ -2428,6 +2428,11 @@
   resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query/-/graphql-live-query-0.5.0.tgz#e4737eedaa6c597e5e7056a73fa596c08aba528e"
   integrity sha512-hYZymZzmb4P8730sV5NHFSxslulZ6Nl9MbWaoAcf9FCXzkV8PCYOODRu1iFQHOPXQ7ncynbqS3ti29jeD1Uh2A==
 
+"@n1ru4l/graphql-live-query@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query/-/graphql-live-query-0.7.0.tgz#c162731f7b24d9dc795b035bb3e99ce9f3ec128d"
+  integrity sha512-60PqxTVGqchrff5xCBXtGYuqi68W/FEB0ppp4JFB0kQR4MB8+Cl4f2E2FE15AWdSq7CUd09VbhRhm0tgEyqp5A==
+
 "@n1ru4l/in-memory-live-query-store@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@n1ru4l/in-memory-live-query-store/-/in-memory-live-query-store-0.5.0.tgz#7608af55230487a0d53e939c6d576c7d1c24cc05"
