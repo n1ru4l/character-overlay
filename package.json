@@ -54,7 +54,8 @@
     "codegen": "yarn print-schema && graphql-codegen --config codegen.yml",
     "server:start:dev": "ts-node-dev --project server/tsconfig.json --no-deps server/main.ts",
     "server:build": "prisma generate && tsc --project server/tsconfig.json",
-    "start:prod": "prisma migrate up --experimental --create-db && node main.js"
+    "start:prod": "prisma migrate up --experimental --create-db && node main.js",
+    "build:docker": "docker build . -t n1ru4l/character-overlay"
   },
   "eslintConfig": {
     "extends": [

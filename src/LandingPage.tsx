@@ -11,9 +11,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { CharacterOverlay } from "./CharacterOverlay";
+import { CharacterOverlay } from "./CharacterView";
 import { useCreateCharacterMutationMutation } from "./generated/graphql";
 import { isSome, Maybe } from "./Maybe";
+import { HeaderSection } from "./AppShell";
 
 const SectionContainer = styled(Container)`
   max-width: 1200px;
@@ -21,18 +22,6 @@ const SectionContainer = styled(Container)`
 
 const MainSectionContainer = styled(SectionContainer)`
   margin-top: 6rem;
-`;
-
-const LogoImage = styled(Image)`
-  height: 75px;
-  width: 60px;
-`;
-
-const LogoText = styled(Text)`
-  font-weight: bold;
-  line-height: 1;
-  font-family: Inter, "Aileron Black", sans-serif, "Source Sans Pro", Roboto,
-    Tahoma, Geneva, Verdana, sans-serif;
 `;
 
 const BackgroundImageContainer = styled.div`
@@ -64,6 +53,18 @@ export const LandingPage = (): React.ReactElement => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createCharacterState.data?.createCharacter]);
 
+  React.useEffect(
+    () => () => {
+      const stream = streamRef.current;
+      if (isSome(stream)) {
+        for (const track of stream.getTracks()) {
+          track.stop();
+        }
+      }
+    },
+    []
+  );
+
   return (
     <BackgroundImageContainer
       style={{
@@ -72,15 +73,7 @@ export const LandingPage = (): React.ReactElement => {
         backgroundImage: "",
       }}
     >
-      <SectionContainer>
-        <HStack>
-          <LogoImage src="/head.png" alt="OBS Character Overlay Logo" />
-          <LogoText>
-            Character <br />
-            Overlay
-          </LogoText>
-        </HStack>
-      </SectionContainer>
+      <HeaderSection />
       <MainSectionContainer>
         <HStack spacing="24px">
           <Stack spacing="8px">
@@ -93,7 +86,6 @@ export const LandingPage = (): React.ReactElement => {
             <Box>
               <Button
                 colorScheme="purple"
-                width="auto"
                 size="lg"
                 onClick={() => {
                   createCharacter();
@@ -136,11 +128,16 @@ export const LandingPage = (): React.ReactElement => {
             ></video>
             <OverlayContainer>
               <CharacterOverlay
+                size="sm"
                 character={{
+                  id: "__local-example",
                   name: "Robin Hood",
                   maximumHealth: 30,
                   currentHealth: 22,
-                  portraitUrl: "/sample-portrait.jpg",
+                  imageUrl: "/sample-portrait.jpg",
+                  currentMana: 10,
+                  maximumMana: 20,
+                  hasMana: false,
                 }}
               />
             </OverlayContainer>
