@@ -8,7 +8,7 @@
     "@n1ru4l/socket-io-graphql-server": "0.8.0",
     "@prisma/cli": "2.9.0",
     "@prisma/client": "2.9.0",
-    "@tinyhttp/app": "0.5.20",
+    "@tinyhttp/app": "0.5.32",
     "gqtx": "0.7.0",
     "graphql": "15.3.0",
     "patch-package": "6.2.2",
