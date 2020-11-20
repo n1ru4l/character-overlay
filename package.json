@@ -16,7 +16,7 @@
     "socket.io": "3.0.0"
   },
   "devDependencies": {
-    "@chakra-ui/icons": "1.0.0",
+    "@chakra-ui/icons": "1.0.1",
     "@chakra-ui/react": "1.0.0",
     "@emotion/react": "11.1.1",
     "@emotion/styled": "11.0.0",
