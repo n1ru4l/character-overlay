@@ -2442,10 +2442,10 @@
   resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-client/-/socket-io-graphql-client-0.7.0.tgz#dd1abf4a2adf083a4471800f779fbfd4f8a050cb"
   integrity sha512-lGpSW6JjbLZkf67JSWAEiXKsfG1b6UFU+5hSOn+HdH8AyZ3wpER7xAr20RwpQcKjtJS5ZwIOxbTbanszpA8WWQ==
 
-"@n1ru4l/socket-io-graphql-server@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-server/-/socket-io-graphql-server-0.7.0.tgz#dd864ae0bbd533e26adbdabaae5c3b6f153fc6cb"
-  integrity sha512-8GfVtW/CVLLjO5oEFjpD/WoNmq8o78I5VPwo7IzNebmWHl78YJ4BhYs9qgVZHjWCPDGY8mWz0AkTb3UnSSyF2A==
+"@n1ru4l/socket-io-graphql-server@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-server/-/socket-io-graphql-server-0.8.0.tgz#29d0aef447dfc658830440c338bb995a256d6001"
+  integrity sha512-pPuYJ3uerNzbi7k/QJ/9EaI93ynEzEI6xZgjsAC4KFhHMsL46E9keXafeeuSmLTovxN6GCa3Pg4xHw2nEtEk4g==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
