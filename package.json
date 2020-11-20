@@ -10,7 +10,7 @@
     "@prisma/client": "2.9.0",
     "@tinyhttp/app": "0.5.32",
     "gqtx": "0.7.0",
-    "graphql": "15.3.0",
+    "graphql": "15.4.0",
     "patch-package": "6.2.2",
     "sirv": "1.0.7",
     "socket.io": "3.0.0"
