@@ -2437,10 +2437,10 @@
     "@n1ru4l/graphql-live-query" "0.5.0"
     graphql "^15.3.0"
 
-"@n1ru4l/socket-io-graphql-client@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-client/-/socket-io-graphql-client-0.7.0.tgz#dd1abf4a2adf083a4471800f779fbfd4f8a050cb"
-  integrity sha512-lGpSW6JjbLZkf67JSWAEiXKsfG1b6UFU+5hSOn+HdH8AyZ3wpER7xAr20RwpQcKjtJS5ZwIOxbTbanszpA8WWQ==
+"@n1ru4l/socket-io-graphql-client@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-client/-/socket-io-graphql-client-0.8.0.tgz#eb13c057ff14a4bf098a159d1274b51ac89cd548"
+  integrity sha512-ZwNtfx5BVtRx7/6W7JVD9Ytp9oSYj7ac8dxdNOLz0jnDb63rxj9MDBI4lbj4/ord+5r+BRP9aM9XurmTBJ0CgA==
 
 "@n1ru4l/socket-io-graphql-server@0.8.0":
   version "0.8.0"
