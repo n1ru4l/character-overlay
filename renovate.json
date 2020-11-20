@@ -18,6 +18,10 @@
     {
       "groupName": "testing library",
       "packagePatterns": ["^@testing-library/"]
+    },
+    {
+      "groupName": "chakra-ui",
+      "packagePatterns": ["^@chakra-ui/"]
     }
   ]
 }
