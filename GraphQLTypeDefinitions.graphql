@@ -48,6 +48,7 @@ input CharacterUpdateFields {
   hasMana: Boolean
   maximumMana: Int
   currentMana: Int
+  imageUrl: String
 }
 
 union CreateCharacterResult = Error | CreateCharacterSuccess

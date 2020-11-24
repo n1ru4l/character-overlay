@@ -166,6 +166,7 @@ const GraphQLCharacterUpdateFields = t.inputObjectType({
     hasMana: t.arg(t.Boolean),
     maximumMana: t.arg(t.Int),
     currentMana: t.arg(t.Int),
+    imageUrl: t.arg(t.String),
   }),
 });
 
@@ -197,6 +198,7 @@ const Mutation = t.mutationType({
             hasMana: args.input.updates.hasMana ?? undefined,
             maximumMana: args.input.updates.maximumMana ?? undefined,
             currentMana: args.input.updates.currentMana ?? undefined,
+            imageUrl: args.input.updates.imageUrl ?? undefined,
           },
         });
         return null;

@@ -38,5 +38,6 @@ COPY --from=backend-builder /usr/context/server-build/ ./
 COPY --from=frontend-builder /usr/context/build ./build/
 
 ENV DATABASE_URL="file:///data/database.db"
+ENV UPLOAD_DIRECTORY="/data/"
 
 CMD ["yarn", "start:prod"]

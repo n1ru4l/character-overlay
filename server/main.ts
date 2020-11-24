@@ -1,4 +1,6 @@
 import { App } from "@tinyhttp/app";
+import multer from "multer";
+import path from "path";
 import sirv from "sirv";
 import { Server } from "socket.io";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
@@ -26,9 +28,34 @@ prisma.$use(async (params, next) => {
   return resultPromise;
 });
 
+const uploadDirectory = process.env.UPLOAD_DIRECTORY ?? process.cwd();
 const app = new App();
 
-app.use(sirv("build"));
+const uploads = multer({ dest: path.join(uploadDirectory, "uploads") });
+
+app
+  .use(
+    "/uploads",
+    sirv(uploadDirectory, {
+      dev: true,
+    })
+  )
+  .post("/upload", async (req, res) => {
+    const cb = uploads.single("avatar");
+    cb(req as any, res as any, (err: unknown) => {
+      if (err instanceof multer.MulterError) {
+        res.writeHead(500);
+        res.end("A Multer error occurred when uploading.");
+      } else if (err) {
+        res.writeHead(500);
+        res.end("An unknown error occurred when uploading.");
+      } else {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end("/uploads/" + (req as any).file.filename);
+      }
+    });
+  })
+  .use(sirv("build"));
 
 const PORT = 4000;
 

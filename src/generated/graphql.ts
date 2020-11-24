@@ -76,6 +76,7 @@ export type CharacterUpdateFields = {
   hasMana?: Maybe<Scalars['Boolean']>;
   maximumMana?: Maybe<Scalars['Int']>;
   currentMana?: Maybe<Scalars['Int']>;
+  imageUrl?: Maybe<Scalars['String']>;
 };
 
 export type CreateCharacterResult = Error | CreateCharacterSuccess;
