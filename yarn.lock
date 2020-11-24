@@ -2840,10 +2840,10 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@0.5.34":
-  version "0.5.34"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-0.5.34.tgz#eebd4aecbe1dedb6cecc1f0fb561c8620efb1a4a"
-  integrity sha512-59zhfXpf8jfofevl4+fCOXllwMAr22CPvLrM5Iwsgea/Jy13G4bTgFQ9q/Rzk2WXluypvLA9TR+d6y4GR+PvIA==
+"@tinyhttp/app@0.5.35":
+  version "0.5.35"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-0.5.35.tgz#85a50388b0b8cb42415debb7f74be743cdd629b1"
+  integrity sha512-jSTj4MWIbhN2iTLmHO5JKyAHzqKbeGwHOqJ4JsSZfKrP5PeyGMsx4Ii9GAj3T5M3lS/a2B1swEOX3MRBODTgaQ==
   dependencies:
     "@tinyhttp/cookie" "0.5.3"
     "@tinyhttp/proxy-addr" "0.5.9"
