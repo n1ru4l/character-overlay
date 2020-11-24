@@ -2486,15 +2486,22 @@
     "@graphql-tools/wrap" "^7.0.1"
     "@n1ru4l/graphql-live-query" "0.7.0"
 
-"@n1ru4l/socket-io-graphql-client@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-client/-/socket-io-graphql-client-0.8.0.tgz#eb13c057ff14a4bf098a159d1274b51ac89cd548"
-  integrity sha512-ZwNtfx5BVtRx7/6W7JVD9Ytp9oSYj7ac8dxdNOLz0jnDb63rxj9MDBI4lbj4/ord+5r+BRP9aM9XurmTBJ0CgA==
+"@n1ru4l/push-pull-async-iterable-iterator@1.0.0-alpha.2":
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/push-pull-async-iterable-iterator/-/push-pull-async-iterable-iterator-1.0.0-alpha.2.tgz#361b56c2b146e30ececd1b7db6f3ec189c477c65"
+  integrity sha512-ao8QdsYX1T2SpzNAKU4XTuLzZmmEFFZmQxrcgG14sMdFiSmw3p5fcAfGiXnGurXtXrSlinZFbEhSnJZcamJ5Jg==
 
-"@n1ru4l/socket-io-graphql-server@0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-server/-/socket-io-graphql-server-0.8.1.tgz#7216545bc0440e5ddaf64292b9bda9fb0ff1504f"
-  integrity sha512-TCGJGxiWiVxrKYdxgrY2jZ1x4HuqBIQNTYJfiJkR0P4y1VRzaFzFvqvorujHj6hJozh9GbsrHyM/cirkLWgkug==
+"@n1ru4l/socket-io-graphql-client@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-client/-/socket-io-graphql-client-0.9.0.tgz#bf6d8d725aa774af9d6d988afffc619163506405"
+  integrity sha512-Ee4eIS7IC88GWAoyCTFyYFO4Sh3kKzX88c8dik8IIZpxvGfvie5Xop1lRBrk1HXiKey7AFJm92IAQ7+8/Jwb6w==
+  dependencies:
+    "@n1ru4l/push-pull-async-iterable-iterator" "1.0.0-alpha.2"
+
+"@n1ru4l/socket-io-graphql-server@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/socket-io-graphql-server/-/socket-io-graphql-server-0.9.0.tgz#c0dec64567484eab3f18856523657a5419dff559"
+  integrity sha512-7KSTGAWEY+eu6Ta4Liu9CaUyNwyigLAYBdKwbXCE6+RbuMVqb2Ds/rw7tPuTfeM+L269sbxhyk/a0faArqGTFQ==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
