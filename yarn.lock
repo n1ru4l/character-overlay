@@ -2473,10 +2473,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@n1ru4l/graphql-live-query-patch@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query-patch/-/graphql-live-query-patch-0.2.0.tgz#594497788b524aef5b1e877c2a138013df255533"
-  integrity sha512-szsMt9+xpYMLKwb3wWLYkI9cRuxgxAW1xZQiHlb9oOiz9bdoH7lRxbUyyzF74qdCzlzwvTNgl69yeRSpZiGFvg==
+"@n1ru4l/graphql-live-query-patch@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query-patch/-/graphql-live-query-patch-0.3.0.tgz#9bd68ed258129926e821a65a2790637e684a7c0d"
+  integrity sha512-Gs7og4FSdrGtycnkSeKbCVXxN6I8xs8FsNdzMTTL3pyJEDxhAeX2Cf/LdaM8Rs4eshM5GH0PGRPmH7J0pJqsKw==
   dependencies:
     fast-json-patch "3.0.0-1"
 

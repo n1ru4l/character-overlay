@@ -3,7 +3,7 @@ import sirv from "sirv";
 import { Server } from "socket.io";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
-import { applyLiveQueryPatchDeflator } from "@n1ru4l/graphql-live-query-patch";
+import { createApplyLiveQueryPatchGenerator } from "@n1ru4l/graphql-live-query-patch";
 import { schema } from "./schema";
 import { PrismaClient } from "@prisma/client";
 import type { ApplicationContext } from "./ApplicationContext";
@@ -42,7 +42,7 @@ registerSocketIOGraphQLServer({
   socketServer,
   getParameter: () => ({
     execute: (...args) =>
-      applyLiveQueryPatchDeflator(liveQueryStore.execute(...args)),
+      createApplyLiveQueryPatchGenerator()(liveQueryStore.execute(...args)),
     graphQLExecutionParameter: {
       schema,
       contextValue: {
