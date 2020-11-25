@@ -7,6 +7,8 @@ import {
 } from "urql";
 import { io } from "socket.io-client";
 import { createSocketIOGraphQLClient } from "@n1ru4l/socket-io-graphql-client";
+import { createApplyLiveQueryPatch } from "@n1ru4l/graphql-live-query-patch";
+import { applyAsyncIterableIteratorToSink } from "@n1ru4l/push-pull-async-iterable-iterator";
 
 export const createUrqlClient = () => {
   const socket = io();
@@ -20,13 +22,15 @@ export const createUrqlClient = () => {
       subscriptionExchange({
         enableAllOperations: true,
         forwardSubscription: ({ query: operation, variables }) => ({
-          subscribe: (observerLike) => ({
-            unsubscribe: networkInterface.execute(
-              {
-                operation,
-                variables,
-              },
-              observerLike
+          subscribe: (sink) => ({
+            unsubscribe: applyAsyncIterableIteratorToSink(
+              createApplyLiveQueryPatch()(
+                networkInterface.execute({
+                  operation,
+                  variables,
+                })
+              ),
+              sink
             ),
           }),
         }),
