@@ -33,11 +33,12 @@ RUN yarn
 COPY prisma/schema.prisma  ./prisma/
 COPY prisma/migrations/  ./prisma/migrations
 RUN yarn prisma generate
+RUN mkdir -p /data/uploads
 
 COPY --from=backend-builder /usr/context/server-build/ ./
 COPY --from=frontend-builder /usr/context/build ./build/
 
 ENV DATABASE_URL="file:///data/database.db"
-ENV UPLOAD_DIRECTORY="/data/"
+ENV STORAGE_DIRECTORY="/data"
 
-CMD ["yarn", "start:prod"]
+CMD yarn prisma migrate up --experimental --create-db && node main.js

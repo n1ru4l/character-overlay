@@ -1,8 +1,8 @@
 import { App } from "@tinyhttp/app";
 import multer from "multer";
 import path from "path";
-import sirv from "sirv";
 import { Server } from "socket.io";
+import serveStatic from "serve-static";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { createApplyLiveQueryPatchGenerator } from "@n1ru4l/graphql-live-query-patch";
@@ -28,20 +28,21 @@ prisma.$use(async (params, next) => {
   return resultPromise;
 });
 
-const uploadDirectory = process.env.UPLOAD_DIRECTORY ?? process.cwd();
+const uploadDirectory = process.env.STORAGE_DIRECTORY ?? process.cwd();
+const publicDirectory = path.join(process.cwd(), "build");
+
 const app = new App();
 
-const uploads = multer({ dest: path.join(uploadDirectory, "uploads") });
+const uploadHandler = multer({ dest: path.join(uploadDirectory, "uploads") });
+const uploadsServeHandler = serveStatic(uploadDirectory);
+const staticServeHandler = serveStatic(publicDirectory);
 
 app
-  .use(
-    "/uploads",
-    sirv(uploadDirectory, {
-      dev: true,
-    })
-  )
+  .use("/uploads", (req, res, next) => {
+    return uploadsServeHandler(req, res, next!);
+  })
   .post("/upload", async (req, res) => {
-    const cb = uploads.single("avatar");
+    const cb = uploadHandler.single("avatar");
     cb(req as any, res as any, (err: unknown) => {
       if (err instanceof multer.MulterError) {
         res.writeHead(500);
@@ -55,7 +56,7 @@ app
       }
     });
   })
-  .use(sirv("build"));
+  .use((req, res, next) => staticServeHandler(req, res, next!));
 
 const PORT = 4000;
 

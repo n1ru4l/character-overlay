@@ -1,6 +1,6 @@
 # Character Overlay
 
-Add a character overlay for you video stream without hazzle.
+Add a character overlay for you video stream without hassle.
 
 ```bash
 docker run -p 4000:4000 -v $PWD/.data:/data n1ru4l/character-overlay

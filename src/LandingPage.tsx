@@ -81,7 +81,7 @@ export const LandingPage = (): React.ReactElement => {
               Overlay for your favorite RPG in seconds!
             </Heading>
             <Text fontSize="lg">
-              Add information such as health, mana to your video without hazzle.
+              Add information such as health, mana to your video without hassle.
             </Text>
             <Box>
               <Button
