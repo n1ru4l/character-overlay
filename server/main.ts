@@ -82,5 +82,7 @@ registerSocketIOGraphQLServer({
 });
 
 process.once("SIGINT", () => {
-  server.close();
+  socketServer.close(() => {
+    server.close();
+  });
 });
