@@ -169,9 +169,10 @@ const Editor = ({
 
           <Alert status="info">
             <AlertIcon />
-            You can edit and update this character the link above. We recommend
-            bookmarking this site if you plan to re-use the character at a later
-            point in time.
+            You can edit and update this character on this page. The access to
+            this page is coupled to the URL in your address bar above ☝️. We
+            recommend bookmarking this site if you plan to re-use the character
+            at a later point in time.
           </Alert>
 
           <Alert status="warning">
