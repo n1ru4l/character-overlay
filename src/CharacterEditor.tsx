@@ -240,7 +240,7 @@ const Editor = ({
                             }
                             setCurrentHealth(newHealth);
                           }}
-                          onSubstract={(value) => {
+                          onSubtract={(value) => {
                             let newHealth = currentHealth - value;
                             if (newHealth < 0) {
                               newHealth = 0;
@@ -308,7 +308,7 @@ const Editor = ({
                               }
                               setCurrentMana(newMana);
                             }}
-                            onSubstract={(value) => {
+                            onSubtract={(value) => {
                               let newMana = currentMana - value;
                               if (newMana < 0) {
                                 newMana = 0;

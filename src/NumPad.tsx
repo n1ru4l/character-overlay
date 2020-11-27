@@ -18,7 +18,7 @@ import { parseIntSafe } from "./number-utilities";
 
 export const NumPad = (props: {
   onAdd: (value: number) => void;
-  onSubstract: (value: number) => void;
+  onSubtract: (value: number) => void;
 }): React.ReactElement => {
   const [value, setValue] = React.useState("0");
   const handleNumber = (inputNumber: number) => {
@@ -44,8 +44,8 @@ export const NumPad = (props: {
     setValue("0");
   };
 
-  const handleSubstract = () => {
-    props.onSubstract(parseInt(value, 10));
+  const handleSubtract = () => {
+    props.onSubtract(parseInt(value, 10));
     setValue("0");
   };
 
@@ -61,7 +61,7 @@ export const NumPad = (props: {
             handleAdd();
             return;
           case "-":
-            handleSubstract();
+            handleSubtract();
             return;
           default:
             const maybeNumber = parseIntSafe(ev.key);
@@ -180,7 +180,7 @@ export const NumPad = (props: {
           <Button
             rightIcon={<MinusIcon boxSize={3} />}
             variant="outline"
-            onClick={handleSubstract}
+            onClick={handleSubtract}
           >
             Minus
           </Button>
