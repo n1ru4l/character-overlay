@@ -294,7 +294,7 @@ const Editor = ({
                             ) => {
                               const maybeNumber = parseIntSafe(ev.target.value);
                               if (isSome(maybeNumber)) {
-                                setCurrentHealth(maybeNumber);
+                                setCurrentMana(maybeNumber);
                               }
                             }}
                           />
