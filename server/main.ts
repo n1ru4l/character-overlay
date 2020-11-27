@@ -1,6 +1,8 @@
 import { App } from "@tinyhttp/app";
-import sirv from "sirv";
+import multer from "multer";
+import path from "path";
 import { Server } from "socket.io";
+import serveStatic from "serve-static";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { createApplyLiveQueryPatchGenerator } from "@n1ru4l/graphql-live-query-patch";
@@ -26,9 +28,35 @@ prisma.$use(async (params, next) => {
   return resultPromise;
 });
 
+const uploadDirectory = process.env.STORAGE_DIRECTORY ?? process.cwd();
+const publicDirectory = path.join(process.cwd(), "build");
+
 const app = new App();
 
-app.use(sirv("build"));
+const uploadHandler = multer({ dest: path.join(uploadDirectory, "uploads") });
+const uploadsServeHandler = serveStatic(uploadDirectory);
+const staticServeHandler = serveStatic(publicDirectory);
+
+app
+  .use("/uploads", (req, res, next) => {
+    return uploadsServeHandler(req, res, next!);
+  })
+  .post("/upload", async (req, res) => {
+    const cb = uploadHandler.single("avatar");
+    cb(req as any, res as any, (err: unknown) => {
+      if (err instanceof multer.MulterError) {
+        res.writeHead(500);
+        res.end("A Multer error occurred when uploading.");
+      } else if (err) {
+        res.writeHead(500);
+        res.end("An unknown error occurred when uploading.");
+      } else {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end("/uploads/" + (req as any).file.filename);
+      }
+    });
+  })
+  .use((req, res, next) => staticServeHandler(req, res, next!));
 
 const PORT = 4000;
 
@@ -54,5 +82,7 @@ registerSocketIOGraphQLServer({
 });
 
 process.once("SIGINT", () => {
-  server.close();
+  socketServer.close(() => {
+    server.close();
+  });
 });

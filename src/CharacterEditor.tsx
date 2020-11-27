@@ -27,10 +27,11 @@ import {
   useCreateCharacterMutationMutation,
   useUpdateCharacterMutationMutation,
 } from "./generated/graphql";
-import { isSome } from "./Maybe";
+import { isSome, Maybe } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";
 import { NumPad } from "./NumPad";
 import { ProgressBar } from "./ProgressBar";
+import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -112,6 +113,7 @@ const Editor = ({
   editHash: string;
 }) => {
   const [, updateCharacter] = useUpdateCharacterMutationMutation();
+  const [imageUrl, setImageUrl] = React.useState(character.imageUrl);
   const [name, setName] = React.useState(character.name);
   const [currentHealth, setCurrentHealth] = React.useState(
     character.currentHealth
@@ -142,6 +144,7 @@ const Editor = ({
           hasMana,
           currentMana,
           maximumMana,
+          imageUrl,
         },
       },
     });
@@ -154,6 +157,7 @@ const Editor = ({
     hasMana,
     currentMana,
     maximumMana,
+    imageUrl,
   ]);
 
   return (
@@ -172,7 +176,7 @@ const Editor = ({
 
           <Alert status="warning">
             <AlertIcon />
-            If you loose the URL you cannot update this character anymore. So
+            If you lose the URL you cannot update this character anymore. So
             make sure you bookmark it.
           </Alert>
 
@@ -195,7 +199,7 @@ const Editor = ({
 
         <HStack spacing="10" width="100%">
           <Box>
-            <CharacterImage src={character.imageUrl ?? ""} />
+            <CharacterImage src={imageUrl ?? ""} />
           </Box>
           <VStack spacing="2">
             <Input value={name} onChange={(ev) => setName(ev.target.value)} />
@@ -350,8 +354,63 @@ const Editor = ({
             </Stack>
           </VStack>
         </HStack>
+        <Box>
+          <ImageUpload
+            onChange={(fileUrl) => {
+              setImageUrl(fileUrl);
+            }}
+          />
+        </Box>
       </Stack>
     </>
+  );
+};
+
+const ImageUpload = (props: {
+  onChange: (newImageUrl: string) => void;
+}): React.ReactElement => {
+  const [file, setFile] = React.useState<Maybe<File>>(null);
+  return (
+    <Box>
+      <form
+        action="/upload"
+        encType="multipart/form-data"
+        method="post"
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          if (!file) {
+            alert("Must select a image first");
+            return;
+          }
+          const formData = new FormData();
+          formData.append("avatar", file);
+          fetch("/upload", {
+            method: "POST",
+            // @ts-ignore
+            body: formData,
+          })
+            .then((res) => {
+              console.log(res.status);
+              return res.text();
+            })
+            .then(props.onChange)
+            .catch(console.log);
+        }}
+      >
+        <div>
+          <input
+            type="file"
+            name="avatar"
+            onChange={(ev) => {
+              setFile(ev.target.files?.item(0));
+            }}
+          />
+          <Button type="submit" value="Get me the stats!">
+            Change Picture
+          </Button>
+        </div>
+      </form>
+    </Box>
   );
 };
 
@@ -384,12 +443,14 @@ const CopyInput = (props: React.ComponentProps<typeof Input>) => {
   );
 };
 
-const CharacterImage = styled.img({
+const CharacterImage = styled.div((props: { src: string }) => ({
   width: 150,
   height: 150,
   background: "white",
   borderRadius: 75,
-});
+  backgroundSize: "cover",
+  backgroundImage: `url(${props.src})`,
+}));
 
 const healthGradientColors = ["#ec008c", "#ff0000"] as [string, string];
 const manaGradientColors = ["#3c99dc", "#66D3FA"] as [string, string];

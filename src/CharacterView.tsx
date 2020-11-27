@@ -1,5 +1,6 @@
+import styled from "@emotion/styled";
 import * as React from "react";
-import { Box, Image, HStack, Text, Stack } from "@chakra-ui/react";
+import { Box, HStack, Text, Stack } from "@chakra-ui/react";
 import { CharacterViewFragment } from "./generated/graphql";
 import { ProgressBar } from "./ProgressBar";
 
@@ -56,14 +57,20 @@ export const CharacterOverlay = (props: {
           ) : null}
         </Stack>
       </Box>
-      <Image
-        height={imageSize}
-        width={imageSize}
-        borderRadius="10px"
-        overflow="hidden"
+      <CharacterImage
+        style={{
+          height: imageSize,
+          width: imageSize,
+        }}
         src={props.character.imageUrl ?? ""}
-        alt="Character Portrait"
       />
     </HStack>
   );
 };
+
+const CharacterImage = styled.div((props: { src: string }) => ({
+  background: "white",
+  borderRadius: 10,
+  backgroundSize: "cover",
+  backgroundImage: `url(${props.src})`,
+}));
