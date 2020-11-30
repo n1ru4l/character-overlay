@@ -2495,6 +2495,11 @@
     "@graphql-tools/wrap" "^7.0.1"
     "@n1ru4l/graphql-live-query" "0.7.0"
 
+"@n1ru4l/push-pull-async-iterable-iterator@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/push-pull-async-iterable-iterator/-/push-pull-async-iterable-iterator-1.0.0.tgz#d8f603181bde6ccedd9c2cc1cbe58adeaa5c3967"
+  integrity sha512-nGW5BxvPRoywvrBsZN7wrj3KE13nYH0+6IyCBkn8ciyLkTt0mJoPsSUBYJEVPTb4ZthKosgdw396K9kZEU9vCA==
+
 "@n1ru4l/push-pull-async-iterable-iterator@1.0.0-alpha.2":
   version "1.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/@n1ru4l/push-pull-async-iterable-iterator/-/push-pull-async-iterable-iterator-1.0.0-alpha.2.tgz#361b56c2b146e30ececd1b7db6f3ec189c477c65"
