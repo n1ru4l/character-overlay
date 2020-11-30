@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Box, Container, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Container, HStack, Image, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { FeedbackFish } from "@feedback-fish/react";
 
 const LogoImage = styled(Image)`
   height: 75px;
@@ -24,14 +25,19 @@ export const MainSectionContainer = styled(SectionContainer)`
 
 export const HeaderSection = (): React.ReactElement => (
   <SectionContainer>
-    <Box as="a" href="/" width="auto" display="inline-block">
-      <HStack>
-        <LogoImage src="/head.png" alt="OBS Character Overlay Logo" />
-        <LogoText>
-          Character <br />
-          Overlay
-        </LogoText>
-      </HStack>
-    </Box>
+    <HStack justify="space-between">
+      <Box as="a" href="/" width="auto" display="inline-block">
+        <HStack>
+          <LogoImage src="/head.png" alt="OBS Character Overlay Logo" />
+          <LogoText>
+            Character <br />
+            Overlay
+          </LogoText>
+        </HStack>
+      </Box>
+      <FeedbackFish projectId="518614210753ad">
+        <Button>Send feedback</Button>
+      </FeedbackFish>
+    </HStack>
   </SectionContainer>
 );
