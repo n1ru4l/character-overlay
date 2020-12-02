@@ -2861,10 +2861,10 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.0.1.tgz#63f510f153a926b916eea7073b56f74b3c4f2a18"
-  integrity sha512-gxMliVezaLHlE2NUkZlP7YM4nobHeQi+/2RQP3S2H2NXngv6H8tUiqz5KHHJmmBKtUyM5MNYHW7Zdtnp4X13ig==
+"@tinyhttp/app@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.0.2.tgz#b591166c55623de654bd8e73bf546c4be8508302"
+  integrity sha512-flJYmZrJlCBlmQEbOD1jDWO7z1Xs6I4vp8QYMOmv6pYKNpges+Q2ckZUyWb/AXYCTRTs+hhQEdnSB8e6CHqx3Q==
   dependencies:
     "@tinyhttp/cookie" "1.0.1"
     "@tinyhttp/proxy-addr" "1.0.0"
