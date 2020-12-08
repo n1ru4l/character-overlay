@@ -2868,16 +2868,16 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.0.2.tgz#b591166c55623de654bd8e73bf546c4be8508302"
-  integrity sha512-flJYmZrJlCBlmQEbOD1jDWO7z1Xs6I4vp8QYMOmv6pYKNpges+Q2ckZUyWb/AXYCTRTs+hhQEdnSB8e6CHqx3Q==
+"@tinyhttp/app@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.0.3.tgz#4c422e55b0d9a9b3a975fea1d6576ceba0c0e1f7"
+  integrity sha512-3DmAw0hxNN3qbARd48qQlYWjjhYH+TNlDU8IbcFaf6TrJAE9cc3Sv/3sTDpmvgx/ZIyk45bISsP8FN2X8SHXhg==
   dependencies:
     "@tinyhttp/cookie" "1.0.1"
     "@tinyhttp/proxy-addr" "1.0.0"
     "@tinyhttp/req" "1.0.1"
     "@tinyhttp/res" "1.0.1"
-    "@tinyhttp/router" "1.0.1"
+    "@tinyhttp/router" "1.0.2"
 
 "@tinyhttp/content-disposition@^1.0.1":
   version "1.0.1"
@@ -2937,10 +2937,10 @@
     es-vary "^0.0.8"
     escape-html "^1.0.3"
 
-"@tinyhttp/router@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/router/-/router-1.0.1.tgz#7c389aa4464c55bd98b417e15daada0296aeb22b"
-  integrity sha512-NWy65aTKZkT96ERZjlZMyQWH1SRYi/k+E355PB7Uv5ENfRt/54N8y7Hv665mTztckrfOlS8JhvFoExAn8pkq9g==
+"@tinyhttp/router@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/router/-/router-1.0.2.tgz#1f154a9827fcefe28c121170b936e9ed153888b9"
+  integrity sha512-J8ANkQASSZSINGe8XaJx/Cs8y0cb3BgGSLBg1kUce+fF1+2/dNlDI3DcgE7tcWam9dTholeLvZ1oo0qtha7jKw==
 
 "@tinyhttp/send@1.0.1":
   version "1.0.1"
