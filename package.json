@@ -18,8 +18,8 @@
     "socket.io": "3.0.4"
   },
   "devDependencies": {
-    "@chakra-ui/icons": "1.0.1",
-    "@chakra-ui/react": "1.0.2",
+    "@chakra-ui/icons": "1.0.2",
+    "@chakra-ui/react": "1.0.4",
     "@emotion/react": "11.1.2",
     "@emotion/styled": "11.0.0",
     "@feedback-fish/react": "1.2.1",
