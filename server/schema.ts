@@ -57,6 +57,18 @@ const GraphQLCharacterType = t.objectType<Character>({
       type: t.NonNull(t.Int),
       resolve: (character) => character.maximumMana,
     }),
+    t.field("hasFatePoints", {
+      type: t.NonNull(t.Boolean),
+      resolve: (character) => character.hasFatePoints,
+    }),
+    t.field("currentFatePoints", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.currentFatePoints,
+    }),
+    t.field("maximumFatePoints", {
+      type: t.NonNull(t.Int),
+      resolve: (character) => character.maximumFatePoints,
+    }),
   ],
 });
 
@@ -166,6 +178,9 @@ const GraphQLCharacterUpdateFields = t.inputObjectType({
     hasMana: t.arg(t.Boolean),
     maximumMana: t.arg(t.Int),
     currentMana: t.arg(t.Int),
+    hasFatePoints: t.arg(t.Boolean),
+    maximumFatePoints: t.arg(t.Int),
+    currentFatePoints: t.arg(t.Int),
     imageUrl: t.arg(t.String),
   }),
 });
@@ -198,6 +213,11 @@ const Mutation = t.mutationType({
             hasMana: args.input.updates.hasMana ?? undefined,
             maximumMana: args.input.updates.maximumMana ?? undefined,
             currentMana: args.input.updates.currentMana ?? undefined,
+            hasFatePoints: args.input.updates.hasFatePoints ?? undefined,
+            maximumFatePoints:
+              args.input.updates.maximumFatePoints ?? undefined,
+            currentFatePoints:
+              args.input.updates.currentFatePoints ?? undefined,
             imageUrl: args.input.updates.imageUrl ?? undefined,
           },
         });
@@ -225,7 +245,7 @@ const Mutation = t.mutationType({
           console.error(err);
           return {
             type: "Error" as const,
-            reason: "Somethign unexpected happened. Please try again.",
+            reason: "Something unexpected happened. Please try again.",
           };
         }
       },

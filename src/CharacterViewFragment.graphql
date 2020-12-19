@@ -7,4 +7,7 @@ fragment CharacterViewFragment on Character {
   hasMana
   maximumMana
   currentMana
+  hasFatePoints
+  maximumFatePoints
+  currentFatePoints
 }

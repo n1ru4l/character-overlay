@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import { darken, transparentize } from "polished";
 import * as React from "react";
 
-const healthBarWidth = 300;
-const healthBarHeight = 30;
+const barWidth = 300;
+const barHeight = 30;
 
 const Container = styled.div({
   position: "relative",
-  width: healthBarWidth,
-  height: healthBarHeight,
+  width: barWidth,
+  height: barHeight,
   borderRadius: 3,
   overflow: "hidden",
   color: "white",
@@ -17,7 +17,7 @@ const Container = styled.div({
 
 const Progress = styled.div({
   width: "100%",
-  height: healthBarHeight,
+  height: barHeight,
   transition: "width .6s ease-in-out",
 });
 
@@ -39,7 +39,7 @@ export const ProgressBar = (props: {
   maximum: number;
   colors: [string, string];
 }): React.ReactElement => {
-  const progressWidth = (healthBarWidth * props.current) / props.maximum;
+  const progressWidth = (barWidth * props.current) / props.maximum;
   return (
     <Container
       style={{

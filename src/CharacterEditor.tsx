@@ -8,8 +8,10 @@ import {
   FormLabel,
   Heading,
   HStack,
+  IconButton,
   Input,
   InputGroup,
+  InputLeftAddon,
   InputRightElement,
   Popover,
   PopoverTrigger,
@@ -31,7 +33,8 @@ import { isSome, Maybe } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";
 import { NumPad } from "./NumPad";
 import { ProgressBar } from "./ProgressBar";
-import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
+import { FatePoints } from "./FatePointsIndicator";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -124,6 +127,15 @@ const Editor = ({
   const [hasMana, setHasMana] = React.useState(character.hasMana);
   const [currentMana, setCurrentMana] = React.useState(character.currentMana);
   const [maximumMana, setMaximumMana] = React.useState(character.maximumMana);
+  const [hasFatePoints, setHasFatePoints] = React.useState(
+    character.hasFatePoints
+  );
+  const [currentFatePoints, setCurrentFatePoints] = React.useState(
+    character.currentFatePoints
+  );
+  const [maximumFatePoints, setMaximumFatePoints] = React.useState(
+    character.maximumFatePoints
+  );
 
   const isFirstRun = React.useRef(true);
   React.useEffect(() => {
@@ -144,6 +156,9 @@ const Editor = ({
           hasMana,
           currentMana,
           maximumMana,
+          hasFatePoints,
+          maximumFatePoints,
+          currentFatePoints,
           imageUrl,
         },
       },
@@ -157,6 +172,9 @@ const Editor = ({
     hasMana,
     currentMana,
     maximumMana,
+    hasFatePoints,
+    maximumFatePoints,
+    currentFatePoints,
     imageUrl,
   ]);
 
@@ -353,6 +371,52 @@ const Editor = ({
                 />
               </FormControl>
             </Stack>
+            <Stack>
+              {hasFatePoints ? (
+                <>
+                  <FatePoints
+                    current={currentFatePoints}
+                    maximum={maximumFatePoints}
+                  />
+                  <HStack>
+                    <IconButton
+                      size="sm"
+                      aria-label="Add point"
+                      icon={<MinusIcon />}
+                      disabled={currentFatePoints === 0}
+                      onClick={() => {
+                        setCurrentFatePoints((points) => points - 1);
+                      }}
+                    />
+                    <IconButton
+                      size="sm"
+                      aria-label="Remove point"
+                      icon={<AddIcon />}
+                      disabled={maximumFatePoints === currentFatePoints}
+                      onClick={() => {
+                        setCurrentFatePoints((points) => points + 1);
+                      }}
+                    />
+                    <FatePointInput
+                      value={maximumFatePoints}
+                      onChange={setMaximumFatePoints}
+                    />
+                  </HStack>
+                </>
+              ) : null}
+              <FormControl display="flex" alignItems="center">
+                <FormLabel htmlFor="email-alerts" mb="0">
+                  SchiPs?
+                </FormLabel>
+                <Switch
+                  id="email-alerts"
+                  isChecked={hasFatePoints}
+                  onChange={(ev) => {
+                    setHasFatePoints(ev.target.checked);
+                  }}
+                />
+              </FormControl>
+            </Stack>
           </VStack>
         </HStack>
         <Box>
@@ -364,6 +428,36 @@ const Editor = ({
         </Box>
       </Stack>
     </>
+  );
+};
+
+const FatePointInput = (props: {
+  value: number;
+  onChange: (value: number) => void;
+}): React.ReactElement => {
+  const [value, setValue] = React.useState(() => String(props.value));
+
+  const [updateRef] = React.useState(() => ({
+    onChange: props.onChange,
+  }));
+
+  React.useEffect(() => {
+    const integerValue = parseIntSafe(value);
+    if (isSome(integerValue)) {
+      console.log(integerValue);
+      updateRef.onChange(integerValue);
+    }
+  }, [updateRef, value]);
+
+  return (
+    <InputGroup size="sm">
+      <InputLeftAddon children="Total Schips" />
+      <Input
+        borderRadius="0"
+        value={value}
+        onChange={(ev) => setValue(ev.target.value)}
+      />
+    </InputGroup>
   );
 };
 
