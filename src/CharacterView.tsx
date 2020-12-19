@@ -3,6 +3,7 @@ import * as React from "react";
 import { Box, HStack, Text, Stack } from "@chakra-ui/react";
 import { CharacterViewFragment } from "./generated/graphql";
 import { ProgressBar } from "./ProgressBar";
+import { FatePoints } from "./FatePointsIndicator";
 
 export const CharacterOverlay = (props: {
   character: CharacterViewFragment;
@@ -53,6 +54,12 @@ export const CharacterOverlay = (props: {
                   </Text>
                 </Text>
               }
+            />
+          ) : null}
+          {props.character.hasFatePoints ? (
+            <FatePoints
+              current={props.character.currentFatePoints}
+              maximum={props.character.maximumFatePoints}
             />
           ) : null}
         </Stack>

@@ -138,6 +138,9 @@ export const LandingPage = (): React.ReactElement => {
                   currentMana: 10,
                   maximumMana: 20,
                   hasMana: false,
+                  hasFatePoints: false,
+                  currentFatePoints: 0,
+                  maximumFatePoints: 0,
                 }}
               />
             </OverlayContainer>
