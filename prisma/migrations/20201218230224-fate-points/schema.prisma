@@ -23,5 +23,5 @@ model Character {
   editHash          String   @unique
   hasFatePoints     Boolean  @default(false)
   maximumFatePoints Int      @default(2)
-  currentFatePoints Int      @default(0)
+  currentFatePoints Int      @default(2)
 }

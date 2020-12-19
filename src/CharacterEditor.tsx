@@ -21,6 +21,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { HeaderSection, MainSectionContainer } from "./AppShell";
 import {
@@ -34,7 +35,7 @@ import { parseIntSafe } from "./number-utilities";
 import { NumPad } from "./NumPad";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { useResetState } from "./useResetState";
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -116,25 +117,40 @@ const Editor = ({
   editHash: string;
 }) => {
   const [, updateCharacter] = useUpdateCharacterMutationMutation();
-  const [imageUrl, setImageUrl] = React.useState(character.imageUrl);
-  const [name, setName] = React.useState(character.name);
-  const [currentHealth, setCurrentHealth] = React.useState(
-    character.currentHealth
+  const [imageUrl, setImageUrl] = useResetState(() => character.imageUrl, [
+    character.imageUrl,
+  ]);
+  const [name, setName] = useResetState(() => character.name, [character.name]);
+  const [currentHealth, setCurrentHealth] = useResetState(
+    () => character.currentHealth,
+    [character.currentHealth]
   );
-  const [maximumHealth, setMaximumHealth] = React.useState(
-    character.maximumHealth
+  const [maximumHealth, setMaximumHealth] = useResetState(
+    () => character.maximumHealth,
+    [character.maximumHealth]
   );
-  const [hasMana, setHasMana] = React.useState(character.hasMana);
-  const [currentMana, setCurrentMana] = React.useState(character.currentMana);
-  const [maximumMana, setMaximumMana] = React.useState(character.maximumMana);
-  const [hasFatePoints, setHasFatePoints] = React.useState(
-    character.hasFatePoints
+  const [hasMana, setHasMana] = useResetState(() => character.hasMana, [
+    character.hasMana,
+  ]);
+  const [currentMana, setCurrentMana] = useResetState(
+    () => character.currentMana,
+    [character.currentMana]
   );
-  const [currentFatePoints, setCurrentFatePoints] = React.useState(
-    character.currentFatePoints
+  const [maximumMana, setMaximumMana] = useResetState(
+    () => character.maximumMana,
+    [character.maximumMana]
   );
-  const [maximumFatePoints, setMaximumFatePoints] = React.useState(
-    character.maximumFatePoints
+  const [hasFatePoints, setHasFatePoints] = useResetState(
+    () => character.hasFatePoints,
+    [character.hasFatePoints]
+  );
+  const [currentFatePoints, setCurrentFatePoints] = useResetState(
+    () => character.currentFatePoints,
+    [character.currentFatePoints]
+  );
+  const [maximumFatePoints, setMaximumFatePoints] = useResetState(
+    () => character.maximumFatePoints,
+    [character.maximumFatePoints]
   );
 
   const isFirstRun = React.useRef(true);
@@ -371,7 +387,7 @@ const Editor = ({
                 />
               </FormControl>
             </Stack>
-            <Stack>
+            <Stack width={300}>
               {hasFatePoints ? (
                 <>
                   <FatePoints

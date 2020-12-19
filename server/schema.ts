@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { GraphQLLiveDirective } from "@n1ru4l/graphql-live-query";
 import type { ApplicationContext } from "./ApplicationContext";
 import type { Character } from "@prisma/client";
+import { isNone } from "./Maybe";
 
 const createUniqueId = () => crypto.randomBytes(16).toString("hex");
 
@@ -202,22 +203,41 @@ const Mutation = t.mutationType({
         input: t.arg(t.NonNullInput(GraphQLUpdateCharacterInput)),
       },
       resolve: async (_, args, context) => {
+        // This logic would be better off on the database layer as a trigger
+        // Unfortunately, it is not possible to add database triggers with prisma migrate.
+        const record = await context.prisma.character.findOne({
+          where: { editHash: args.input.editHash },
+        });
+        if (isNone(record)) {
+          return null;
+        }
+        const maximumHealth =
+          args.input.updates.maximumHealth ?? record.maximumHealth;
+        const currentHealth =
+          args.input.updates.currentHealth ?? record.currentHealth;
+        const maximumMana =
+          args.input.updates.maximumMana ?? record.maximumMana;
+        const currentMana =
+          args.input.updates.currentMana ?? record.currentMana;
+        const maximumFatePoints =
+          args.input.updates.maximumFatePoints ?? record.maximumFatePoints;
+        const currentFatePoints =
+          args.input.updates.currentFatePoints ?? record.currentFatePoints;
+
         await context.prisma.character.update({
           where: {
             editHash: args.input.editHash,
           },
           data: {
             name: args.input.updates.name ?? undefined,
-            maximumHealth: args.input.updates.maximumHealth ?? undefined,
-            currentHealth: args.input.updates.currentHealth ?? undefined,
+            maximumHealth,
+            currentHealth: Math.min(currentHealth, maximumHealth),
             hasMana: args.input.updates.hasMana ?? undefined,
-            maximumMana: args.input.updates.maximumMana ?? undefined,
-            currentMana: args.input.updates.currentMana ?? undefined,
+            maximumMana,
+            currentMana: Math.min(currentMana, maximumMana),
             hasFatePoints: args.input.updates.hasFatePoints ?? undefined,
-            maximumFatePoints:
-              args.input.updates.maximumFatePoints ?? undefined,
-            currentFatePoints:
-              args.input.updates.currentFatePoints ?? undefined,
+            maximumFatePoints,
+            currentFatePoints: Math.min(currentFatePoints, maximumFatePoints),
             imageUrl: args.input.updates.imageUrl ?? undefined,
           },
         });

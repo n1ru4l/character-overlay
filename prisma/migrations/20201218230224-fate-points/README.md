@@ -20,7 +20,7 @@ CREATE TABLE "new_Character" (
     "editHash" TEXT NOT NULL,
     "hasFatePoints" BOOLEAN NOT NULL DEFAULT false,
     "maximumFatePoints" INTEGER NOT NULL DEFAULT 2,
-    "currentFatePoints" INTEGER NOT NULL DEFAULT 0,
+    "currentFatePoints" INTEGER NOT NULL DEFAULT 2,
     PRIMARY KEY ("id")
 );
 INSERT INTO "new_Character" ("id", "createdAt", "name", "imageUrl", "maximumHealth", "currentHealth", "hasMana", "maximumMana", "currentMana", "editHash") SELECT "id", "createdAt", "name", "imageUrl", "maximumHealth", "currentHealth", "hasMana", "maximumMana", "currentMana", "editHash" FROM "Character";
@@ -71,8 +71,6 @@ migration 20201026181917-characters-table..20201218230224-fate-points
 +  editHash          String   @unique
 +  hasFatePoints     Boolean  @default(false)
 +  maximumFatePoints Int      @default(2)
-+  currentFatePoints Int      @default(0)
++  currentFatePoints Int      @default(2)
  }
 ```
-
-

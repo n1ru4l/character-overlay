@@ -11,7 +11,7 @@ const FatePoint = (props: { isActive: boolean }): React.ReactElement => (
     overflow={"hidden"}
     background={color}
     border={`2px solid ${darken(0.1, color)}`}
-    opacity={props.isActive ? 1 : 0.5}
+    opacity={props.isActive ? 1 : 0.2}
   />
 );
 
