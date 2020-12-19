@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { GraphQLLiveDirective } from "@n1ru4l/graphql-live-query";
 import type { ApplicationContext } from "./ApplicationContext";
 import type { Character } from "@prisma/client";
-import { isNone } from "./Maybe";
+import { isNone } from "./maybe";
 
 const createUniqueId = () => crypto.randomBytes(16).toString("hex");
 
