@@ -2661,10 +2661,10 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.1.5.tgz#f2484a674a1e89372125e09f3d82c4ed70633f9f"
-  integrity sha512-X4xtuy2uaXYStAq83rHpVu7rV0Z2S/6i2FQjVYOP+nMK8e3fpdjyiTuBI20R8Cf8tu9j1/xbpBP8z1imhOcnrg==
+"@tinyhttp/app@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.1.6.tgz#5551dcfff6a50031c3e4bbc857c4cc22c4fda296"
+  integrity sha512-dFQOOn7Dc2ybG+hHlVokDip68skPogksLMNtqqU/SoiCoNkb8DQ0nzPBBlXWhWid27Nu+xNxK/Yq03mw4YqzgA==
   dependencies:
     "@tinyhttp/cookie" "1.1.0"
     "@tinyhttp/proxy-addr" "1.1.0"
