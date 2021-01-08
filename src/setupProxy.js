@@ -11,4 +11,16 @@ module.exports = function (app) {
       ws: true,
     })
   );
+  app.use(
+    proxy("/upload", {
+      target: "http://localhost:4000",
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    proxy("/uploads", {
+      target: "http://localhost:4000",
+      changeOrigin: true,
+    })
+  );
 };
