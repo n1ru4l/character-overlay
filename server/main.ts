@@ -34,7 +34,7 @@ const publicDirectory = path.join(process.cwd(), "build");
 const app = new App();
 
 const uploadHandler = multer({ dest: path.join(uploadDirectory, "uploads") });
-const uploadsServeHandler = serveStatic(uploadDirectory);
+const uploadsServeHandler = serveStatic(path.join(uploadDirectory, "uploads"));
 const staticServeHandler = serveStatic(publicDirectory);
 
 app
