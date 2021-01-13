@@ -460,7 +460,6 @@ const FatePointInput = (props: {
   React.useEffect(() => {
     const integerValue = parseIntSafe(value);
     if (isSome(integerValue)) {
-      console.log(integerValue);
       updateRef.onChange(integerValue);
     }
   }, [updateRef, value]);
@@ -501,7 +500,6 @@ const ImageUpload = (props: {
             body: formData,
           })
             .then((res) => {
-              console.log(res.status);
               return res.text();
             })
             .then(props.onChange)

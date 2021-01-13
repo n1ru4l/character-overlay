@@ -1,40 +1,34 @@
 import { App } from "@tinyhttp/app";
 import multer from "multer";
 import path from "path";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import serveStatic from "serve-static";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 import { createApplyLiveQueryPatchGenerator } from "@n1ru4l/graphql-live-query-patch";
+import Database from "better-sqlite3";
 import { schema } from "./schema";
-import { PrismaClient } from "@prisma/client";
 import type { ApplicationContext } from "./ApplicationContext";
+import { migrateDatabase } from "./migrateDatabase";
 
 const liveQueryStore = new InMemoryLiveQueryStore();
-const prisma = new PrismaClient();
 
-// Register Middleware for automatic model invalidation
-prisma.$use(async (params, next) => {
-  const resultPromise = next(params);
+const version = process.env.APP_VERSION ?? "latest";
+const db = new Database(
+  process.env.DATABASE_URL ?? path.join(process.cwd(), ".data", "database.db")
+);
+migrateDatabase(db)();
 
-  if (params.action === "update" && params.model) {
-    resultPromise.then((res) => {
-      if (res?.id) {
-        liveQueryStore.invalidate(`${params.model}:${res.id}`);
-      }
-    });
-  }
-
-  return resultPromise;
-});
-
-const uploadDirectory = process.env.STORAGE_DIRECTORY ?? process.cwd();
+const uploadDirectory = path.join(
+  process.env.STORAGE_DIRECTORY ?? process.cwd(),
+  "uploads"
+);
 const publicDirectory = path.join(process.cwd(), "build");
 
 const app = new App();
 
-const uploadHandler = multer({ dest: path.join(uploadDirectory, "uploads") });
-const uploadsServeHandler = serveStatic(path.join(uploadDirectory, "uploads"));
+const uploadHandler = multer({ dest: uploadDirectory });
+const uploadsServeHandler = serveStatic(uploadDirectory);
 const staticServeHandler = serveStatic(publicDirectory);
 
 app
@@ -66,7 +60,7 @@ const server = app.listen(PORT, () => {
 
 const socketServer = new Server(server);
 
-registerSocketIOGraphQLServer({
+const graphQLServerLayer = registerSocketIOGraphQLServer({
   socketServer,
   getParameter: () => ({
     execute: (...args) =>
@@ -75,10 +69,27 @@ registerSocketIOGraphQLServer({
       schema,
       contextValue: {
         liveQueryStore,
-        prisma,
+        db,
       } as ApplicationContext,
     },
   }),
+  isLazy: true,
+});
+
+// In order to keep clients in sync with the backend we do a handshake for determining
+// whether the client needs a reload (in order to get the updated frontend) or not.
+socketServer.on("connection", (socket: Socket) => {
+  socket.on("handshake", (payload: unknown) => {
+    if (typeof payload === "object" && payload !== null) {
+      const clientFrontendVersion = (payload as any).version ?? "unknown";
+      let success = false;
+      if (clientFrontendVersion === version) {
+        graphQLServerLayer.registerSocket(socket);
+        success = true;
+      }
+      socket.emit("handshake", { success });
+    }
+  });
 });
 
 process.once("SIGINT", () => {

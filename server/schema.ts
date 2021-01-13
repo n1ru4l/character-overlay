@@ -3,8 +3,8 @@ import { specifiedDirectives } from "graphql";
 import crypto from "crypto";
 import { GraphQLLiveDirective } from "@n1ru4l/graphql-live-query";
 import type { ApplicationContext } from "./ApplicationContext";
-import type { Character } from "@prisma/client";
 import { isNone } from "./maybe";
+import * as Character from "./character";
 
 const createUniqueId = () => crypto.randomBytes(16).toString("hex");
 
@@ -23,7 +23,7 @@ const GraphQLErrorType = t.objectType<{
   ],
 });
 
-const GraphQLCharacterType = t.objectType<Character>({
+const GraphQLCharacterType = t.objectType<Character.CharacterRecord>({
   name: "Character",
   fields: () => [
     t.field("id", {
@@ -75,7 +75,7 @@ const GraphQLCharacterType = t.objectType<Character>({
 
 const CharacterEditorView = t.objectType<{
   type: "CharacterEditorView";
-  character: Character;
+  character: Character.CharacterRecord;
 }>({
   name: "CharacterEditorView",
   fields: () => [
@@ -109,10 +109,10 @@ const Query = t.queryType({
       args: {
         editHash: t.arg(t.NonNullInput(t.ID)),
       },
-      resolve: async (_, args, context) => {
-        const character = await context.prisma.character.findOne({
-          where: { editHash: args.editHash },
-        });
+      resolve: (_, args, context) => {
+        const character = Character.findOneWhereEditHash(args.editHash)(
+          context.db
+        )();
 
         if (character === null) {
           return {
@@ -132,10 +132,8 @@ const Query = t.queryType({
       args: {
         id: t.arg(t.NonNullInput(t.ID)),
       },
-      resolve: async (_, args, context) => {
-        const character = await context.prisma.character.findOne({
-          where: { id: args.id },
-        });
+      resolve: (_, args, context) => {
+        const character = Character.findOneWhereId(args.id)(context.db)();
         return character;
       },
     }),
@@ -144,7 +142,7 @@ const Query = t.queryType({
 
 const CreateCharacterSuccess = t.objectType<{
   type: "CreateCharacterSuccess";
-  character: Character;
+  character: Character.CharacterRecord;
 }>({
   name: "CreateCharacterSuccess",
   fields: () => [
@@ -202,12 +200,12 @@ const Mutation = t.mutationType({
       args: {
         input: t.arg(t.NonNullInput(GraphQLUpdateCharacterInput)),
       },
-      resolve: async (_, args, context) => {
+      resolve: (_, args, context) => {
         // This logic would be better off on the database layer as a trigger
         // Unfortunately, it is not possible to add database triggers with prisma migrate.
-        const record = await context.prisma.character.findOne({
-          where: { editHash: args.input.editHash },
-        });
+        const record = Character.findOneWhereEditHash(args.input.editHash)(
+          context.db
+        )();
         if (isNone(record)) {
           return null;
         }
@@ -224,39 +222,38 @@ const Mutation = t.mutationType({
         const currentFatePoints =
           args.input.updates.currentFatePoints ?? record.currentFatePoints;
 
-        await context.prisma.character.update({
-          where: {
-            editHash: args.input.editHash,
-          },
-          data: {
-            name: args.input.updates.name ?? undefined,
-            maximumHealth,
-            currentHealth: Math.min(currentHealth, maximumHealth),
-            hasMana: args.input.updates.hasMana ?? undefined,
-            maximumMana,
-            currentMana: Math.min(currentMana, maximumMana),
-            hasFatePoints: args.input.updates.hasFatePoints ?? undefined,
-            maximumFatePoints,
-            currentFatePoints: Math.min(currentFatePoints, maximumFatePoints),
-            imageUrl: args.input.updates.imageUrl ?? undefined,
-          },
-        });
+        Character.updateOneWhereEditHash(record.editHash, {
+          name: args.input.updates.name ?? undefined,
+          maximumHealth,
+          currentHealth: Math.min(currentHealth, maximumHealth),
+          hasMana: args.input.updates.hasMana ?? undefined,
+          maximumMana,
+          currentMana: Math.min(currentMana, maximumMana),
+          hasFatePoints: args.input.updates.hasFatePoints ?? undefined,
+          maximumFatePoints,
+          currentFatePoints: Math.min(currentFatePoints, maximumFatePoints),
+          imageUrl: args.input.updates.imageUrl ?? undefined,
+        })(context.db)();
+        context.liveQueryStore.invalidate(`Character:${record.id}`);
+
         return null;
       },
     }),
     t.field("createCharacter", {
       type: t.NonNull(CreateCharacterResult),
-      resolve: async (_, __, context) => {
+      resolve: (_, __, context) => {
         try {
-          const character = await context.prisma.character.create({
-            data: {
-              id: createUniqueId(),
-              name: "John Wayne",
-              imageUrl:
-                "https://i.pinimg.com/236x/a1/51/44/a151443dadd6fee73bf8c460ebc2854d--character-portraits-character-ideas.jpg",
-              editHash: createUniqueId(),
-            },
-          });
+          const id = createUniqueId();
+          Character.createOne({
+            id,
+            name: "John Wayne",
+            imageUrl:
+              "https://i.pinimg.com/236x/a1/51/44/a151443dadd6fee73bf8c460ebc2854d--character-portraits-character-ideas.jpg",
+            editHash: createUniqueId(),
+          })(context.db)();
+
+          const character = Character.findOneWhereId(id)(context.db)()!;
+
           return {
             type: "CreateCharacterSuccess" as const,
             character,
