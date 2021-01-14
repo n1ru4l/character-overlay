@@ -1,6 +1,4 @@
 import type { Database } from "better-sqlite3";
-import { toCamelCase } from "./util/toCamelCase";
-import { toSnakeCase } from "./util/toSnakeCase";
 
 export type CharacterRecord = {
   id: string;
@@ -27,7 +25,6 @@ const transformRecord = (record: {
   const entries = Object.entries(record);
   const newEntries: [string, unknown][] = [];
   for (let [key, value] of entries) {
-    key = toCamelCase(key);
     if (key === "hasMana" || key === "hasFatePoints") {
       value = value ? true : false;
     }
@@ -45,20 +42,20 @@ export const findOneWhereId = (id: string) => (
       /* SQL */ `
       SELECT
         "id",
-        "created_at",
+        "createdAt",
         "name",
-        "image_url",
-        "maximum_health",
-        "current_health",
-        "has_mana",
-        "maximum_mana",
-        "current_mana",
-        "edit_hash",
-        "has_fate_points",
-        "maximum_fate_points",
-        "current_fate_points"
+        "imageUrl",
+        "maximumHealth",
+        "currentHealth",
+        "hasMana",
+        "maximumMana",
+        "currentMana",
+        "editHash",
+        "hasFatePoints",
+        "maximumFatePoints",
+        "currentFatePoints"
       FROM
-        "character"
+        "Character"
       WHERE
         "id" = ?
     `
@@ -76,22 +73,22 @@ export const findOneWhereEditHash = (editHash: string) => (
       /* SQL */ `
       SELECT
         "id",
-        "created_at",
+        "createdAt",
         "name",
-        "image_url",
-        "maximum_health",
-        "current_health",
-        "has_mana",
-        "maximum_mana",
-        "current_mana",
-        "edit_hash",
-        "has_fate_points",
-        "maximum_fate_points",
-        "current_fate_points"
+        "imageUrl",
+        "maximumHealth",
+        "currentHealth",
+        "hasMana",
+        "maximumMana",
+        "currentMana",
+        "editHash",
+        "hasFatePoints",
+        "maximumFatePoints",
+        "currentFatePoints"
       FROM
-        "character"
+        "Character"
       WHERE
-        "edit_hash" = ?
+        "editHash" = ?
     `
     )
     .get(editHash);
@@ -129,15 +126,15 @@ export const updateOneWhereEditHash = (
       value = value ? 1 : 0;
     }
     values.push(value);
-    setParts.push(`${toSnakeCase(key)} = ?`);
+    setParts.push(`"${key}" = ?`);
   }
   db.prepare(
     /* SQL */ `
     UPDATE
-      "character"
+      "Character"
     SET ${setParts.join(", ")}
     WHERE
-      "edit_hash" = ?
+      "editHash" = ?
   `
   ).run(...values, editHash);
 };
@@ -150,7 +147,7 @@ export const createOne = (opts: {
 }) => (db: Database) => (): void => {
   db.prepare(
     /* SQL*/ `
-    INSERT INTO "character" ("id", "name", "image_url", "edit_hash") VALUES (
+    INSERT INTO "Character" ("id", "name", "imageUrl", "editHash") VALUES (
       ?,
       ?,
       ?,

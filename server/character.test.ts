@@ -8,7 +8,7 @@ describe("character read database logic", () => {
   const db = createDB();
   migrateDatabase(db)();
   db.exec(/* SQL*/ `
-    INSERT INTO "character" ("id", "name", "image_url", "edit_hash", "created_at") VALUES (
+    INSERT INTO "character" ("id", "name", "imageUrl", "editHash", "createdAt") VALUES (
       '1',
       'Peter',
       'img',
@@ -62,7 +62,7 @@ describe("character update database logic", () => {
   const db = createDB();
   migrateDatabase(db)();
   db.exec(/* SQL*/ `
-    INSERT INTO "character" ("id", "name", "image_url", "edit_hash", "created_at") VALUES (
+    INSERT INTO "character" ("id", "name", "imageUrl", "editHash", "createdAt") VALUES (
       '1',
       'Peter',
       'img',
