@@ -1,7 +1,7 @@
-import type { PrismaClient } from "@prisma/client";
+import type { Database } from "better-sqlite3";
 import type { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
 
 export type ApplicationContext = {
-  prisma: PrismaClient;
+  db: Database;
   liveQueryStore: InMemoryLiveQueryStore;
 };
