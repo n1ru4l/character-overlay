@@ -2622,10 +2622,10 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@1.1.11":
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.1.11.tgz#2a443e237b6ed3cf4c5d430b05e7ca2598703c6e"
-  integrity sha512-++klE/XyIT8KEFaOML79FmASlpFBvesqbxbfxf2MUa/yku85oGBq/oiNhqa9OVFlkfFFaKkvZSaJjgerI9EqlQ==
+"@tinyhttp/app@1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.1.12.tgz#35ab8c5a7f8252523c30d1a9f958d92c57090465"
+  integrity sha512-5tQltmJ5Q/CebwvyCXMaxcyQsEv0ylMJPADjDA8YgKCtvdVMibL0PXdAka1KF5SBYMvkWe1eZPtRE9do9FtTjw==
   dependencies:
     "@tinyhttp/cookie" "1.1.1"
     "@tinyhttp/proxy-addr" "1.1.1"
