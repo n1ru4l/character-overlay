@@ -12,8 +12,6 @@ RUN yarn
 
 FROM builder-base as frontend-builder
 
-ARG APP_VERSION="latest"
-
 COPY snowpack.config.js ./
 COPY src ./src/
 COPY public ./public/
