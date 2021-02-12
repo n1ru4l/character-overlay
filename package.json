@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "character-overlay",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -52,13 +52,12 @@
     "ts-jest": "26.5.1",
     "ts-node-dev": "1.1.1",
     "typescript": "4.1.5",
-    "urql": "1.11.6"
+    "urql": "2.0.1"
   },
   "scripts": {
-    "start": "react-scripts dev",
+    "start": "snowpack dev",
     "build": "snowpack build",
     "test": "jest",
-    "eject": "react-scripts eject",
     "postinstall": "patch-package",
     "print-schema": "ts-node --project ./server/tsconfig.json  ./scripts/write-graphql-schema.ts",
     "codegen": "yarn print-schema && graphql-codegen --config codegen.yml",
