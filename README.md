@@ -12,8 +12,6 @@ Visit `http://localhost:4000`
 
 ## Development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ### Available Scripts
 
 #### `yarn codegen`
@@ -26,10 +24,10 @@ Start the GraphQL backend, you must run this command first.
 
 #### `yarn start`
 
-Starts the react development server.
+Starts the snowpack development server.
 
 #### Building the docker image
 
 ```bash
-docker build -t n1ru4l/character-overlay
+yarn build:docker
 ```
