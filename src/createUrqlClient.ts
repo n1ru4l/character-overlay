@@ -10,11 +10,15 @@ import { createSocketIOGraphQLClient } from "@n1ru4l/socket-io-graphql-client";
 import { createApplyLiveQueryPatch } from "@n1ru4l/graphql-live-query-patch";
 import { applyAsyncIterableIteratorToSink } from "@n1ru4l/push-pull-async-iterable-iterator";
 
+const APP_VERSION =
+  window?.document.querySelector(`[data-version]`)?.getAttribute("content") ??
+  null;
+
 export const createUrqlClient = () => {
   const socket = io();
   const networkInterface = createSocketIOGraphQLClient<ExecutionResult>(socket);
   socket.on("connect", () => {
-    socket.emit("handshake", { version: process.env.REACT_APP_VERSION });
+    socket.emit("handshake", { version: APP_VERSION });
   });
   socket.on("handshake", (payload: unknown) => {
     // @ts-ignore

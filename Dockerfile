@@ -12,10 +12,7 @@ RUN yarn
 
 FROM builder-base as frontend-builder
 
-ARG APP_VERSION="latest"
-ENV REACT_APP_VERSION=$APP_VERSION
-
-COPY tsconfig.json ./
+COPY snowpack.config.js ./
 COPY src ./src/
 COPY public ./public/
 RUN yarn build
@@ -42,10 +39,9 @@ ARG NODE_ENV="production"
 ENV NODE_ENV="production"
 
 COPY package.json yarn.lock ./
-COPY patches/ ./patches/
 RUN mkdir -p /data/uploads
 COPY --from=dependency-builder /usr/context/node_modules/ ./node_modules/
-COPY --from=backend-builder /usr/context/server-build/ ./
+COPY --from=backend-builder /usr/context/server-build/ ./server-build
 COPY --from=frontend-builder /usr/context/build ./build/
 
 ENV DATABASE_URL="/data/database.db"
@@ -54,4 +50,4 @@ ENV STORAGE_DIRECTORY="/data"
 ARG APP_VERSION="latest"
 ENV APP_VERSION=$APP_VERSION
 
-CMD [ "node", "main.js" ]
+CMD [ "node", "server-build/main.js" ]

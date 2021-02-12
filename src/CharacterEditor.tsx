@@ -24,18 +24,16 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { HeaderSection, MainSectionContainer } from "./AppShell";
-import {
-  CharacterViewFragment,
-  useCharacterEditorQueryQuery,
-  useCreateCharacterMutationMutation,
-  useUpdateCharacterMutationMutation,
-} from "./generated/graphql";
+import { CharacterViewFragment } from "./CharacterViewFragment";
 import { isSome, Maybe } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";
 import { NumPad } from "./NumPad";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
 import { useResetState } from "./useResetState";
+import { useCharacterEditorQueryQuery } from "./CharacterEditorQuery";
+import { useCreateCharacterMutationMutation } from "./CreateCharacterMutation";
+import { useUpdateCharacterMutationMutation } from "./UpdateCharacterMutation";
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -524,12 +522,11 @@ const ImageUpload = (props: {
 };
 
 const buildCharacterUrl = (characterId: string) =>
-  process.env.PUBLIC_URL ||
   window.location.protocol +
-    "//" +
-    window.location.hostname +
-    (window.location.port ? `:${window.location.port}` : "") +
-    `/#character=${characterId}`;
+  "//" +
+  window.location.hostname +
+  (window.location.port ? `:${window.location.port}` : "") +
+  `/#character=${characterId}`;
 
 const CopyInput = (props: React.ComponentProps<typeof Input>) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);

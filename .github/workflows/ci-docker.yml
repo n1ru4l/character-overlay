@@ -37,13 +37,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: n1ru4l/character-overlay:${{ github.sha }}
-          build-args: |
-            APP_VERSION=${{ github.sha }}
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --output "type=image,push=true" \
+            --cache-from=type=registry,ref=n1ru4l/character-overlay:build-cache-linux-amd64 \
+            --cache-to=type=registry,ref=n1ru4l/character-overlay:build-cache-linux-amd64,mode=max \
+            --build-arg APP_VERSION=${{ github.sha }} \
+            -t "n1ru4l/character-overlay:${{ github.sha }}" \
+            .

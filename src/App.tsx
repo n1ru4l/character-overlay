@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import { Box } from "@chakra-ui/react";
-import { useCharacterQueryQuery } from "./generated/graphql";
+import { useCharacterQueryQuery } from "./CharacterQuery";
 import { isNone, isSome, Maybe } from "./Maybe";
 import { LandingPage } from "./LandingPage";
 import { CharacterEditor } from "./CharacterEditor";
