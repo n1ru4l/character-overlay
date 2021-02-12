@@ -1,5 +1,6 @@
 import { App } from "@tinyhttp/app";
 import multer from "multer";
+import fs from "fs";
 import path from "path";
 import { Server, Socket } from "socket.io";
 import serveStatic from "serve-static";
@@ -13,7 +14,7 @@ import { migrateDatabase } from "./migrateDatabase";
 
 const liveQueryStore = new InMemoryLiveQueryStore();
 
-const version = process.env.APP_VERSION ?? "latest";
+const version = process.env.APP_VERSION ?? "__latest__";
 const db = new Database(
   process.env.DATABASE_URL ?? path.join(process.cwd(), ".data", "database.db")
 );
@@ -28,13 +29,19 @@ const publicDirectory = path.join(process.cwd(), "build");
 const app = new App();
 
 const uploadHandler = multer({ dest: uploadDirectory });
-const uploadsServeHandler = serveStatic(uploadDirectory);
-const staticServeHandler = serveStatic(publicDirectory);
+const uploadsServeHandler = serveStatic(uploadDirectory, {
+  maxAge: "10y",
+});
+const staticServeHandler = serveStatic(publicDirectory, {
+  maxAge: "10y",
+});
+
+const indexHtmlContent = fs
+  .readFileSync(path.join(publicDirectory, "index.html"), "utf-8")
+  .replace(/__latest__/g, version);
 
 app
-  .use("/uploads", (req, res, next) => {
-    return uploadsServeHandler(req, res, next!);
-  })
+  .use("/uploads", (req, res, next) => uploadsServeHandler(req, res, next!))
   .post("/upload", async (req, res) => {
     const cb = uploadHandler.single("avatar");
     cb(req as any, res as any, (err: unknown) => {
@@ -50,6 +57,7 @@ app
       }
     });
   })
+  .get("/", (_, res) => res.send(indexHtmlContent))
   .use((req, res, next) => staticServeHandler(req, res, next!));
 
 const PORT = 4000;

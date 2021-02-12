@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CharacterOverlay } from "./CharacterView";
-import { useCreateCharacterMutationMutation } from "./generated/graphql";
+import { useCreateCharacterMutationMutation } from "./CreateCharacterMutation";
 import { isSome, Maybe } from "./Maybe";
 import { HeaderSection } from "./AppShell";
 

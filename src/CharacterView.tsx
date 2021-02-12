@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 import { Box, HStack, Text, Stack } from "@chakra-ui/react";
-import { CharacterViewFragment } from "./generated/graphql";
+import { CharacterViewFragment } from "./CharacterViewFragment";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
 

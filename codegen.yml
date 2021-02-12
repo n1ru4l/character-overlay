@@ -4,8 +4,18 @@ documents: "src/**/*.graphql"
 config:
   dedupeOperationSuffix: true
 generates:
-  src/generated/graphql.ts:
+  src/__generated__/types.ts:
     plugins:
+      - add:
+          content: "// THIS FILE IS AUTO GENERATED DO NOT MANUALLY EDIT\n/* eslint-disable */"
       - "typescript"
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .tsx
+      baseTypesPath: __generated__/types.ts
+    plugins:
+      - add:
+          content: "// THIS FILE IS AUTO GENERATED DO NOT MANUALLY EDIT\n/* eslint-disable */"
       - "typescript-operations"
       - "typescript-urql"
