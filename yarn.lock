@@ -7487,7 +7487,7 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-resolve@^1.0.0, resolve@^1.10.0, resolve@^1.12.0, resolve@^1.18.1, resolve@^1.19.0:
+resolve@^1.0.0, resolve@^1.10.0, resolve@^1.12.0, resolve@^1.18.1, resolve@^1.19.0, resolve@^1.20.0:
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
   integrity sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
@@ -7808,14 +7808,15 @@ snowpack-plugin-hash@0.14.2:
     typed-colors "^1.0.0"
     typed-figures "^1.0.0"
 
-snowpack@3.0.12:
-  version "3.0.12"
-  resolved "https://registry.yarnpkg.com/snowpack/-/snowpack-3.0.12.tgz#1260aa7d78f2c9b663e657a38d4e7157a00751ae"
-  integrity sha512-iEEMxXCKEPn7lC5h9O+VfI2IYfld99k0EsNVQ53nT5WMh7lbS5KawQ8/9XVsWSnHOxgtbRfg0amkdyVVpMWiGQ==
+snowpack@3.0.13:
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/snowpack/-/snowpack-3.0.13.tgz#25e6434b186d916f69b0bae6325bda4f1451c035"
+  integrity sha512-USTcpfJ68rbuFvUygw+3n9qS1CC/tGsr/JNVc6FNk0ZRfGBE4OmB+Mmk5nWtdxi546GeCr/GvveJenYLen/WpA==
   dependencies:
     default-browser-id "^2.0.0"
     esbuild "^0.8.7"
     open "^7.0.4"
+    resolve "^1.20.0"
     rollup "^2.34.0"
   optionalDependencies:
     fsevents "^2.2.0"
