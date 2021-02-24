@@ -7,7 +7,7 @@
     "@n1ru4l/graphql-live-query-patch": "0.3.1",
     "@n1ru4l/in-memory-live-query-store": "0.6.0",
     "@n1ru4l/socket-io-graphql-server": "0.9.2",
-    "@tinyhttp/app": "1.2.2",
+    "@tinyhttp/app": "1.2.3",
     "@types/better-sqlite3": "5.4.1",
     "better-sqlite3": "7.1.2",
     "gqtx": "0.7.0",
