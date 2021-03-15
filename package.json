@@ -29,7 +29,7 @@
     "@graphql-codegen/typescript-operations": "1.17.15",
     "@graphql-codegen/typescript-urql": "2.0.5",
     "@n1ru4l/push-pull-async-iterable-iterator": "2.1.2",
-    "@n1ru4l/socket-io-graphql-client": "0.9.1",
+    "@n1ru4l/socket-io-graphql-client": "0.9.3",
     "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.5",
     "@testing-library/user-event": "12.8.1",
