@@ -37,7 +37,7 @@
     "@types/multer": "1.4.5",
     "@types/node": "12.20.4",
     "@types/react": "17.0.3",
-    "@types/react-dom": "17.0.1",
+    "@types/react-dom": "17.0.3",
     "@types/serve-static": "1.13.9",
     "framer-motion": "4.0.0",
     "http-proxy": "1.18.1",
