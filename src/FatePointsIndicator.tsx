@@ -15,7 +15,7 @@ const FatePoint = (props: { isActive: boolean }): React.ReactElement => (
   />
 );
 
-const times = <T,>(amount: number, create: (index: number) => T) => {
+const times = <T extends any>(amount: number, create: (index: number) => T) => {
   if (amount < 0) {
     return [];
   }

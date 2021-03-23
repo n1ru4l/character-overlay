@@ -12,9 +12,10 @@ RUN yarn
 
 FROM builder-base as frontend-builder
 
-COPY snowpack.config.js ./
+COPY vite.config.ts ./
 COPY src ./src/
 COPY public ./public/
+COPY index.html ./
 RUN yarn build
 
 FROM builder-base as backend-builder
@@ -42,7 +43,7 @@ COPY package.json yarn.lock ./
 RUN mkdir -p /data/uploads
 COPY --from=dependency-builder /usr/context/node_modules/ ./node_modules/
 COPY --from=backend-builder /usr/context/server-build/ ./server-build
-COPY --from=frontend-builder /usr/context/build ./build/
+COPY --from=frontend-builder /usr/context/dist ./dist/
 
 ENV DATABASE_URL="/data/database.db"
 ENV STORAGE_DIRECTORY="/data"

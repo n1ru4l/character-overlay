@@ -28,7 +28,7 @@ export const HeaderSection = (): React.ReactElement => (
     <HStack justify="space-between">
       <Box as="a" href="/" width="auto" display="inline-block">
         <HStack>
-          <LogoImage src="/head.png" alt="OBS Character Overlay Logo" />
+          <LogoImage src="/head.png" />
           <LogoText>
             Character <br />
             Overlay

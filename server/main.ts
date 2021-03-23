@@ -24,7 +24,7 @@ const uploadDirectory = path.join(
   process.env.STORAGE_DIRECTORY ?? process.cwd(),
   "uploads"
 );
-const publicDirectory = path.join(process.cwd(), "build");
+const publicDirectory = path.join(process.cwd(), "dist");
 
 const app = new App();
 

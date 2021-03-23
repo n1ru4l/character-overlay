@@ -13,10 +13,6 @@
       ]
     },
     {
-      "groupName": "prisma",
-      "packagePatterns": ["@prisma/cli", "@prisma/client"]
-    },
-    {
       "groupName": "testing library",
       "packagePatterns": ["^@testing-library/"]
     },

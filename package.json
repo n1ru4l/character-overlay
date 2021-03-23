@@ -39,6 +39,7 @@
     "@types/react": "17.0.3",
     "@types/react-dom": "17.0.1",
     "@types/serve-static": "1.13.9",
+    "@vitejs/plugin-react-refresh": "1.3.1",
     "framer-motion": "4.0.0",
     "http-proxy": "1.18.1",
     "jest": "26.6.3",
@@ -46,22 +47,21 @@
     "prettier": "2.2.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "snowpack": "3.0.13",
-    "snowpack-plugin-hash": "0.14.2",
     "socket.io-client": "3.1.3",
     "ts-jest": "26.5.4",
     "ts-node-dev": "1.1.6",
     "typescript": "4.2.3",
-    "urql": "2.0.1"
+    "urql": "2.0.1",
+    "vite": "2.1.2"
   },
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
+    "dev": "vite",
+    "build": "vite build",
     "test": "jest",
     "postinstall": "patch-package",
     "print-schema": "ts-node --project ./server/tsconfig.json  ./scripts/write-graphql-schema.ts",
     "codegen": "yarn print-schema && graphql-codegen --config codegen.yml",
-    "server:start:dev": "ts-node-dev --project server/tsconfig.json --no-deps server/main.ts",
+    "server:dev": "ts-node-dev --project server/tsconfig.json --no-deps server/main.ts",
     "server:build": "tsc --project server/tsconfig.json",
     "build:docker": "docker build . -t n1ru4l/character-overlay"
   },
@@ -70,20 +70,5 @@
       "react-app",
       "react-app/jest"
     ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "scarfSettings": {
-    "enabled": false
   }
 }
