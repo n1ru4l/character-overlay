@@ -46,3 +46,11 @@ jobs:
             --build-arg APP_VERSION=${{ github.sha }} \
             -t "n1ru4l/character-overlay:${{ github.sha }}" \
             .
+
+      - name: Create commit comment
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: |
+            **This image has been published to DockerHub.** 🐋   
+            You can easily try this build out locally with Docker.
+            `docker run -p 4000:4000 n1ru4l/character-overlay:${{ github.sha }}`
