@@ -534,7 +534,7 @@ const CopyInput = (props: React.ComponentProps<typeof Input>) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   return (
     <InputGroup size="md">
-      <Input pr="4.5rem" ref={inputRef} background="white" {...props} />
+      <Input pr="4.5rem" variant="filled" ref={inputRef} {...props} />
       <InputRightElement width="4.5rem">
         <Button
           h="1.75rem"

@@ -1,11 +1,22 @@
 import * as React from "react";
-import { Box, Button, Container, HStack, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  HStack,
+  useColorMode,
+  Image,
+  Text,
+  IconButton,
+} from "@chakra-ui/react";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { FeedbackFish } from "@feedback-fish/react";
 
-const LogoImage = styled(Image)`
+const LogoImage = styled(Image)<{ isDark: boolean }>`
   height: 75px;
   width: 60px;
+  filter: invert(${(p) => (p.isDark ? 1 : 0)});
 `;
 
 const LogoText = styled(Text)`
@@ -23,21 +34,45 @@ export const MainSectionContainer = styled(SectionContainer)`
   margin-top: 6rem;
 `;
 
-export const HeaderSection = (): React.ReactElement => (
-  <SectionContainer>
-    <HStack justify="space-between">
-      <Box as="a" href="/" width="auto" display="inline-block">
+const DarkModeButton = () => {
+  const { toggleColorMode, colorMode } = useColorMode();
+
+  return (
+    <IconButton
+      aria-label="Dark Mode"
+      icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+      onClick={toggleColorMode}
+    />
+  );
+};
+
+export const HeaderSection = (): React.ReactElement => {
+  const { colorMode } = useColorMode();
+  return (
+    <SectionContainer>
+      <HStack justify="space-between">
+        <Box
+          as="a"
+          href="/"
+          width="auto"
+          display="inline-block"
+          alignSelf="flex-start"
+        >
+          <HStack>
+            <LogoImage src="/head.png" isDark={colorMode === "dark"} />
+            <LogoText>
+              Character <br />
+              Overlay
+            </LogoText>
+          </HStack>
+        </Box>
         <HStack>
-          <LogoImage src="/head.png" />
-          <LogoText>
-            Character <br />
-            Overlay
-          </LogoText>
+          <DarkModeButton />
+          <FeedbackFish projectId="518614210753ad">
+            <Button>Send feedback</Button>
+          </FeedbackFish>
         </HStack>
-      </Box>
-      <FeedbackFish projectId="518614210753ad">
-        <Button>Send feedback</Button>
-      </FeedbackFish>
-    </HStack>
-  </SectionContainer>
-);
+      </HStack>
+    </SectionContainer>
+  );
+};
