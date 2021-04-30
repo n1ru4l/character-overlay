@@ -17,6 +17,7 @@ import { isSome } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";
 
 export const NumPad = (props: {
+  text: string;
   onAdd: (value: number) => void;
   onSubtract: (value: number) => void;
 }): React.ReactElement => {
@@ -73,7 +74,7 @@ export const NumPad = (props: {
     >
       <PopoverArrow />
       <PopoverCloseButton />
-      <PopoverHeader>Change Health</PopoverHeader>
+      <PopoverHeader>{props.text}</PopoverHeader>
       <PopoverBody>
         <VStack spacing="2">
           <Input

@@ -266,6 +266,7 @@ const Editor = ({
                       </PopoverTrigger>
                       <Portal>
                         <NumPad
+                          text="Change Health"
                           onAdd={(value) => {
                             let newHealth = currentHealth + value;
                             if (newHealth > maximumHealth) {
@@ -334,6 +335,7 @@ const Editor = ({
                         </PopoverTrigger>
                         <Portal>
                           <NumPad
+                            text="Change Mana"
                             onAdd={(value) => {
                               let newMana = currentMana + value;
                               if (newMana > maximumMana) {
