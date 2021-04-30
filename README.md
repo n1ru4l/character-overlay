@@ -18,11 +18,11 @@ Visit `http://localhost:4000`
 
 Generate code typings for the GraphQL operations.
 
-#### `yarn start:server:dev`
+#### `yarn server:dev`
 
 Start the GraphQL backend, you must run this command first.
 
-#### `yarn start`
+#### `yarn dev`
 
 Starts the snowpack development server.
 
