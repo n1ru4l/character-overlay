@@ -1969,10 +1969,10 @@
     es-mime-types "^0.0.16"
     negotiator "^0.6.2"
 
-"@tinyhttp/app@1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.3.1.tgz#eda7392b475d7a26c1f06cad3ca10693c896400a"
-  integrity sha512-Vjo0vPVKBl68QRG22ck+KvG5w1A4GFCEMOeWgqv7F6tXTEKQyzF+LNhehl5zPSYBANLZllsdz2pz+gT+Omz1MQ==
+"@tinyhttp/app@1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@tinyhttp/app/-/app-1.3.2.tgz#dd5b3b59a300d25bc6094508444068fba7c2e106"
+  integrity sha512-1Q1qWAldPNGLZ0Gb2BCdrnGRbtJQ+GKcDwFA2EZ1jDe6bBgnVASDb5a+4mYkAG1xe562esk46B/hljEUtbn4Tg==
   dependencies:
     "@tinyhttp/cookie" "1.3.0"
     "@tinyhttp/proxy-addr" "1.3.0"
