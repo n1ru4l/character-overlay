@@ -3792,10 +3792,10 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
-engine.io-client@~4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-4.1.0.tgz#dce19be6ee1ec4440c592b45f6f5cef28acb4b3f"
-  integrity sha512-OUmn4m71/lW3ixICv4h3DuBRuh3ri0w3cDuepjsrINSbbqbni4Xw1shTFiKhl0v58lEtNpwJTpSKJJ3fondu5Q==
+engine.io-client@~5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-5.1.1.tgz#f5c3aaaef1bdc9443aac6ffde48b3b2fb2dc56fc"
+  integrity sha512-jPFpw2HLL0lhZ2KY0BpZhIJdleQcUO9W1xkIpo0h3d6s+5D6+EV/xgQw9qWOmymszv2WXef/6KUUehyxEKomlQ==
   dependencies:
     base64-arraybuffer "0.1.4"
     component-emitter "~1.3.0"
@@ -3805,7 +3805,6 @@ engine.io-client@~4.1.0:
     parseqs "0.0.6"
     parseuri "0.0.6"
     ws "~7.4.2"
-    xmlhttprequest-ssl "~1.5.4"
     yeast "0.1.2"
 
 engine.io-parser@~4.0.0, engine.io-parser@~4.0.1:
@@ -3813,10 +3812,10 @@ engine.io-parser@~4.0.0, engine.io-parser@~4.0.1:
   resolved "https://registry.yarnpkg.com/engine.io-parser/-/engine.io-parser-4.0.1.tgz#6444c3cf2523ba4fc3bbaedd4fe425e6bcb16479"
   integrity sha512-v5aZK1hlckcJDGmHz3W8xvI3NUHYc9t8QtTbqdR5OaH3S9iJZilPubauOm+vLWOMMWzpE3hiq92l9lTAHamRCg==
 
-engine.io@~4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-4.1.0.tgz#d8ac90a09ed9fc703abf87023f1e1815e33f044e"
-  integrity sha512-vW7EAtn0HDQ4MtT5QbmCHF17TaYLONv2/JwdYsq9USPRZVM4zG7WB3k0Nc321z8EuSOlhGokrYlYx4176QhD0A==
+engine.io@~5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-5.1.0.tgz#d1d1520d6e99fe61618a4e65a97f57b1d232d711"
+  integrity sha512-A2i4kVvOA3qezQLlMz+FayGFdqOo0LP3fYrb0VqXMDXKoXcbgM0KxcEYnsdVzOMJQErIAb1GIStRj7UWFoiqlQ==
   dependencies:
     accepts "~1.3.4"
     base64id "2.0.0"
@@ -7610,21 +7609,21 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-socket.io-adapter@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-2.1.0.tgz#edc5dc36602f2985918d631c1399215e97a1b527"
-  integrity sha512-+vDov/aTsLjViYTwS9fPy5pEtTkrbEKsw2M+oVSoFGw6OD1IpvlV1VPhUzNbofCQ8oyMbdYJqDtGdmHQK6TdPg==
+socket.io-adapter@~2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-2.3.0.tgz#63090df6dd6d289b0806acff4a0b2f1952ffe37e"
+  integrity sha512-jdIbSFRWOkaZpo5mXy8T7rXEN6qo3bOFuq4nVeX1ZS7AtFlkbk39y153xTXEIW7W94vZfhVOux1wTU88YxcM1w==
 
-socket.io-client@3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-3.1.3.tgz#57ddcefea58cfab71f0e94c21124de8e3c5aa3e2"
-  integrity sha512-4sIGOGOmCg3AOgGi7EEr6ZkTZRkrXwub70bBB/F0JSkMOUFpA77WsL87o34DffQQ31PkbMUIadGOk+3tx1KGbw==
+socket.io-client@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-4.1.1.tgz#2cdd883fcebd4417fda0f1becc72eea0664ece0b"
+  integrity sha512-avzRzFZIkmyNxqvhmm5ns0Itq5dgEkesDPB6Tl0Yben47U08MvdFnVXAuFDULQhDXjuYdCb6QUEILYLUKQEuGg==
   dependencies:
     "@types/component-emitter" "^1.2.10"
     backo2 "~1.0.2"
     component-emitter "~1.3.0"
     debug "~4.3.1"
-    engine.io-client "~4.1.0"
+    engine.io-client "~5.1.1"
     parseuri "0.0.6"
     socket.io-parser "~4.0.4"
 
@@ -7637,10 +7636,10 @@ socket.io-parser@~4.0.3, socket.io-parser@~4.0.4:
     component-emitter "~1.3.0"
     debug "~4.3.1"
 
-socket.io@3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-3.1.2.tgz#06e27caa1c4fc9617547acfbb5da9bc1747da39a"
-  integrity sha512-JubKZnTQ4Z8G4IZWtaAZSiRP3I/inpy8c/Bsx2jrwGrTbKeVU5xd6qkKMHpChYeM3dWZSO0QACiGK+obhBNwYw==
+socket.io@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-4.1.1.tgz#aa3e4d93142fec6ba2053091601b55c835864b54"
+  integrity sha512-YKPdhaYRGEXjP+VqoKlfOEPgDjm0aMq1YWonjHg4rBU1xJCmgceNh2XL1vO4czWupH+WX1+d9Wqb768h7BC5kw==
   dependencies:
     "@types/cookie" "^0.4.0"
     "@types/cors" "^2.8.8"
@@ -7648,8 +7647,8 @@ socket.io@3.1.2:
     accepts "~1.3.4"
     base64id "~2.0.0"
     debug "~4.3.1"
-    engine.io "~4.1.0"
-    socket.io-adapter "~2.1.0"
+    engine.io "~5.1.0"
+    socket.io-adapter "~2.3.0"
     socket.io-parser "~4.0.3"
 
 source-map-resolve@^0.5.0:
@@ -8680,11 +8679,6 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
-
-xmlhttprequest-ssl@~1.5.4:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz#c2876b06168aadc40e57d97e81191ac8f4398b3e"
-  integrity sha1-wodrBhaKrcQOV9l+gRkayPQ5iz4=
 
 xtend@^4.0.0:
   version "4.0.2"
