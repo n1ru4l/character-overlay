@@ -35,7 +35,7 @@
     "@testing-library/user-event": "13.1.8",
     "@types/jest": "26.0.23",
     "@types/multer": "1.4.5",
-    "@types/node": "12.20.12",
+    "@types/node": "12.20.13",
     "@types/react": "17.0.5",
     "@types/react-dom": "17.0.4",
     "@types/serve-static": "1.13.9",
