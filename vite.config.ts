@@ -7,7 +7,7 @@ const backendAddress = "http://localhost:4000";
 export default defineConfig({
   plugins: [reactRefresh()],
   build: {
-    target: "safari14",
+    target: "es2019",
     minify: false,
   },
   resolve: {
