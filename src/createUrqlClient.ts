@@ -17,18 +17,8 @@ const APP_VERSION =
 export const createUrqlClient = () => {
   const socket = io();
   const networkInterface = createSocketIOGraphQLClient<ExecutionResult>(socket);
-  socket.on("connect", () => {
-    socket.emit("handshake", { version: APP_VERSION });
-  });
-  socket.on("handshake", (payload: unknown) => {
-    // @ts-ignore
-    if (payload?.success !== true) {
-      // There is a new version of the frontend available that we want to use.
-      window.location.reload();
-    }
-  });
 
-  return new UrqlClient({
+  const client = new UrqlClient({
     url: "/graphql",
     exchanges: [
       dedupExchange,
@@ -51,4 +41,17 @@ export const createUrqlClient = () => {
       }),
     ],
   });
+
+  socket.on("connect", () => {
+    socket.emit("handshake", { version: APP_VERSION });
+  });
+  socket.on("handshake", (payload: unknown) => {
+    // @ts-ignore
+    if (payload?.success !== true) {
+      // There is a new version of the frontend available that we want to use.
+      window.location.reload();
+    }
+  });
+
+  return client;
 };

@@ -16,6 +16,7 @@ import {
   Popover,
   PopoverTrigger,
   Portal,
+  Spacer,
   Stack,
   Switch,
   Text,
@@ -34,6 +35,7 @@ import { useResetState } from "./useResetState";
 import { useCharacterEditorQueryQuery } from "./CharacterEditorQuery";
 import { useCreateCharacterMutationMutation } from "./CreateCharacterMutation";
 import { useUpdateCharacterMutationMutation } from "./UpdateCharacterMutation";
+import { OBSInstructions } from "./OBSInstructions";
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -211,22 +213,6 @@ const Editor = ({
             <AlertIcon />
             If you lose the URL you cannot update this character anymore. So
             make sure you bookmark it.
-          </Alert>
-
-          <Alert status="info">
-            <AlertIcon />
-            <Stack padding="2">
-              <Text>
-                Use the following link for embedding the Overlay in your
-                streaming software such as OBS. It will automatically update
-                once you applied any changes on this site.
-              </Text>
-              <CopyInput
-                type="text"
-                readOnly
-                value={buildCharacterUrl(character.id)}
-              />
-            </Stack>
           </Alert>
         </Stack>
 
@@ -442,6 +428,23 @@ const Editor = ({
             }}
           />
         </Box>
+        <Box padding="4" />
+        <Alert status="info">
+          <AlertIcon />
+          <Stack padding="2">
+            <Text>
+              Use the following link for embedding the Overlay in your streaming
+              software such as OBS. It will automatically update once you
+              applied any changes on this site.
+            </Text>
+            <CopyInput
+              type="text"
+              readOnly
+              value={buildCharacterUrl(character.id)}
+            />
+          </Stack>
+        </Alert>
+        <OBSInstructions />
       </Stack>
     </>
   );

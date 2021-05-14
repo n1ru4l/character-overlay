@@ -81,7 +81,6 @@ const graphQLServerLayer = registerSocketIOGraphQLServer({
       } as ApplicationContext,
     },
   }),
-  isLazy: true,
 });
 
 // In order to keep clients in sync with the backend we do a handshake for determining
@@ -92,7 +91,6 @@ socketServer.on("connection", (socket: Socket) => {
       const clientFrontendVersion = (payload as any).version ?? "unknown";
       let success = false;
       if (clientFrontendVersion === version) {
-        graphQLServerLayer.registerSocket(socket);
         success = true;
       }
       socket.emit("handshake", { success });
