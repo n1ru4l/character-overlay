@@ -2818,10 +2818,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-better-sqlite3@7.4.0:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-7.4.0.tgz#178cec863aa3090cbb0c5392f920925811d6ac87"
-  integrity sha512-hXwwaFvtYwRfjBSGP6+woB95qbwSnfpXyy/kDFzgOMoDttzyaWsBGcU3FGuRbzhbRv0qpKRCJQ6Hru2pQ8adxg==
+better-sqlite3@7.4.1:
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-7.4.1.tgz#9daab6fb5be44460772992478ccda2db53605b7d"
+  integrity sha512-sk1kW3PsWE7W7G9qbi5TQxCROlQVR8YWlp4srbyrwN5DrLeamKfrm3JExwOiNSAYyJv8cw5/2HOfvF/ipZj4qg==
   dependencies:
     bindings "^1.5.0"
     prebuild-install "^6.0.1"
