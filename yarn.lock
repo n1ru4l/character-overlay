@@ -2125,10 +2125,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/better-sqlite3@5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@types/better-sqlite3/-/better-sqlite3-5.4.2.tgz#d2b0692935d0a9faf5200090ad0bdf7fba5408a6"
-  integrity sha512-t7SdiL8NNGibdXmqfLbp9ZL87DcV+SgjCvO2E8elTG/f4eO4Vu+TkmqzmTuPXulDzOwKv3Aj2Jlocqdb+CSefA==
+"@types/better-sqlite3@5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@types/better-sqlite3/-/better-sqlite3-5.4.3.tgz#4f1142c02db111627d9c5792f8aa349fcf46d100"
+  integrity sha512-d4T8Htgz3sQL3u5oVwkWipZLBYUooKEA4fhU9Sp4F6VDIhifQo1NR/IDtnAIID0Y9IXV3TQnNhv6S+m8TnkEdg==
   dependencies:
     "@types/integer" "*"
 
