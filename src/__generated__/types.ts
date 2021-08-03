@@ -17,27 +17,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type Query = {
-  __typename?: "Query";
-  characterEditor?: Maybe<CharacterEditor>;
-  character?: Maybe<Character>;
-};
-
-export type QueryCharacterEditorArgs = {
-  editHash: Scalars["ID"];
-};
-
-export type QueryCharacterArgs = {
-  id: Scalars["ID"];
-};
-
-export type CharacterEditor = CharacterEditorView | Error;
-
-export type CharacterEditorView = {
-  __typename?: "CharacterEditorView";
-  character: Character;
-};
-
 export type Character = {
   __typename?: "Character";
   id: Scalars["ID"];
@@ -53,24 +32,11 @@ export type Character = {
   maximumFatePoints: Scalars["Int"];
 };
 
-export type Error = {
-  __typename?: "Error";
-  reason: Scalars["String"];
-};
+export type CharacterEditor = CharacterEditorView | Error;
 
-export type Mutation = {
-  __typename?: "Mutation";
-  updateCharacter?: Maybe<Scalars["Boolean"]>;
-  createCharacter: CreateCharacterResult;
-};
-
-export type MutationUpdateCharacterArgs = {
-  input: UpdateCharacterInput;
-};
-
-export type UpdateCharacterInput = {
-  editHash: Scalars["String"];
-  updates: CharacterUpdateFields;
+export type CharacterEditorView = {
+  __typename?: "CharacterEditorView";
+  character: Character;
 };
 
 export type CharacterUpdateFields = {
@@ -91,4 +57,38 @@ export type CreateCharacterResult = Error | CreateCharacterSuccess;
 export type CreateCharacterSuccess = {
   __typename?: "CreateCharacterSuccess";
   editHash: Scalars["String"];
+};
+
+export type Error = {
+  __typename?: "Error";
+  reason: Scalars["String"];
+};
+
+export type Mutation = {
+  __typename?: "Mutation";
+  updateCharacter?: Maybe<Scalars["Boolean"]>;
+  createCharacter: CreateCharacterResult;
+};
+
+export type MutationUpdateCharacterArgs = {
+  input: UpdateCharacterInput;
+};
+
+export type Query = {
+  __typename?: "Query";
+  characterEditor?: Maybe<CharacterEditor>;
+  character?: Maybe<Character>;
+};
+
+export type QueryCharacterEditorArgs = {
+  editHash: Scalars["ID"];
+};
+
+export type QueryCharacterArgs = {
+  id: Scalars["ID"];
+};
+
+export type UpdateCharacterInput = {
+  editHash: Scalars["String"];
+  updates: CharacterUpdateFields;
 };
