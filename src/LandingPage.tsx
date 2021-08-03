@@ -10,11 +10,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { gql } from "./gql";
 import styled from "@emotion/styled";
 import { CharacterOverlay } from "./CharacterView";
-import { useCreateCharacterMutationMutation } from "./CreateCharacterMutation";
 import { isSome, Maybe } from "./Maybe";
 import { HeaderSection } from "./AppShell";
+import { useMutation } from "urql";
 
 const SectionContainer = styled(Container)`
   max-width: 1200px;
@@ -31,6 +32,20 @@ const BackgroundImageContainer = styled.div`
   background-image: url("/background.svg");
 `;
 
+export const CreateCharacterMutation = gql(/* GraphQL */ `
+  mutation CreateCharacterMutation {
+    createCharacter {
+      __typename
+      ... on Error {
+        reason
+      }
+      ... on CreateCharacterSuccess {
+        editHash
+      }
+    }
+  }
+`);
+
 export const LandingPage = (): React.ReactElement => {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const streamRef = React.useRef<Maybe<MediaStream>>(null);
@@ -38,10 +53,9 @@ export const LandingPage = (): React.ReactElement => {
     "notStarted" | "starting" | "started"
   >("notStarted");
 
-  const [
-    createCharacterState,
-    createCharacter,
-  ] = useCreateCharacterMutationMutation();
+  const [createCharacterState, createCharacter] = useMutation(
+    CreateCharacterMutation
+  );
 
   React.useEffect(() => {
     if (

@@ -1,3 +1,0 @@
-mutation UpdateCharacterMutation($input: UpdateCharacterInput!) {
-  updateCharacter(input: $input)
-}
