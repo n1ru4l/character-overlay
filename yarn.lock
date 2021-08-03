@@ -1583,6 +1583,13 @@
     camel-case "4.1.2"
     tslib "~2.2.0"
 
+"@graphql-tools/utils@^8.0.0":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.0.1.tgz#bf09e8d6d17c4a0830f0fbf2c69dd725de19058c"
+  integrity sha512-gjQk6sht4b0/hcG+QEVxfMyO8bn5tuU1nIOVhQ4whgFaUmrnb3hx2mwzz1EJzfIOAuHKE8tY0lu6jt3bGTD4yg==
+  dependencies:
+    tslib "~2.3.0"
+
 "@graphql-tools/wrap@^7.0.4":
   version "7.0.8"
   resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-7.0.8.tgz#ad41e487135ca3ea1ae0ea04bb3f596177fb4f50"
@@ -1807,10 +1814,18 @@
   resolved "https://registry.yarnpkg.com/@microsoft/fetch-event-source/-/fetch-event-source-2.0.1.tgz#9ceecc94b49fbaa15666e38ae8587f64acce007d"
   integrity sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==
 
-"@n1ru4l/graphql-live-query-patch@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query-patch/-/graphql-live-query-patch-0.3.1.tgz#b6ce6f7b9855b9c5984958b81a5cda54040aa598"
-  integrity sha512-c9m7Q1jVZ4OAIfnBIymjOnsMJpLcwyaP7RoTzSefJon9I2HukXtpHvwrgdc/Z8mFWPprMWggu3vEwwtIxrFnSg==
+"@n1ru4l/graphql-live-query-patch-json-patch@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query-patch-json-patch/-/graphql-live-query-patch-json-patch-0.3.3.tgz#7cf60ee7e34c5d5b0eb536d0b5c3e64ecdb97065"
+  integrity sha512-NAYpFyxYlWcPJgc5W7b3t9jXYSqvxKKH/xPZdUn+KTKbNbbcQw/ZpEipr5r0/shsvuSxiWNi7vvjfPBZX6oOXA==
+  dependencies:
+    "@n1ru4l/graphql-live-query-patch" "^0.3.2"
+    fast-json-patch "3.0.0-1"
+
+"@n1ru4l/graphql-live-query-patch@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query-patch/-/graphql-live-query-patch-0.3.2.tgz#c268c7b38e128ff117db12176514826fc9b50007"
+  integrity sha512-ydXF1lX30JXb6g8BjDehkp0UFNDii4/Z9yXjBxySleE3ZB3MzYSzL8U59mh6yUxd6CcuZkNwuxuP00T4y7/Sfg==
   dependencies:
     fast-json-patch "3.0.0-1"
 
@@ -1819,16 +1834,16 @@
   resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query/-/graphql-live-query-0.7.1.tgz#c020d017c3ed6bcfdde49a7106ba035e4d0774f5"
   integrity sha512-5kJPe2FkPNsCGu9tocKIzUSNO986qAqdnbk8hIFqWlpVPBAmEAOYb1mr6PA18FYAlu7ojWm9Hm13k29aj2GGlQ==
 
-"@n1ru4l/in-memory-live-query-store@0.6.5":
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/in-memory-live-query-store/-/in-memory-live-query-store-0.6.5.tgz#17dbd198b70da34ea7d8b05098945bbd3b2dbecc"
-  integrity sha512-Yj9ova+t3TKuD5HFkqEBnjI1apNSEXq0JDqH41xz6ArWDLVY9e9kZMQBmIXe2iTeaKtkYOhcmrw2kdjITZaiqw==
+"@n1ru4l/in-memory-live-query-store@0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/in-memory-live-query-store/-/in-memory-live-query-store-0.6.6.tgz#57f4b7e4219c062a82da6b4e6434f0bda5284497"
+  integrity sha512-91GdnWsnSq2ZI4C0vJlzedXPjWNxz71RP+870RJjRoHmsco5vyDs6W3y9aCUy02HkGwhdJNuf6qSylBA8oDKqQ==
   dependencies:
-    "@graphql-tools/utils" "^7.7.1"
+    "@graphql-tools/utils" "^8.0.0"
     "@n1ru4l/graphql-live-query" "0.7.1"
-    "@n1ru4l/push-pull-async-iterable-iterator" "^2.1.4"
+    "@n1ru4l/push-pull-async-iterable-iterator" "^3.0.0"
 
-"@n1ru4l/push-pull-async-iterable-iterator@3.0.0":
+"@n1ru4l/push-pull-async-iterable-iterator@3.0.0", "@n1ru4l/push-pull-async-iterable-iterator@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@n1ru4l/push-pull-async-iterable-iterator/-/push-pull-async-iterable-iterator-3.0.0.tgz#22dc34094c2de5f21b9a798d0ffab16b45de0eb7"
   integrity sha512-gwoIwo/Dt1GOI+lbcG1G7IeRM2K+Fo0op3OGyFJ4tXUCf2a3Q8lUCm81aoevrXC0nu4gbAXeOWy7wWxjpSvZUw==

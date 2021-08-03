@@ -6,7 +6,7 @@ import { Server, Socket } from "socket.io";
 import serveStatic from "serve-static";
 import { registerSocketIOGraphQLServer } from "@n1ru4l/socket-io-graphql-server";
 import { InMemoryLiveQueryStore } from "@n1ru4l/in-memory-live-query-store";
-import { createApplyLiveQueryPatchGenerator } from "@n1ru4l/graphql-live-query-patch";
+import { applyLiveQueryJSONPatchGenerator } from "@n1ru4l/graphql-live-query-patch-json-patch";
 import Database from "better-sqlite3";
 import { schema } from "./schema";
 import type { ApplicationContext } from "./ApplicationContext";
@@ -72,7 +72,7 @@ const graphQLServerLayer = registerSocketIOGraphQLServer({
   socketServer,
   getParameter: () => ({
     execute: (...args) =>
-      createApplyLiveQueryPatchGenerator()(liveQueryStore.execute(...args)),
+      applyLiveQueryJSONPatchGenerator(liveQueryStore.execute(...args)),
     graphQLExecutionParameter: {
       schema,
       contextValue: {
