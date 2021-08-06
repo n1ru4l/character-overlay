@@ -1,11 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import { Box } from "@chakra-ui/react";
-import { useCharacterQueryQuery } from "./CharacterQuery";
+import { gql } from "./gql";
+import { useQuery } from "urql";
 import { isNone, isSome, Maybe } from "./Maybe";
 import { LandingPage } from "./LandingPage";
 import { CharacterEditor } from "./CharacterEditor";
 import { CharacterOverlay } from "./CharacterView";
+
+const CharacterQuery = gql(/* GraphQL */ `
+  query CharacterQuery($characterId: ID!) @live {
+    character(id: $characterId) {
+      id
+      ...CharacterViewFragment
+    }
+  }
+`);
 
 const parseEditHash = (hash: string): Maybe<string> => {
   const result = /edit=(\w*)/.exec(hash);
@@ -95,7 +105,8 @@ export const App = (): React.ReactElement => {
 };
 
 const CharacterRenderer = ({ characterId }: { characterId: string }) => {
-  const [data] = useCharacterQueryQuery({
+  const [data] = useQuery({
+    query: CharacterQuery,
     variables: {
       characterId,
     },

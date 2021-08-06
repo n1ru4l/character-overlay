@@ -16,26 +16,57 @@ import {
   Popover,
   PopoverTrigger,
   Portal,
-  Spacer,
   Stack,
   Switch,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { gql } from "./gql";
+import { useMutation, useQuery } from "urql";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { HeaderSection, MainSectionContainer } from "./AppShell";
-import { CharacterViewFragment } from "./CharacterViewFragment";
 import { isSome, Maybe } from "./Maybe";
 import { parseIntSafe } from "./number-utilities";
 import { NumPad } from "./NumPad";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
 import { useResetState } from "./useResetState";
-import { useCharacterEditorQueryQuery } from "./CharacterEditorQuery";
-import { useCreateCharacterMutationMutation } from "./CreateCharacterMutation";
-import { useUpdateCharacterMutationMutation } from "./UpdateCharacterMutation";
 import { OBSInstructions } from "./OBSInstructions";
+import { CreateCharacterMutation } from "./LandingPage";
+
+const CharacterViewFragment = gql(/* GraphQL */ `
+  fragment CharacterViewFragment on Character {
+    id
+    name
+    imageUrl
+    maximumHealth
+    currentHealth
+    hasMana
+    maximumMana
+    currentMana
+    hasFatePoints
+    maximumFatePoints
+    currentFatePoints
+  }
+`);
+
+const CharacterEditorQuery = gql(/* GraphQL */ `
+  query CharacterEditorQuery($editHash: ID!) @live {
+    characterEditor(editHash: $editHash) {
+      __typename
+      ... on Error {
+        reason
+      }
+      ... on CharacterEditorView {
+        character {
+          id
+          ...CharacterViewFragment
+        }
+      }
+    }
+  }
+`);
 
 export const CharacterEditor = (props: {
   editHash: string;
@@ -51,7 +82,8 @@ export const CharacterEditor = (props: {
 };
 
 const Renderer = (props: { editHash: string }) => {
-  const [data] = useCharacterEditorQueryQuery({
+  const [data] = useQuery({
+    query: CharacterEditorQuery,
     variables: {
       editHash: props.editHash,
     },
@@ -71,10 +103,9 @@ const Renderer = (props: { editHash: string }) => {
 };
 
 const CharacterNotFoundView = (): React.ReactElement => {
-  const [
-    createCharacterState,
-    createCharacter,
-  ] = useCreateCharacterMutationMutation();
+  const [createCharacterState, createCharacter] = useMutation(
+    CreateCharacterMutation
+  );
 
   React.useEffect(() => {
     if (
@@ -109,17 +140,27 @@ const CharacterNotFoundView = (): React.ReactElement => {
   );
 };
 
+const UpdateCharacterMutation = gql(/* GraphQL */ `
+  mutation UpdateCharacterMutation($input: UpdateCharacterInput!) {
+    updateCharacter(input: $input)
+  }
+`);
+
 const Editor = ({
   character,
   editHash,
 }: {
-  character: CharacterViewFragment;
+  character: Exclude<
+    typeof CharacterViewFragment["__resultType"],
+    null | undefined
+  >;
   editHash: string;
 }) => {
-  const [, updateCharacter] = useUpdateCharacterMutationMutation();
-  const [imageUrl, setImageUrl] = useResetState(() => character.imageUrl, [
-    character.imageUrl,
-  ]);
+  const [, updateCharacter] = useMutation(UpdateCharacterMutation);
+  const [imageUrl, setImageUrl] = useResetState(
+    () => character.imageUrl,
+    [character.imageUrl]
+  );
   const [name, setName] = useResetState(() => character.name, [character.name]);
   const [currentHealth, setCurrentHealth] = useResetState(
     () => character.currentHealth,
@@ -129,9 +170,10 @@ const Editor = ({
     () => character.maximumHealth,
     [character.maximumHealth]
   );
-  const [hasMana, setHasMana] = useResetState(() => character.hasMana, [
-    character.hasMana,
-  ]);
+  const [hasMana, setHasMana] = useResetState(
+    () => character.hasMana,
+    [character.hasMana]
+  );
   const [currentMana, setCurrentMana] = useResetState(
     () => character.currentMana,
     [character.currentMana]

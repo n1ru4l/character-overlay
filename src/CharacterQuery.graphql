@@ -1,6 +1,0 @@
-query CharacterQuery($characterId: ID!) @live {
-  character(id: $characterId) {
-    id
-    ...CharacterViewFragment
-  }
-}

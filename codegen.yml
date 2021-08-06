@@ -1,21 +1,8 @@
 overwrite: true
 schema: "./GraphQLTypeDefinitions.graphql"
-documents: "src/**/*.graphql"
-config:
-  dedupeOperationSuffix: true
+documents:
+  - "src/**/*.tsx"
+  - "!src/gql/**/*"
 generates:
-  src/__generated__/types.ts:
-    plugins:
-      - add:
-          content: "// THIS FILE IS AUTO GENERATED DO NOT MANUALLY EDIT\n/* eslint-disable */"
-      - "typescript"
-  src/:
-    preset: near-operation-file
-    presetConfig:
-      extension: .tsx
-      baseTypesPath: __generated__/types.ts
-    plugins:
-      - add:
-          content: "// THIS FILE IS AUTO GENERATED DO NOT MANUALLY EDIT\n/* eslint-disable */"
-      - "typescript-operations"
-      - "typescript-urql"
+  ./src/gql/:
+    preset: gql-tag-operations-preset
