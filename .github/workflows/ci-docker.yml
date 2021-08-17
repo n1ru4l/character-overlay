@@ -26,6 +26,9 @@ jobs:
       - name: Unit tests
         run: yarn test
 
+      - name: Type check
+        run: yarn tsc
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
