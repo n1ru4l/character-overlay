@@ -10,12 +10,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { gql } from "./gql";
 import styled from "@emotion/styled";
 import { CharacterOverlay } from "./CharacterView";
 import { isSome, Maybe } from "./Maybe";
 import { HeaderSection } from "./AppShell";
-import { useMutation } from "urql";
+import { useMutation, gql } from "urql";
 
 const SectionContainer = styled(Container)`
   max-width: 1200px;

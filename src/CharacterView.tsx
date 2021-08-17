@@ -1,12 +1,13 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 import { Box, HStack, Text, Stack } from "@chakra-ui/react";
-import { CharacterViewFragment } from "./CharacterViewFragment";
+import type { CharacterViewFragment } from "./CharacterEditor";
+import { DocumentType } from "@urql/core";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
 
 export const CharacterOverlay = (props: {
-  character: CharacterViewFragment;
+  character: DocumentType<typeof CharacterViewFragment>;
   size: "sm" | "lg";
 }): React.ReactElement => {
   const imageSize = (props.size === "sm" ? 75 : 125) + "px";

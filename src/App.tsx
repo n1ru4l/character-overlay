@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import { Box } from "@chakra-ui/react";
-import { gql } from "./gql";
-import { useQuery } from "urql";
+import { useQuery, gql } from "urql";
 import { isNone, isSome, Maybe } from "./Maybe";
 import { LandingPage } from "./LandingPage";
 import { CharacterEditor } from "./CharacterEditor";
