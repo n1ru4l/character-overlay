@@ -21,8 +21,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { gql } from "./gql";
-import { useMutation, useQuery } from "urql";
+import { useMutation, useQuery, gql } from "urql";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { HeaderSection, MainSectionContainer } from "./AppShell";
@@ -35,7 +34,7 @@ import { useResetState } from "./useResetState";
 import { OBSInstructions } from "./OBSInstructions";
 import { CreateCharacterMutation } from "./LandingPage";
 
-const CharacterViewFragment = gql(/* GraphQL */ `
+export const CharacterViewFragment = gql(/* GraphQL */ `
   fragment CharacterViewFragment on Character {
     id
     name

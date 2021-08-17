@@ -4,5 +4,7 @@ documents:
   - "src/**/*.tsx"
   - "!src/gql/**/*"
 generates:
-  ./src/gql/:
+  ./src/__generated__/:
     preset: gql-tag-operations-preset
+    presetConfig:
+      augmentedModuleName: "@urql/core"
