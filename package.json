@@ -24,7 +24,7 @@
     "@emotion/styled": "11.3.0",
     "@feedback-fish/react": "1.2.1",
     "@graphql-codegen/cli": "2.1.1",
-    "@graphql-codegen/gql-tag-operations-preset": "1.1.0",
+    "@graphql-codegen/gql-tag-operations-preset": "1.1.1",
     "@n1ru4l/push-pull-async-iterable-iterator": "3.0.0",
     "@n1ru4l/socket-io-graphql-client": "0.9.5",
     "@testing-library/jest-dom": "5.13.0",
