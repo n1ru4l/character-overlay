@@ -20,7 +20,7 @@
   "devDependencies": {
     "@chakra-ui/icons": "1.0.15",
     "@chakra-ui/react": "1.6.7",
-    "@emotion/react": "11.4.0",
+    "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
     "@feedback-fish/react": "1.2.1",
     "@graphql-codegen/cli": "2.1.1",
