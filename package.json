@@ -15,7 +15,7 @@
     "multer": "1.4.2",
     "patch-package": "6.4.7",
     "serve-static": "1.14.1",
-    "socket.io": "4.1.3"
+    "socket.io": "4.2.0"
   },
   "devDependencies": {
     "@chakra-ui/icons": "1.0.14",
@@ -44,7 +44,7 @@
     "prettier": "2.3.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "socket.io-client": "4.1.3",
+    "socket.io-client": "4.2.0",
     "ts-jest": "26.5.6",
     "ts-node-dev": "1.1.8",
     "typescript": "4.4.2",
