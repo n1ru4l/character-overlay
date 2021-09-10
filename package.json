@@ -18,13 +18,14 @@
     "socket.io": "4.1.3"
   },
   "devDependencies": {
+    "@babel/core": "7.15.5",
     "@chakra-ui/icons": "1.0.14",
     "@chakra-ui/react": "1.6.5",
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
     "@feedback-fish/react": "1.2.1",
-    "@graphql-codegen/cli": "2.0.1",
-    "@graphql-codegen/gql-tag-operations-preset": "1.1.0-alpha-08b4fc3a4.0",
+    "@graphql-codegen/cli": "2.2.0",
+    "@graphql-codegen/gql-tag-operations-preset": "1.2.0-alpha-e70565fc0.0",
     "@n1ru4l/push-pull-async-iterable-iterator": "3.0.0",
     "@n1ru4l/socket-io-graphql-client": "0.9.5",
     "@testing-library/jest-dom": "5.13.0",

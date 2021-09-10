@@ -13,20 +13,19 @@ export type Scalars = {
   Float: number;
 };
 
-
 export type Character = {
   __typename?: 'Character';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  imageUrl?: Maybe<Scalars['String']>;
-  currentHealth: Scalars['Int'];
-  maximumHealth: Scalars['Int'];
-  hasMana: Scalars['Boolean'];
-  currentMana: Scalars['Int'];
-  maximumMana: Scalars['Int'];
-  hasFatePoints: Scalars['Boolean'];
   currentFatePoints: Scalars['Int'];
+  currentHealth: Scalars['Int'];
+  currentMana: Scalars['Int'];
+  hasFatePoints: Scalars['Boolean'];
+  hasMana: Scalars['Boolean'];
+  id: Scalars['ID'];
+  imageUrl?: Maybe<Scalars['String']>;
   maximumFatePoints: Scalars['Int'];
+  maximumHealth: Scalars['Int'];
+  maximumMana: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type CharacterEditor = CharacterEditorView | Error;
@@ -37,19 +36,19 @@ export type CharacterEditorView = {
 };
 
 export type CharacterUpdateFields = {
-  name?: Maybe<Scalars['String']>;
-  maximumHealth?: Maybe<Scalars['Int']>;
+  currentFatePoints?: Maybe<Scalars['Int']>;
   currentHealth?: Maybe<Scalars['Int']>;
-  hasMana?: Maybe<Scalars['Boolean']>;
-  maximumMana?: Maybe<Scalars['Int']>;
   currentMana?: Maybe<Scalars['Int']>;
   hasFatePoints?: Maybe<Scalars['Boolean']>;
-  maximumFatePoints?: Maybe<Scalars['Int']>;
-  currentFatePoints?: Maybe<Scalars['Int']>;
+  hasMana?: Maybe<Scalars['Boolean']>;
   imageUrl?: Maybe<Scalars['String']>;
+  maximumFatePoints?: Maybe<Scalars['Int']>;
+  maximumHealth?: Maybe<Scalars['Int']>;
+  maximumMana?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
-export type CreateCharacterResult = Error | CreateCharacterSuccess;
+export type CreateCharacterResult = CreateCharacterSuccess | Error;
 
 export type CreateCharacterSuccess = {
   __typename?: 'CreateCharacterSuccess';
@@ -63,8 +62,8 @@ export type Error = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  updateCharacter?: Maybe<Scalars['Boolean']>;
   createCharacter: CreateCharacterResult;
+  updateCharacter?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -74,18 +73,18 @@ export type MutationUpdateCharacterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  characterEditor?: Maybe<CharacterEditor>;
   character?: Maybe<Character>;
-};
-
-
-export type QueryCharacterEditorArgs = {
-  editHash: Scalars['ID'];
+  characterEditor?: Maybe<CharacterEditor>;
 };
 
 
 export type QueryCharacterArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryCharacterEditorArgs = {
+  editHash: Scalars['ID'];
 };
 
 export type UpdateCharacterInput = {
@@ -119,7 +118,7 @@ export type UpdateCharacterMutationMutation = { __typename?: 'Mutation', updateC
 export type CreateCharacterMutationMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateCharacterMutationMutation = { __typename?: 'Mutation', createCharacter: { __typename: 'Error', reason: string } | { __typename: 'CreateCharacterSuccess', editHash: string } };
+export type CreateCharacterMutationMutation = { __typename?: 'Mutation', createCharacter: { __typename: 'CreateCharacterSuccess', editHash: string } | { __typename: 'Error', reason: string } };
 
 export const CharacterViewFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CharacterViewFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"imageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"maximumHealth"}},{"kind":"Field","name":{"kind":"Name","value":"currentHealth"}},{"kind":"Field","name":{"kind":"Name","value":"hasMana"}},{"kind":"Field","name":{"kind":"Name","value":"maximumMana"}},{"kind":"Field","name":{"kind":"Name","value":"currentMana"}},{"kind":"Field","name":{"kind":"Name","value":"hasFatePoints"}},{"kind":"Field","name":{"kind":"Name","value":"maximumFatePoints"}},{"kind":"Field","name":{"kind":"Name","value":"currentFatePoints"}}]}}]} as unknown as DocumentNode<CharacterViewFragmentFragment, unknown>;
 export const CharacterQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CharacterQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"characterId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"directives":[{"kind":"Directive","name":{"kind":"Name","value":"live"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"character"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"characterId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"CharacterViewFragment"}}]}}]}},...CharacterViewFragmentFragmentDoc.definitions]} as unknown as DocumentNode<CharacterQueryQuery, CharacterQueryQueryVariables>;
