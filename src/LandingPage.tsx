@@ -143,19 +143,21 @@ export const LandingPage = (): React.ReactElement => {
             <OverlayContainer>
               <CharacterOverlay
                 size="sm"
-                character={{
-                  id: "__local-example",
-                  name: "Robin Hood",
-                  maximumHealth: 30,
-                  currentHealth: 22,
-                  imageUrl: "/sample-portrait.jpg",
-                  currentMana: 10,
-                  maximumMana: 20,
-                  hasMana: false,
-                  hasFatePoints: false,
-                  currentFatePoints: 0,
-                  maximumFatePoints: 0,
-                }}
+                character={
+                  {
+                    id: "__local-example",
+                    name: "Robin Hood",
+                    maximumHealth: 30,
+                    currentHealth: 22,
+                    imageUrl: "/sample-portrait.jpg",
+                    currentMana: 10,
+                    maximumMana: 20,
+                    hasMana: false,
+                    hasFatePoints: false,
+                    currentFatePoints: 0,
+                    maximumFatePoints: 0,
+                  } as any
+                }
               />
             </OverlayContainer>
             <WebcamTriggerContainer>

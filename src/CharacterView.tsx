@@ -1,14 +1,31 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 import { Box, HStack, Text, Stack } from "@chakra-ui/react";
-import { CharacterViewFragment } from "./CharacterViewFragment";
 import { ProgressBar } from "./ProgressBar";
 import { FatePoints } from "./FatePointsIndicator";
+import { FragmentType, gql, useFragment } from "./gql";
+
+const CharacterOverlayFragment = gql(/* GraphQL */ `
+  fragment CharacterOverlayFragment on Character {
+    id
+    name
+    currentHealth
+    maximumHealth
+    hasMana
+    currentMana
+    maximumMana
+    hasFatePoints
+    currentFatePoints
+    maximumFatePoints
+    imageUrl
+  }
+`);
 
 export const CharacterOverlay = (props: {
-  character: CharacterViewFragment;
+  character: FragmentType<typeof CharacterOverlayFragment>;
   size: "sm" | "lg";
 }): React.ReactElement => {
+  const character = useFragment(CharacterOverlayFragment, props.character);
   const imageSize = (props.size === "sm" ? 75 : 125) + "px";
   return (
     <HStack>
@@ -19,12 +36,12 @@ export const CharacterOverlay = (props: {
           textShadow="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"
           width="100%"
         >
-          {props.character.name}
+          {character.name}
         </Text>
         <Stack spacing="2">
           <ProgressBar
-            current={props.character.currentHealth}
-            maximum={props.character.maximumHealth}
+            current={character.currentHealth}
+            maximum={character.maximumHealth}
             colors={["#ec008c", "#ff0000"]}
             label={
               <Text as="span">
@@ -32,16 +49,15 @@ export const CharacterOverlay = (props: {
                   LeP
                 </Text>{" "}
                 <Text as="span">
-                  {props.character.currentHealth} /{" "}
-                  {props.character.maximumHealth}
+                  {character.currentHealth} / {character.maximumHealth}
                 </Text>
               </Text>
             }
           />
-          {props.character.hasMana ? (
+          {character.hasMana ? (
             <ProgressBar
-              current={props.character.currentMana}
-              maximum={props.character.maximumMana}
+              current={character.currentMana}
+              maximum={character.maximumMana}
               colors={["#3c99dc", "#66D3FA"]}
               label={
                 <Text as="span">
@@ -49,17 +65,16 @@ export const CharacterOverlay = (props: {
                     AsP
                   </Text>{" "}
                   <Text as="span">
-                    {props.character.currentMana} /{" "}
-                    {props.character.maximumMana}
+                    {character.currentMana} / {character.maximumMana}
                   </Text>
                 </Text>
               }
             />
           ) : null}
-          {props.character.hasFatePoints ? (
+          {character.hasFatePoints ? (
             <FatePoints
-              current={props.character.currentFatePoints}
-              maximum={props.character.maximumFatePoints}
+              current={character.currentFatePoints}
+              maximum={character.maximumFatePoints}
             />
           ) : null}
         </Stack>
@@ -69,7 +84,7 @@ export const CharacterOverlay = (props: {
           height: imageSize,
           width: imageSize,
         }}
-        src={props.character.imageUrl ?? ""}
+        src={character.imageUrl ?? ""}
       />
     </HStack>
   );

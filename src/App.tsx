@@ -13,6 +13,7 @@ const CharacterQuery = gql(/* GraphQL */ `
     character(id: $characterId) {
       id
       ...CharacterViewFragment
+      ...CharacterOverlayFragment
     }
   }
 `);

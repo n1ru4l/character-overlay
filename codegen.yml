@@ -6,3 +6,5 @@ documents:
 generates:
   ./src/gql/:
     preset: gql-tag-operations-preset
+    presetConfig:
+      fragmentMasking: true

@@ -21,7 +21,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { gql } from "./gql";
+import { FragmentType, gql, useFragment } from "./gql";
 import { useMutation, useQuery } from "urql";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
@@ -146,16 +146,11 @@ const UpdateCharacterMutation = gql(/* GraphQL */ `
   }
 `);
 
-const Editor = ({
-  character,
-  editHash,
-}: {
-  character: Exclude<
-    typeof CharacterViewFragment["__resultType"],
-    null | undefined
-  >;
+const Editor = (props: {
+  character: FragmentType<typeof CharacterViewFragment>;
   editHash: string;
 }) => {
+  const character = useFragment(CharacterViewFragment, props.character);
   const [, updateCharacter] = useMutation(UpdateCharacterMutation);
   const [imageUrl, setImageUrl] = useResetState(
     () => character.imageUrl,
@@ -201,12 +196,12 @@ const Editor = ({
       isFirstRun.current = false;
       return;
     }
-    if (!editHash) {
+    if (!props.editHash) {
       return;
     }
     updateCharacter({
       input: {
-        editHash,
+        editHash: props.editHash,
         updates: {
           name,
           currentHealth,
@@ -223,7 +218,7 @@ const Editor = ({
     });
   }, [
     updateCharacter,
-    editHash,
+    props.editHash,
     name,
     currentHealth,
     maximumHealth,
