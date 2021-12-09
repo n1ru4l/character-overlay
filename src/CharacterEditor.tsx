@@ -35,22 +35,6 @@ import { useResetState } from "./useResetState";
 import { OBSInstructions } from "./OBSInstructions";
 import { CreateCharacterMutation } from "./LandingPage";
 
-const CharacterViewFragment = gql(/* GraphQL */ `
-  fragment CharacterViewFragment on Character {
-    id
-    name
-    imageUrl
-    maximumHealth
-    currentHealth
-    hasMana
-    maximumMana
-    currentMana
-    hasFatePoints
-    maximumFatePoints
-    currentFatePoints
-  }
-`);
-
 const CharacterEditorQuery = gql(/* GraphQL */ `
   query CharacterEditorQuery($editHash: ID!) @live {
     characterEditor(editHash: $editHash) {
@@ -143,6 +127,22 @@ const CharacterNotFoundView = (): React.ReactElement => {
 const UpdateCharacterMutation = gql(/* GraphQL */ `
   mutation UpdateCharacterMutation($input: UpdateCharacterInput!) {
     updateCharacter(input: $input)
+  }
+`);
+
+const CharacterViewFragment = gql(/* GraphQL */ `
+  fragment CharacterViewFragment on Character {
+    id
+    name
+    imageUrl
+    maximumHealth
+    currentHealth
+    hasMana
+    maximumMana
+    currentMana
+    hasFatePoints
+    maximumFatePoints
+    currentFatePoints
   }
 `);
 

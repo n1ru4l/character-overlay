@@ -8,3 +8,7 @@ generates:
     preset: gql-tag-operations-preset
     presetConfig:
       fragmentMasking: true
+
+hooks:
+  afterOneFileWrite:
+    - prettier --write
