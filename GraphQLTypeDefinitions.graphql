@@ -4,7 +4,9 @@
 Instruction for establishing a live connection that is updated once the underlying data changes.
 """
 directive @live(
-  """Whether the query should be live or not."""
+  """
+  Whether the query should be live or not.
+  """
   if: Boolean = true
 
   """
