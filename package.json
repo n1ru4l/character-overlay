@@ -32,7 +32,7 @@
     "@testing-library/user-event": "13.2.1",
     "@types/jest": "27.0.2",
     "@types/multer": "1.4.7",
-    "@types/node": "14.17.15",
+    "@types/node": "14.18.63",
     "@types/react": "17.0.24",
     "@types/react-dom": "17.0.9",
     "@types/serve-static": "1.13.10",
