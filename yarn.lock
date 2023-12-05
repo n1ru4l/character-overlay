@@ -4563,10 +4563,10 @@ got@^9.6.0:
     to-readable-stream "^1.0.0"
     url-parse-lax "^3.0.0"
 
-gqtx@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/gqtx/-/gqtx-0.7.0.tgz#d63fecf0d18d0172abbed9a15341d6236d5642a8"
-  integrity sha512-xOIPkiSc15zbh6uWlAMOzImJXoPn4V60Vk2QaHKTWpXHv9j+G9dSMcR7mMauPpqRaeuP1HxPVS8iK6oKzU8Inw==
+gqtx@0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/gqtx/-/gqtx-0.9.3.tgz#e6c8eadac0689ffb50a219aff8ab842c2655a17c"
+  integrity sha512-LQii9isCdtVuUg1RC9wJy1L8o8bWEgubs2yQ/+INnvenqUxjTb/5rObmreDT2fxe07CTCaufPy64JYg1bcoT4g==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.4:
   version "4.2.4"
